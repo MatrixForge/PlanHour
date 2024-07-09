@@ -23,36 +23,4 @@ background-color: #C5B3E6;
 color: black;
 }
 
-.card {
-  background-image: url('/images/homepage-image.jpg'); /* Replace with your image filename */
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  color: white; /* Optional: Text color to be visible on the background image */
-  padding: 2rem;
-  border: none;
-  border-radius: 10px;
-}
-
-.card-body {
-  /* Adjust these styles to position your content within the card */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%; /* Ensures content fills the remaining space */
-}
-
-.card-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.card-text {
-  /* Optional: Adjust the text style as needed */
-}
-
-.card-link-container {
-  text-align: center;
-}
 

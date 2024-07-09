@@ -1,0 +1,48 @@
+.signupContainer {
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Light background color */
+  }
+  
+  .signupRow {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  
+  .formContainer {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signupButton {
+    background-color: #f0e4d7; /* Light brown color */
+    border: none;
+    color: #000;
+  }
+  
+  .signupButton:hover {
+    background-color: #e0d4c7;
+  }
+  
+  .backgroundContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f8f9fa; /* Light background color */
+  }
+  
+  .backgroundImages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .backgroundImages > div {
+    width: calc(50% - 10px);
+    height: 200px;
+    position: relative;
+  }
+  

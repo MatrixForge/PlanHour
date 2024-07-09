@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Home: React.FC = () => {
   return (
-    <div>
+    <div >
       <CustomNavbar />
       <div
         className="w-100"
@@ -24,9 +24,6 @@ const Home: React.FC = () => {
 
       <Card/>
 
-      <div className="container">
-      <Footer/>
-    </div>
       
     </div>
   );

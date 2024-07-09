@@ -3,7 +3,7 @@ import styles from '../../styles/custom-colors.module.css';
 
 const Cards = () => {
     return (
-        <div className="bg-brown p-4">
+        <div className={`bg-brown p-4  ${styles.customBrown}`}>
             <div className="d-flex justify-content-center">
                 {/* Card 1 */}
                 <div className="card rounded-pill mx-3 shadow-lg " style={{ width: '18rem' }}>
