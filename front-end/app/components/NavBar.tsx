@@ -19,7 +19,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn }) => {
         {!loggedIn && (
           <>
             <div>
-              <a className="btn btn-outline-dark ms-2 rounded-pill" href="#">Login</a>
+              <a className="btn btn-outline-dark ms-2 rounded-pill" href="/login">Login</a>
             </div>
           </>
         )}
@@ -31,7 +31,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn }) => {
           </>
         )}
             <div>
-              <a className={`btn btn-light mx-2 rounded-pill ${styles.customBrown}`} href="#">Get Started</a>
+              <a className={`btn btn-light mx-2 rounded-pill ${styles.customBrown}`} href="/signup">Get Started</a>
             </div>
         <div>
           <button className={styles1.customButton}>
