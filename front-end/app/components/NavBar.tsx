@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../styles/custom-colors.module.css'; 
 import styles1 from '../../styles/navbar.module.css'; 
+import Link from 'next/link';
 
 interface NavBarProps {
   loggedIn: boolean;
@@ -19,7 +20,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn }) => {
         {!loggedIn && (
           <>
             <div>
-              <a className="btn btn-outline-dark ms-2 rounded-pill" href="/login">Login</a>
+              <Link className="btn btn-outline-dark ms-2 rounded-pill" href="/login">Login</Link>
             </div>
           </>
         )}
@@ -31,7 +32,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn }) => {
           </>
         )}
             <div>
-              <a className={`btn btn-light mx-2 rounded-pill ${styles.customBrown}`} href="/signup">Get Started</a>
+              <Link className={`btn btn-light mx-2 rounded-pill ${styles.customBrown}`} href="/signup">Get Started</Link>
             </div>
         <div>
           <button className={styles1.customButton}>
