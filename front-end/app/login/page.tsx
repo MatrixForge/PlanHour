@@ -1,14 +1,32 @@
 "use client";
 import React, { useState } from 'react';
-import '../../styles/signin.css'; 
-import 'bootstrap-icons/font/bootstrap-icons.css'; 
+import axios from 'axios';
+import '../../styles/signin.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import Link from 'next/link';
+import useAuthStore from '../../store/authStore';
+import { useRouter } from 'next/navigation';
 
-const Signup = () => {
+const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const setUser = useAuthStore((state) => state.setUser);
+    const router = useRouter();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
+    };
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            const { data } = await axios.post('http://localhost:5000/api/users/login', { email, password });
+            setUser(data);
+            router.push('/'); 
+        } catch (error:any) {
+            console.error('Login failed:', error.response?.data?.message || error.message);
+        }
     };
 
     return (
@@ -16,31 +34,43 @@ const Signup = () => {
             <div className='flexContainer'>
                 <div className='leftBox'>
                     <h1>Log in</h1>
-                    <div className="form-group">
-                        <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Email" />
-                    </div>
-                    <div className="form-group">
-                        <div className="icon-container">
+                    <form onSubmit={handleLogin}>
+                        <div className="form-group">
                             <input 
-                                type={showPassword ? "text" : "password"} 
+                                type="email" 
                                 className="form-control" 
-                                id="password" 
-                                placeholder="Password" 
+                                id="email" 
+                                aria-describedby="emailHelp" 
+                                placeholder="Email" 
+                                value={email} 
+                                onChange={(e) => setEmail(e.target.value)}
                             />
-                            <i 
-                                className={`bi ${showPassword ? 'bi-eye-fill' : 'bi-eye-slash'} custom-icon`} 
-                                onClick={togglePasswordVisibility}
-                            ></i>
                         </div>
-                    </div>
-                    <div className="form-options">
-                        <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="rememberMe" />
-                            <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
+                        <div className="form-group">
+                            <div className="icon-container">
+                                <input 
+                                    type={showPassword ? "text" : "password"} 
+                                    className="form-control" 
+                                    id="password" 
+                                    placeholder="Password" 
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <i 
+                                    className={`bi ${showPassword ? 'bi-eye-fill' : 'bi-eye-slash'} custom-icon`} 
+                                    onClick={togglePasswordVisibility}
+                                ></i>
+                            </div>
                         </div>
-                        <Link href="/forgot-password" className="forgot-password">Forgot Password?</Link>
-                    </div>
-                    <button type="submit" className="btn btn-primary rounded-pill">Login</button>
+                        <div className="form-options">
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" id="rememberMe" />
+                                <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
+                            </div>
+                            <Link href="/forgot-password" className="forgot-password">Forgot Password?</Link>
+                        </div>
+                        <button type="submit" className="btn btn-primary rounded-pill">Login</button>
+                    </form>
                     <p className="signin-link">Don't have an account? <Link href="/signup">Sign Up</Link></p>
                 </div>
                 <div className='rightBox'>
@@ -51,4 +81,4 @@ const Signup = () => {
     );
 };
 
-export default Signup;
+export default Login;
