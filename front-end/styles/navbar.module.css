@@ -1,0 +1,13 @@
+.customButton {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0; /* Remove any default padding */
+  }
+  
+  .customIcon {
+    font-size: 2rem; /* Adjust the size as needed */
+    width: 2rem; /* Ensure the width matches the desired size */
+    height: 2rem; /* Ensure the height matches the desired size */
+  }
