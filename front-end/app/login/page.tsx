@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from 'react';
-import '../../styles/signup.css'; 
+import '../../styles/signin.css'; 
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
-import Link from 'next/link'
+import Link from 'next/link';
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,9 +14,8 @@ const Signup = () => {
     return (
         <div className='outerdiv'>
             <div className='flexContainer'>
-
                 <div className='leftBox'>
-                    <h1>Sign up</h1>
+                    <h1>Log in</h1>
                     <div className="form-group">
                         <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Email" />
                     </div>
@@ -34,17 +33,19 @@ const Signup = () => {
                             ></i>
                         </div>
                     </div>
-                    <div className="form-group">
-                        <input type="password" className="form-control" id="confirmPassword" placeholder="Confirm Password" />
+                    <div className="form-options">
+                        <div className="form-check">
+                            <input type="checkbox" className="form-check-input" id="rememberMe" />
+                            <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
+                        </div>
+                        <Link href="/forgot-password" className="forgot-password">Forgot Password?</Link>
                     </div>
-                    <button type="submit" className="btn btn-primary rounded-pill">Sign Up</button>
-                    <p className="signin-link">Already have an account? <Link href="/login">Sign in</Link></p>
+                    <button type="submit" className="btn btn-primary rounded-pill">Login</button>
+                    <p className="signin-link">Don't have an account? <Link href="/signup">Sign Up</Link></p>
                 </div>
-
                 <div className='rightBox'>
                     <img src='/cover.png' alt="Cover" />
                 </div>
-
             </div>
         </div>
     );
