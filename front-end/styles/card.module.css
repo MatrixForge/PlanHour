@@ -1,0 +1,29 @@
+.semicircleContainer {
+    position: relative;
+    width: 300px; /* Adjust width as needed */
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
+  }
+  
+  .semicircle {
+    position: absolute;
+    top: 0; /* Position at the top of the container */
+    left: 0;
+    width: 100%;
+    height: 100px; /* Height of the semicircle */
+    background-color: pink;
+    border-top-left-radius: 50%; /* Half of the width for a semicircle effect */
+    border-top-right-radius: 50%; /* Half of the width for a semicircle effect */
+    transform: rotate(180deg); /* Rotate the semicircle upside down */
+  }
+  
+  .content {
+    background-color: white;
+    height: calc(100% - 100px); /* Height of the remaining space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: black;
+  }
+  
