@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken')
 import asyncHandler from 'express-async-handler';
 import User, { IUser } from '../models/user_model';
 
