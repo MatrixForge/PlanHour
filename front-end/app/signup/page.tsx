@@ -41,7 +41,7 @@ const Signup = () => {
             const name = extractNameFromEmail(email);
 
             const { data } = await axios.post(
-                '/register',
+                'http://localhost:5000/api/users/register',
                 { name, email, password },
                 config
             );

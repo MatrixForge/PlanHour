@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/user_model';
 import generateToken from '../utils/generate_Tokens';
 
+
 // @desc    Register a new user
 // @route   POST /api/users
 // @access  Public
