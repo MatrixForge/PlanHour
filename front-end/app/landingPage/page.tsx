@@ -5,6 +5,7 @@ import CustomNavbar from '../components/NavBar';
 import Body from '../components/body';
 import Card from '../components/Cards';
 import Footer from '../components/footer';
+import TermsOfService from '../components/TermsOfService'; // temp
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,7 +17,6 @@ const LandingPage = ({loggedInBool}) => {
       <Body loggedIn={loggedIn} />
       <Card/>
       <Footer/>
-      
     </div>
   );
 };
