@@ -6,6 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Link from 'next/link';
 import useAuthStore from '../../store/authStore';
 import { useRouter } from 'next/navigation';
+import ForgotPasswordPopup from '../components/ForgotPasswordPopup';
 
 const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,11 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState('');
     const setUser = useAuthStore((state) => state.setUser);
     const router = useRouter();
+
+    const [showPopup, setShowPopup] = useState(false);
+
+    const handleShow = () => setShowPopup(true);
+    const handleClose = () => setShowPopup(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -67,7 +73,7 @@ const Login: React.FC = () => {
                                 <input type="checkbox" className="form-check-input" id="rememberMe" />
                                 <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                             </div>
-                            <Link href="/forgot-password" className="forgot-password">Forgot Password?</Link>
+                            <p onClick={handleShow} className="forgot-password">Forgot Password?</p>
                         </div>
                         <button type="submit" className="btn btn-primary rounded-pill">Login</button>
                     </form>
@@ -77,6 +83,8 @@ const Login: React.FC = () => {
                     <img src='/cover.png' alt="Cover" />
                 </div>
             </div>
+            <ForgotPasswordPopup show={showPopup} handleClose={handleClose} />
+
         </div>
     );
 };

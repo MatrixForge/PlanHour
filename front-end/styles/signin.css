@@ -83,6 +83,7 @@ button.btn-primary {
   border-color: #d8d8d5;
   font-family: "sharp-sans";
   font-weight: 200;
+  color: black;
 }
 
 button.btn-primary:hover {
