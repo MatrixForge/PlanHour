@@ -42,16 +42,17 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
 
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+        const tokenExpiry = rememberMe ? '30d' : '1d'; 
         res.json({
             _id: user._id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id),
+            token: generateToken(user._id, tokenExpiry),
         });
     } else {
         res.status(401);
