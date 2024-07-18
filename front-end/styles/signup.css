@@ -63,8 +63,8 @@ input[type="text"] {
   font-size: 1rem;
   background-color: transparent;
   transition: border-bottom-color 0.3s ease;
-  font-family: "sharp-sans";
-  font-weight: 100;
+  font-family: "Sharp Sans";
+  font-weight: 500;
 }
 
 input[type="email"]:focus,
@@ -80,8 +80,8 @@ button.btn-primary {
   font-size: 1rem;
   background-color: #f3f0e8;
   border-color: #d8d8d5;
-  font-family: "sharp-sans";
-  font-weight: 600;
+  font-family: "Sharp Sans";
+  font-weight: 500;
   color: black;
 
 }

@@ -2,15 +2,19 @@ import React from 'react';
 import styles from '../../styles/custom-colors.module.css'; 
 import styles1 from '../../styles/navbar.module.css'; 
 import cardStyles from '../../styles/card.module.css';
+import Link from 'next/link';
+
 const Cards = () => {
     return (
         <div className={`bg-brown p-4  ${styles.customBrown}`}>
             <div className="d-flex justify-content-center">
                 {/* Card 1 */}
                 <div className="card rounded-pill mx-3 shadow-lg" style={{ width: '18rem' }}>
+                    <Link href='/eventify'>
                     <button className={styles1.customButton}>
                         <img src="/1.png" className="card-img-top" alt="Card 1" />
                     </button>
+                    </Link>
                 </div>
 
                 {/* Card 2 */}

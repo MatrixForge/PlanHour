@@ -1,0 +1,57 @@
+.modal-background {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .form-container {
+    width: 90%; /* Increase the width as needed */
+    max-width: 700px; /* Adjust the width as needed */
+  }
+  
+  .form-heading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin: 20px 0;
+  }
+  
+  .form-control, .form-select, textarea {
+    border: 2px solid orange;
+    border-radius: 4px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .cancel-button, .save-button {
+    flex: 1;
+    margin: 0 5px;
+  }
+  
+  .custom-modal .modal-dialog {
+    width: 90px; /* Optional: set width percentage */
+    max-height: 30%; /* Decrease the height as needed */
+  }
+  
+  .custom-modal .modal-body {
+    padding: 0;
+  }
+  

@@ -1,0 +1,75 @@
+.search-container {
+  display: flex;
+  flex-direction: row ;
+  align-items: center;
+  justify-content: center;
+  margin-top: 38px;
+}
+
+.search {
+  height: 50px;
+  background-color: #fff;
+  padding: 5px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  border-bottom: 2px solid black;
+  display: flex;
+  align-items: center;
+  width: 600px; /* Adjusted width of the search bar */
+}
+
+.search-input {
+  color: black;
+  border: 0;
+  outline: 0;
+  background: none;
+  width: calc(100% - 40px); /* Adjust width to accommodate search icon */
+  margin-top: 5px;
+  caret-color: transparent;
+  line-height: 30px;
+  transition: width 0.4s linear;
+}
+
+.search .search-input {
+  padding: 0 10px;
+  font-size: 16px;
+  font-weight: 300;
+  color: black;
+  transition: width 0.4s linear;
+}
+
+.search:hover > .search-icon {
+  background: #1a237e;
+  color: #fff;
+}
+
+.search-icon {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  background-color: #F6EDE4;
+}
+
+.plus-icon {
+  height:  50px; /* Increased height of the plus icon */
+  width: 50px;  /* Increased width of the plus icon */
+  color: black;
+  background-color: #F6EDE4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30px; /* Gap between search bar and plus icon */
+}
+
+
+.plus-icon i {
+  font-size: 30px; /* Adjust size as needed */
+  color: black; /* Optional: Adjust color */
+}
+
+
+a:link {
+  text-decoration: none;
+}

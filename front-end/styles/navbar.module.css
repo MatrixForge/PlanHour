@@ -11,3 +11,9 @@
     width: 2rem; /* Ensure the width matches the desired size */
     height: 2rem; /* Ensure the height matches the desired size */
   }
+
+
+  .fontCustom {
+    font-family: 'Montserrat'; 
+    font-weight:600;
+  }

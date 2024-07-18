@@ -7,6 +7,7 @@ import Link from 'next/link';
 import useAuthStore from '../../store/authStore';
 import { useRouter } from 'next/navigation';
 import ForgotPasswordPopup from '../components/ForgotPasswordPopup';
+import useStore from '../../store/authStore';
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +16,7 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
   const router = useRouter();
+
 
     const [showPopup, setShowPopup] = useState(false);
 
@@ -41,14 +43,24 @@ const Login: React.FC = () => {
             },
             body: JSON.stringify({ email, password , rememberMe })}
       );
+
+
+        // Check if response is not ok (status not in the range 200-299)
+    if (!response.ok) {
+      const errorText = await response.text(); // Try to get the response text
+      throw new Error(`Server responded with status ${response.status}: ${errorText}`);
+    }
+
       const data = await response.json();
+
       if (response.ok) {
         if (rememberMe) {
-          localStorage.setItem("access-token", data.token);
+          localStorage.setItem('token', data.token);
         //   console.log("Access-token set in localStorage :", localStorage.getItem('access-token'))
         } else {
-          sessionStorage.setItem("access-token", data.token);
-        //    console.log(
+
+          sessionStorage.setItem('token', data.token);
+          //    console.log(
         //      "Access-token set in sessionStorage:",
         //      localStorage.getItem("access-token")
         //    );
