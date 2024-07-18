@@ -17,64 +17,54 @@ const Login: React.FC = () => {
   const setUser = useAuthStore((state) => state.setUser);
   const router = useRouter();
 
+  const [showPopup, setShowPopup] = useState(false);
 
-    const [showPopup, setShowPopup] = useState(false);
-
-    const handleShow = () => setShowPopup(true);
-    const handleClose = () => setShowPopup(false);
+  const handleShow = () => setShowPopup(true);
+  const handleClose = () => setShowPopup(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   const toggleRememberMe = () => {
     setRememberMe((prevRememberMe) => {
       const newRememberMe = !prevRememberMe;
       return newRememberMe;
     });
   };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/login",
-        {   method:'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password , rememberMe })}
-      );
+      const response = await fetch("http://localhost:5000/api/users/login", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, rememberMe })
+      });
 
-
-        // Check if response is not ok (status not in the range 200-299)
-    if (!response.ok) {
-      const errorText = await response.text(); // Try to get the response text
-      throw new Error(`Server responded with status ${response.status}: ${errorText}`);
-    }
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server responded with status ${response.status}: ${errorText}`);
+      }
 
       const data = await response.json();
 
       if (response.ok) {
         if (rememberMe) {
           localStorage.setItem('token', data.token);
-        //   console.log("Access-token set in localStorage :", localStorage.getItem('access-token'))
         } else {
-
           sessionStorage.setItem('token', data.token);
-          //    console.log(
-        //      "Access-token set in sessionStorage:",
-        //      localStorage.getItem("access-token")
-        //    );
         }
         setUser(data);
         router.push("/");
-      }else{
+      } else {
         console.error("Login failed:", data.message);
       }
     } catch (error: any) {
-      console.error(
-        "Login failed:",
-        error.response?.data?.message || error.message
-      );
+      console.error("Login failed:", error.response?.data?.message || error.message);
     }
   };
 
@@ -84,10 +74,10 @@ const Login: React.FC = () => {
         <div className="leftBox">
           <h1>Log in</h1>
           <form onSubmit={handleLogin}>
-            <div className="form-group">
+            <div className="form-group unique-form-group">
               <input
                 type="email"
-                className="form-control"
+                className="form-control unique-input"
                 id="email"
                 aria-describedby="emailHelp"
                 placeholder="Email"
@@ -95,20 +85,18 @@ const Login: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group unique-form-group">
               <div className="icon-container">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="form-control"
+                  className="form-control unique-input"
                   id="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <i
-                  className={`bi ${
-                    showPassword ? "bi-eye-fill" : "bi-eye-slash"
-                  } custom-icon`}
+                  className={`bi ${showPassword ? "bi-eye-fill" : "bi-eye-slash"} custom-icon`}
                   onClick={togglePasswordVisibility}
                 ></i>
               </div>
@@ -130,7 +118,7 @@ const Login: React.FC = () => {
                 Forgot Password?
               </p>
             </div>
-            <button type="submit" className="btn btn-primary rounded-pill">
+            <button type="submit" className="btn btn-primary unique-btn-primary rounded-pill">
               Login
             </button>
           </form>
