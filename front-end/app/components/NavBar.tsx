@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import styles from '../../styles/custom-colors.module.css'; 
-import styles1 from '../../styles/navbar.module.css'; 
-import Link from 'next/link';
-import useAuthStore from '../../store/authStore';
-
+import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Link from "next/link";
+import useAuthStore from "../../store/authStore";
+import styles_nav from "../../styles/navbar.module.css"
+import styles_color from "../../styles/custom-colors.module.css"
 const NavBar: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -15,36 +14,66 @@ const NavBar: React.FC = () => {
   }, [isLoggedIn]);
 
   return (
-    <nav className="navbar">
-      <a className={`navbar-brand ${styles1.fontCustom}`} href="#">
-      <img src="/logo.png" alt="Plan Hour" style={{ width: '100px' }} />
-        <span className="ms-2 ">Plan Hour</span>
-      </a> 
-
-      <div className="ms-auto d-flex flex-row me-3">
-        {!loggedIn && (
-          <>
-            <div>
-              <Link className= {`btn btn-outline-dark ms-2 rounded-pill ${styles1.fontCustom}`} href="/login">Login</Link>
-            </div>
-          </>
-        )}
-        {loggedIn && (
-          <>
-            <div className="d-flex justify-content-center align-items-center me-1">
-              {user?.name || 'User'}
-            </div>
-          </>
-        )}
-        <div>
-          <Link className={`btn btn-light mx-2 rounded-pill ${styles.customBrown} ${styles1.fontCustom}`} href="/signup">Get Started</Link>
-        </div>
-        <div>
-          <button className={styles1.customButton}>
-            <span className={`navbar-toggler-icon ${styles1.customIcon}`}></span>
-          </button>
-        </div>
-      </div> 
+    <nav
+      className={`navbar navbar-expand-lg navbar-light bg-light ${styles_nav.fontCustom}`}
+    >
+      <Link href="/" className="navbar-brand">
+        <img src="/logo.png" alt="Plan Hour" style={{ width: "100px" }} />
+        <span className={`ms-2 ${styles_nav.fontCustom}`}>
+          <b>Plan Hour</b>{" "}
+        </span>
+      </Link>
+      <button
+        className="navbar-toggler me-3"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div className="collapse navbar-collapse me-5" id="navbarNav">
+        <ul className="navbar-nav ms-auto">
+          {!loggedIn && (
+            <>
+              <li className="nav-item">
+                <Link
+                  href="/login"
+                  className={`btn btn-outline-dark ms-2 rounded-pill px-4 py-2 ${styles_nav.fontCustom}`}
+                >
+                  Login
+                </Link>
+              </li>
+            </>
+          )}
+          {loggedIn && (
+            <>
+              <li className="nav-item d-flex align-items-center me-1">
+                {user?.name || "User"}
+              </li>
+            </>
+          )}
+          {loggedIn && (
+            <li className="nav-item">
+              <span
+                className={`navbar-toggler-icon ${styles_nav.customIcon} ms-5`}
+              ></span>
+            </li>
+          )}
+          {!loggedIn && (
+            <li className="nav-item">
+              <Link
+                href="/signup"
+                className={`btn btn-light mx-2 rounded-pill px-4 ${styles_nav.fontCustom} ${styles_color.customBrown}`}
+              >
+                Get Started
+              </Link>
+            </li>
+          )}
+        </ul>
+      </div>
     </nav>
   );
 };

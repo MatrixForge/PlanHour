@@ -1,0 +1,78 @@
+.heroSection {
+  background-image: url("/add-event/hero-section-bg.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+.responsiveImage {
+  width: 100px;
+  height: 100px;
+}
+
+@media (max-width: 768px) {
+  .responsiveImage {
+    width: 33px;
+    height: 33px;
+  }
+}
+
+.buttonList {
+  margin-top: 1.8rem;
+}
+
+.customize-btns:hover{
+  background-color: transparent;
+  
+}
+@media (max-width: 768px) {
+  .btn_responsive {
+    padding:1rem 0.5rem;
+    margin-left: 1rem;
+    font-size:45%;
+    line-height: 1;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .btn_responsive {
+    padding:4px 9px;
+    font-size:90%;
+    line-height: 1.2;
+  }
+}
+
+/* Pagination */
+/* add-event.module.css */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page_item {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 50% !important;
+  margin: 0 5px !important;
+  width: 40px !important;
+  height: 40px !important;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s !important;
+  font-size: 1rem !important;
+  line-height: 1 !important;
+  padding: 0 !important; /* Ensure there's no padding */
+}
+
+.page_item:hover,
+.page_item.active {
+  background-color: #007bff !important;
+  color: #fff !important;
+  border-color: #007bff !important;
+}
+
+.page_item:focus {
+  box-shadow: none !important;
+  outline: none !important; /* Ensure there's no outline */
+}
