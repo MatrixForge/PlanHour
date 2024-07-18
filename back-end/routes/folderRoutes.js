@@ -6,13 +6,13 @@ const authenticateToken = require('../middleware/authMiddleware'); // Adjust the
 
 
 // Get all folders
-router.get('/folders', folderController.getAllFolders);
+router.get('/folders',authenticateToken, folderController.getAllFolders);
 
 // Create a new folder
 router.post('/folders', authenticateToken, folderController.createFolder);
 
 // Get a folder by ID
-router.get('/folders/:id', folderController.getFolderById);
+router.get('/folders/:id', folderController.getAllFolders );
 
 // Add a subfolder to a folder
 router.post('/folders/:id/subfolders', folderController.addSubfolder);
