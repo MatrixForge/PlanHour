@@ -6,27 +6,17 @@ import NavBar from '../components/NavBar';
 import FolderDisplay from '../components/folderDisplay';
 import '../../styles/eventify.css'
 import Footer from '../components/footer';
+import NavBar2 from  '../components/secondNavbg';
 
 const FolderManager = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [folders, setFolders] = useState([]);
 
-//   const handlePlusClick = () => {
-//     setShowPopup(true);
-//   };
-
-//   const handleClosePopup = () => {
-//     setShowPopup(false);
-//   };
-
-//   const handleFolderCreate = (newFolder) => {
-//     setFolders([...folders, newFolder]);
-//     setShowPopup(false);
-//   };
 
   return (
 <div>
     <NavBar/>
+    <NavBar2/>
     <div className='folderManager' > 
       <SearchBar  />
       <FolderDisplay/>

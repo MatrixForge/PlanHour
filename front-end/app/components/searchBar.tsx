@@ -19,13 +19,11 @@ const SearchBar: React.FC = () => {
       <div className="search-container">
         <div className="search">
           <input type="text" className="search-input" placeholder="search your event" name="search" />
-          <a href="#" className="search-icon">
-            <i className="bi bi-search"></i>
-          </a>
+          <button className="search-button">Search</button>
         </div>
         <div className="plus-icon">
           <a href="#" onClick={openModal}>
-            <i className="bi bi-plus-circle-fill"></i>
+            <i className="bi bi-sliders"></i>
           </a>
         </div>
       </div>

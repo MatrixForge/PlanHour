@@ -1,0 +1,28 @@
+
+  
+  /* Styles for screens with width 2114px */
+  @media (max-width: 2114px) {
+    .navbar {
+      min-height: 100px; /* Adjust height as needed */
+    }
+  }
+  
+  /* Styles for smaller screens */
+  @media (max-width: 1148px) {
+    .navbar {
+      min-height: 140px; /* Adjust height as needed */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .navbar {
+      min-height: 60px; /* Adjust height as needed */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .navbar {
+      min-height: 50px; /* Adjust height as needed */
+    }
+  }
+  
