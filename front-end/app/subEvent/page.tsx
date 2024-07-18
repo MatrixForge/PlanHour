@@ -19,8 +19,6 @@ const FolderManager = () => {
     <NavBar2/>
       <FolderDisplay/>
     <Footer/>
-
-
 </div>
    
   );

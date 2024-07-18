@@ -54,17 +54,12 @@ h1 {
   background-color: #F6EDE4;
   font-family: 'Sharp Sans';
   font-weight: 600;
-  color: #F6EDE4;
 }
 .icon-img {
   width: 16px; /* Adjust size to match icon */
   height: 16px; /* Adjust size to match icon */
 }
-.second-card {
-  background-color: #F6EDE4;
-  margin: 30px; /* Adjust margin */
-  position: relative; /* For positioning the overlay */
-}
+
 .grey-overlay {
   position: absolute;
   top: 0;

@@ -19,7 +19,7 @@ exports.createFolder = async (req, res) => {
     date,
     noOfGuests,
     description,
-    //createdBy: req.user.id // Assuming you have user authentication
+    createdBy: req.user.id 
   });
 
   try {
@@ -30,13 +30,16 @@ exports.createFolder = async (req, res) => {
   }
 };
 
-// Get a folder by ID
-exports.getFolderById = async (req, res) => {
+
+// Get all folders of the logged-in user
+exports.getAllFolders = async (req, res) => {
+  const userId = req.user.id;
+
   try {
-    const folder = await Folder.findById(req.params.id).populate('subfolders');
-    res.status(200).json(folder);
+    const folders = await Folder.find({ createdBy: userId }).populate('subfolders');
+    res.status(200).json(folders);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
