@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from '../../styles/custom-colors.module.css';
-import styles1 from '../../styles/navbar.module.css';
 import cardStyles from '../../styles/card.module.css';
 
 const Body = ({ loggedIn }) => {

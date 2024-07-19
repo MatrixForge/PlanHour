@@ -1,7 +1,6 @@
 // FilterOptions.tsx
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "../../../styles/addEvent.module.css";
 
 const FilterOptions: React.FC = () => {
   const filters = [

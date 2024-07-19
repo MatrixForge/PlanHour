@@ -17,25 +17,6 @@ const ButtonList: React.FC = () => {
 
 
   return (
-    // <section className={`d-flex align-items-center m-0 pt-0`}>
-    //   <div className={`container`}>
-    //     <div className="row justify-content-center">
-    //       {buttons.map((button) => (
-    //         <div key={button.name} className="col-6 col-md-auto my-2">
-    //           <button
-    //             className={`btn rounded-3 ms-3 border fs-md-5 ${
-    //               styles[button.color]
-    //             }`}
-    //             onClick={() => console.log(button.name)}
-    //             style={{ fontSize: "1rem", minWidth: "100px" }}
-    //           >
-    //             {button.name}
-    //           </button>
-    //         </div>
-    //       ))}
-    //     </div>
-    //   </div>
-    // </section>
     <section
       className={`d-flex align-items-center m-0 pt-0`}
     >

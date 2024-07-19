@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import styles from "../../../styles/addEvent.module.css";
-
-import { Pagination } from "react-bootstrap";
+import "../../../styles/custom-pagination.css"
+import StarSvg from "./StarSvg"
+import ResponsivePagination from "react-responsive-pagination";
+import BuildingSvg from "./BuildingSvg ";
+import LocationSvg from "./LocationSvg";
+import Svg from "./Svg";
 
 const RestaurantList: React.FC = () => {
   const restaurants = [
@@ -12,34 +13,42 @@ const RestaurantList: React.FC = () => {
       id: 1,
       name: "The Spice House",
       rating: 4.5,
-      description: "A cozy place with delicious Indian cuisine.",
-      image: "/add-event/restaurant1.jpg",
+      description: "A cozy place with delicious Indian cuisine.njd vdbhvuidsbv sgvhuisgvh vdjghvuisvgh vdhvuidsb  jdgvuidvg vdjvgudb b9b bidb uidbh  kmbnuhb khb uib dz;bsuoihbu9s mksh...",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeFMiJ0XWoXC7UEHNBstXi_1sP2KRfPXvOAA&s",
     },
     {
       id: 2,
       name: "Ocean's Delight",
       rating: 4.7,
       description: "Enjoy the best seafood with a beautiful ocean view.",
-      image: "/add-event/restaurant2.jpg",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3YoaaIe7ntaXtCVYA-M4q6O3YpdSrEp4-6Q&s",
     },
     {
       id: 3,
       name: "Pasta Paradise",
       rating: 4.2,
       description: "Authentic Italian pasta dishes to satisfy your cravings.",
-      image: "/add-event/restaurant3.jpg",
+      image: "https://i.ytimg.com/vi/fg0rJi5FWyo/maxresdefault.jpg",
     },
     // Add more restaurant objects here
   ];
-
+  const totalPages = 5;
   const [currentPage, setCurrentPage] = useState(1);
+
+  function handlePageChange(page) {
+    setCurrentPage(page);
+    // ... do something with `page`
+  }
+  
   const itemsPerPage = 2;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = restaurants.slice(indexOfFirstItem, indexOfLastItem);
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  
 
   return (
     <div className="col-md-9 p-3 pt-0">
@@ -64,7 +73,7 @@ const RestaurantList: React.FC = () => {
       </div>
       <div className="col">
         {currentItems.map((restaurant) => (
-          <div key={restaurant.id} className="col-md-6 mb-4">
+          <div key={restaurant.id} className="col-md-12 mb-4">
             <div className="card h-100">
               <div className="row g-0">
                 <div className="col-md-4">
@@ -78,8 +87,41 @@ const RestaurantList: React.FC = () => {
                 <div className="col-md-8">
                   <div className="card-body">
                     <h5 className="card-title">{restaurant.name}</h5>
-                    <p className="card-text">{restaurant.description}</p>
-                    <p className="card-text">Rating: {restaurant.rating}</p>
+                    {/* Rating and category */}
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="row">
+                          <span className="card-text">
+                            {<Svg name="star" />}
+                            {restaurant.rating}
+                            {<Svg name="building" />}
+                            {restaurant.rating}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* location section */}
+                    <div className="row mt-3">
+                      <p className="card-text">
+                        {<Svg name="location" />}
+                        {restaurant.name}
+                      </p>
+                    </div>
+                    <p className="card-text mt-4">{restaurant.description}</p>
+                    <hr></hr>
+                    <div className="row mt-2">
+                      <div className="col-md-4">
+                        {<Svg name="mail" />}
+                        {restaurant.id}
+                      </div>
+                      <div className="col-md-4">
+                        {<Svg name="phone" />}
+                        {restaurant.id}
+                      </div>
+                      <div className="col-md-4">
+                        <h4>{restaurant.rating}</h4>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -88,20 +130,11 @@ const RestaurantList: React.FC = () => {
         ))}
       </div>
       <div className="d-flex justify-content-center">
-        <Pagination className={`${styles.pagination}`}>
-          {[...Array(Math.ceil(restaurants.length / itemsPerPage)).keys()].map(
-            (number) => (
-              <Pagination.Item
-                className={`${styles.page_item} rounded-circle`}
-                key={number + 1}
-                active={number + 1 === currentPage}
-                onClick={() => paginate(number + 1)}
-              >
-                {number + 1}
-              </Pagination.Item>
-            )
-          )}
-        </Pagination>
+        <ResponsivePagination
+          total={totalPages}
+          current={currentPage}
+          onPageChange={(page) => handlePageChange(page)}
+        />
       </div>
     </div>
   );

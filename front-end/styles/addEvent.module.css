@@ -51,18 +51,21 @@
 }
 
 .page_item {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  border: 1px solid #dee2e6 !important;
-  border-radius: 50% !important;
-  margin: 0 5px !important;
-  width: 40px !important;
-  height: 40px !important;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s !important;
-  font-size: 1rem !important;
-  line-height: 1 !important;
-  padding: 0 !important; /* Ensure there's no padding */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dee2e6;
+  margin: 0 10px; /* Increase the margin to space the items apart */
+  width: 40px;
+  height: 40px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.circle {
+  border-radius: 50%; /* Make the items circular */
 }
 
 .page_item:hover,
@@ -74,5 +77,6 @@
 
 .page_item:focus {
   box-shadow: none !important;
-  outline: none !important; /* Ensure there's no outline */
+  outline: none !important;
 }
+
