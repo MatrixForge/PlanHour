@@ -1,29 +1,47 @@
-.semicircleContainer {
-    position: relative;
-    width: 300px; /* Adjust width as needed */
-    height: 400px; /* Adjust height as needed */
-    overflow: hidden;
-  }
-  
-  .semicircle {
-    position: absolute;
-    top: 0; /* Position at the top of the container */
-    left: 0;
-    width: 100%;
-    height: 100px; /* Height of the semicircle */
-    background-color: pink;
-    border-top-left-radius: 50%; /* Half of the width for a semicircle effect */
-    border-top-right-radius: 50%; /* Half of the width for a semicircle effect */
-    transform: rotate(180deg); /* Rotate the semicircle upside down */
-  }
-  
-  .content {
-    background-color: white;
-    height: calc(100% - 100px); /* Height of the remaining space */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    color: black;
-  }
-  
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black; /* Set icon color to black */
+  margin-right: 10px; /* Space between icon and input field */
+}
+
+.inputField {
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3); /* Bottom shadow */
+  font-weight: 600;
+}
+
+.inputField {
+  font-family: 'Montserrat';
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3); /* Bottom shadow */
+  font-weight: 600;
+  position: relative; /* Make sure the input field has relative positioning */
+  padding-left: 40px; /* Add space for the icon */
+}
+
+.inputField::before {
+  content: '\f1d8'; /* Unicode for the icon */
+  font-family: 'Bootstrap Icons'; /* Make sure this matches your icon library */
+  color: black; /* Icon color */
+  position: absolute;
+  left: 10px; /* Adjust based on your padding */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem; /* Adjust icon size if needed */
+}
+
+.customFont {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: black;
+}
+
+.bottomShadow {
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3); /* Bottom shadow */
+}
+
+.noBottomBorder {
+  border: 0.3px solid black; /* Thin black border */
+  border-bottom: none; /* No bottom border */
+}

@@ -1,0 +1,220 @@
+
+.card-header {
+    font-family: 'Sharp Sans';
+    font-weight: 600;
+    font-size: larger;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.card-header p {
+    margin: 0; /* Remove default margin */
+    font-size: 0.8em; /* Adjust font size as needed */
+    color:grey;
+}
+.card {
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+    max-width: 500px; /* Adjust width as needed */
+    margin-top: 60px;
+}   
+
+.card-body {
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 400px; /* Adjust height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 10px;
+    height: 70px;
+    font-family: 'Sharp Sans';
+    font-weight: 500;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.list-group-item .text {
+    margin-right: auto; /* Push icons to the end */
+    margin-left: 5px;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+}
+
+.tick-icon, .x-icon {
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-left: 10px; /* Space between icons */
+}
+
+
+
+
+.tick-icon{
+    width: 24px; /* Set width of the image */
+    height: 24px; /* Set height of the image */
+}
+
+
+
+/* Custom scrollbar styles */
+.card-body::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.card-body::-webkit-scrollbar-thumb {
+    background-color: lightgrey; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded edges for the scrollbar thumb */
+}
+
+.card-body::-webkit-scrollbar-track {
+    background: transparent; /* Make the track transparent */
+}
+
+/* Custom scrollbar styles for event card */
+.event-card::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.event-card::-webkit-scrollbar-thumb {
+    background-color: lightgrey; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded edges for the scrollbar thumb */
+}
+
+.event-card::-webkit-scrollbar-track {
+    background: transparent; /* Make the track transparent */
+}
+
+
+
+.list-group-item.done .text {
+    text-decoration: line-through;
+    color: black; /* Text color when done */
+}
+
+.list-group-item.done .tick-icon {
+    color: green;
+}
+
+/* Center the DayPicker in its column div */
+.day-picker-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Make sure it takes full height of the parent */
+  }
+  
+  /* Custom styles for DayPicker */
+  .day-picker {
+    background-color: #fff5e6; /* Change the background color */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Sharp Sans'; /* Change the font */
+    
+  }
+  
+  .day-picker .rdp-caption {
+    font-size: 1.5rem; /* Adjust the font size */
+    color: #4A5660; /* Adjust the font color */
+  }
+  
+  .day-picker .rdp-cell {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .day-picker .rdp-day_selected, .day-picker .rdp-day:hover {
+    background-color: #E8A696; /* Adjust the color for selected and hover states */
+    color: #fff;
+  }
+  
+  .day-picker .rdp-nav {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end; 
+  }
+  
+  .day-picker .rdp-nav_button {
+    background-color: #E8A696;; /* Light blue background color */
+    border-radius: 50%; /* Fully rounded */
+    width: 30px;
+    height: 30px;
+    display: flex;
+    margin: 0 10px; /* Space between arrows */
+    color:white;
+    justify-content: end;
+  }
+
+  
+  .day-picker .rdp-nav_button:active {
+    background-color: #90c1ff; /* Even darker blue on active state */
+  }
+
+
+/* New styles for the scrollable event card */
+.event-card {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: 200px; /* Adjust height as needed */
+    background-color: rgba(255, 255, 255, 0.5);
+    overflow-y: auto; /* Enable vertical scrolling */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 80px;
+    margin-top: 20px;
+}
+
+.event-item {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.event-item .left-bg {
+    width: 10px;
+    height: 100%;
+    background-color: #E8A696; /* Thick colored background */
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.event-item .event-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-left: 10px;
+    font-family: 'Sharp Sans';
+}
+
+.event-item .event-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.event-item .event-date {
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.left-border-shadow {
+    box-shadow: -5px 0px 15px -5px rgba(0, 0, 0, 0.2);
+  }
+  
