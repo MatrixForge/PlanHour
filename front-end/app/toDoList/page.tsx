@@ -1,22 +1,18 @@
 "use client"
 import React, { useState } from "react";
-import "../../styles/toDoList.css"; // Adjust the path as necessary
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "../components/NavBar";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import Footer from "../components/footer";
+import "../../styles/toDoList.css"; // Adjust the path as necessary
 
 const BootstrapLayout = () => {
   const [todos, setTodos] = useState([
     { id: 1, text: "Cras justo odio", done: false },
     { id: 2, text: "Cras justo odio", done: false },
-    { id: 3, text: "Cras justo odio", done: false },
-    { id: 4, text: "Cras justo odio", done: false },
-    { id: 5, text: "Cras justo odio", done: false },
-    { id: 6, text: "Another todo", done: false },
-    { id: 7, text: "More todos", done: false },
+ 
   ]);
 
   const toggleDone = (id: any) => {
@@ -50,8 +46,8 @@ const BootstrapLayout = () => {
           }}
         >
           <div className="card">
-            <div className="card-header" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', borderBottom: 'none' }}>
-              To-Do <p > (03)</p>
+            <div className="card-header" style={{ borderBottom: 'none' }}>
+              To-do <p> (03)</p>
             </div>
             <div className="card-body">
               <ol className="list-group list-group-numbered">
