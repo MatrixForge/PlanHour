@@ -1,0 +1,23 @@
+.buttonList {
+  margin-top: 1.8rem;
+}
+
+.customBrown {
+  background-color: #a52a2a;
+  color: #fff;
+}
+
+.customLightPurple {
+  background-color: #9370db;
+  color: #fff;
+}
+
+.customLightPink {
+  background-color: #ffb6c1;
+  color: #fff;
+}
+
+.customLightGreen {
+  background-color: #90ee90;
+  color: #fff;
+}
