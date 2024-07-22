@@ -113,10 +113,8 @@
 
 /* Center the DayPicker in its column div */
 .day-picker-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%; /* Make sure it takes full height of the parent */
+  
+  height: 130%; /* Make sure it takes full height of the parent */
 }
 
 /* Custom styles for DayPicker */
@@ -126,7 +124,13 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: "Sharp Sans"; /* Change the font */
+  height:400px;
+  width:400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 
 .day-picker .rdp-caption {
   font-size: 1.5rem; /* Adjust the font size */
