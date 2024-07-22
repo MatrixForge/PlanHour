@@ -1,0 +1,219 @@
+/* Container for the cover image and guest box */
+.coverContainer {
+  position: relative;
+  width: 100%;
+  margin-bottom: 40vh;
+}
+
+/* Cover image container */
+.cover {
+  width: 100%;
+  height: 50vh; /* Height for the cover image */
+  overflow: hidden; /* Ensures the image stays within this container */
+}
+
+/* Cover image styling */
+.coverImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Container for the guest box, positioned on top of the cover image */
+.guestBoxContainer {
+  position: absolute;
+  top: 40px; /* Adjust this value to fine-tune the position */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 10; /* Ensure it's above the image */
+  max-height: 1000px;
+ 
+}
+
+/* Styling for the guest box */
+.guestBox {
+  width: 80%;
+  max-width: 1000px;
+  min-width: 300px;
+  background: rgba(255, 255, 255, 1);
+  padding: 0px 20px 20px 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 80vh; /* Limit height to fit within viewport */
+}
+
+
+
+/* Header styling for the guest box */
+.guestBoxHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: nowrap;
+  position: sticky;
+  top: 0; /* Stick to the top of the containing element */
+  background-color: #fff; /* Ensure the background color covers any content behind it */
+  z-index: 100; /* Make sure it stays above other content */
+  padding: 20px 0; /* Add padding for better visual separation */
+  border-bottom: 1px solid #ddd; /* Optional: Add a bottom border for better separation */
+  font-family: 'Sharp Sans';
+  font-weight: 500;
+}
+
+
+/* Guest list text styling */
+.guestListText {
+  font-size: xx-large;
+  font-weight: 600;
+  width: 600px;
+}
+
+/* Search bar styling */
+.searchBar {
+  flex-grow: 1;
+  margin: 0 20px;
+  min-width: 150px;
+}
+
+/* Button container styling */
+.buttons {
+  display: flex;
+  gap: 10px;
+  font-family: 'Sharp Sans' !important;
+  font-weight: 500 !important;
+}
+
+/* Button styling */
+.btn {
+  width: 120px;
+}
+
+/* Icon styling */
+.icon {
+  margin-right: 5px;
+}
+
+.guestBoxRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 2fr 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #F8F1E9;
+  font-weight: 300;
+}
+
+/* Hide default checkbox */
+.checkbox {
+  display: none; /* Hide the default checkbox */
+}
+
+/* Create custom checkbox */
+.customCheckbox {
+  width: 30px;
+  height: 30px;
+  background-color: #C5B3E6;
+  border-radius: 5px; /* Optional: Rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Checkmark styling */
+.customCheckbox::after {
+  content: '';
+  position: absolute;
+  display: none;
+  width: 24px; /* Increase width for checkmark */
+  height: 24px; /* Increase height for checkmark */
+  background-color: #C5B3E6;
+  border-radius: 3px;
+  font-size: 20px; /* Adjust font size */
+  line-height: 24px; /* Align checkmark vertically */
+  text-align: center; /* Center the content */
+  color: #fff;
+}
+
+/* Use a straight checkmark */
+.checkbox:checked + .customCheckbox::after {
+  content: '\2714'; /* Straight checkmark character */
+  display: block;
+}
+
+/* Use a larger minus sign */
+.checkbox:not(:checked) + .customCheckbox::after {
+  content: '\2212'; /* Unicode minus sign character */
+  display: block;
+  font-weight: 700;
+  font-size: 30px; /* Adjust font size */
+  color: #fff;
+}
+
+/* Custom checkbox container styling */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Grid column styling for guest box items */
+.checkbox {
+  grid-column: 1;
+}
+
+.guestName {
+  grid-column: 2;
+}
+
+.email {
+  grid-column: 3;
+}
+
+.number {
+  grid-column: 4;
+}
+
+.icon {
+  grid-column: 5;
+  text-align: center;
+}
+
+/* Row styling for the guest box items */
+.guestBoxHeaderRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 2fr 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #F8F1E9;
+  font-weight: 300;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 820px) {
+  .guestBox {
+    width: 90%;
+  }
+
+  .guestBoxHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .searchBar {
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .buttons {
+    justify-content: flex-end;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}

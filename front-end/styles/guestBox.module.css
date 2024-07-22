@@ -1,0 +1,94 @@
+/* Row styling for the guest box items */
+.guestBoxRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 2fr 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #ffffff;
+  font-weight: 300;
+}
+
+/* Hide default checkbox */
+.checkbox {
+  display: none;
+}
+
+/* Create custom checkbox */
+.customCheckbox {
+  width: 30px;
+  height: 30px;
+  background-color: #C5B3E6;
+  border-radius: 5px; /* Optional: Rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Checkmark styling */
+.customCheckbox::after {
+  content: '';
+  position: absolute;
+  display: none;
+  width: 24px; /* Increase width for checkmark */
+  height: 24px; /* Increase height for checkmark */
+  background-color: #C5B3E6;
+  border-radius: 3px;
+  font-size: 20px; /* Adjust font size */
+  line-height: 24px; /* Align checkmark vertically */
+  text-align: center; /* Center the content */
+  color: #fff;
+}
+
+/* Use a straight checkmark */
+.checkbox:checked + .customCheckbox::after {
+  content: '\2714'; /* Straight checkmark character */
+  display: block;
+}
+
+/* Use a larger minus sign */
+.checkbox:not(:checked) + .customCheckbox::after {
+  content: '\2212'; /* Unicode minus sign character */
+  display: block;
+  font-weight: 700;
+  font-size: 30px; /* Adjust font size */
+  color: #fff;
+}
+
+/* Grid column styling for guest box items */
+.checkbox {
+  grid-column: 1;
+}
+
+.guestName {
+  grid-column: 2;
+}
+
+.email {
+  grid-column: 3;
+}
+
+.number {
+  grid-column: 4;
+}
+
+.icon {
+  grid-column: 5;
+  text-align: center;
+  font-size: x-large;
+}
+
+/* Header row styling for the guest box */
+.guestBoxHeaderRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 2fr 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #F8F1E9;
+  font-weight: 300;
+}

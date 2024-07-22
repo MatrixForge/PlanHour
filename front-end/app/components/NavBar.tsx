@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
 import useAuthStore from "../../store/authStore";
 import styles_nav from "../../styles/navbar.module.css"
