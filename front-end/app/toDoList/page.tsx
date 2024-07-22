@@ -61,18 +61,18 @@ const BootstrapLayout = () => {
                   className={`list-group-item ${todo.done ? "done" : ""}`}
                   style={{ display:'flex' ,justifyContent:'space-between'}}
 
-                >
-                  <span className="text" >{todo.text}</span>
-                  <div className="icon-container">
-                    <img
-                      src={todo.done ? "correct-filled.png" : "correct.png"}
-                      alt="tick icon"
-                      className="tick-icon"
-                      onClick={() => toggleDone(todo.id)}
-                    />
-                    <i className="bi bi-x-circle x-icon"></i>
-                  </div>
-                </li>
+                  >
+                    <span className="text" >{todo.text}</span>
+                    <div className="icon-container">
+                      <img
+                        src={todo.done ? "correct-filled.png" : "correct.png"}
+                        alt="tick icon"
+                        className="tick-icon"
+                        onClick={() => toggleDone(todo.id)}
+                      />
+                      <i className="bi bi-x-circle x-icon"></i>
+                    </div>
+                  </li>
                 
                 ))}
               </ol>
@@ -80,6 +80,8 @@ const BootstrapLayout = () => {
             <div className="card-footer" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', borderTop: 'none' }}></div>
           </div>
         </div>
+
+        {/* Yahya the great */}
         <div className="col-md-5"  >
           <div className="row">
             <div
@@ -99,33 +101,33 @@ const BootstrapLayout = () => {
             
           </div>
 
-        <div className="row">
-                <div
-                className="col-md-12"
-                style={{
-                    backgroundImage: "linear-gradient(to right, #E8A696, #EEBCAE)", width:'120%',height: '300px'
-                }}  >
-       
-        <div className="event-card">
-          {events.map(event => (
-            <div key={event.id} className="event-item">
-              <div className="left-bg"></div>
-              <div className="event-info">
-                <span className="event-name">{event.name}</span>
-                <span className="event-date">{event.date}</span>
+          <div className="row">
+            <div
+            className="col-md-12"
+            style={{
+                backgroundImage: "linear-gradient(to right, #E8A696, #EEBCAE)", width:'120%',height: '300px'
+            }}  >
+        
+              <div className="event-card">
+                {events.map(event => (
+                  <div key={event.id} className="event-item">
+                    <div className="left-bg"></div>
+                    <div className="event-info">
+                      <span className="event-name">{event.name}</span>
+                      <span className="event-date">{event.date}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-    </div>
 
-        </div>
+          </div>
 
         
 
-     </div>
+        </div>
 
-     <Footer />
+        <Footer />
 
 
       </div>

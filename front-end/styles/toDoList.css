@@ -18,6 +18,7 @@
     height: 100%;
     max-width: 500px; /* Adjust width as needed */
     margin-top: 60px;
+    margin-bottom: 60px !important;
 }   
 
 .card-body {
@@ -54,15 +55,10 @@
     margin-left: 10px; /* Space between icons */
 }
 
-
-
-
 .tick-icon{
     width: 24px; /* Set width of the image */
     height: 24px; /* Set height of the image */
 }
-
-
 
 /* Custom scrollbar styles */
 .card-body::-webkit-scrollbar {
@@ -92,8 +88,6 @@
     background: transparent; /* Make the track transparent */
 }
 
-
-
 .list-group-item.done .text {
     text-decoration: line-through;
     color: black; /* Text color when done */
@@ -113,6 +107,7 @@
   
   /* Custom styles for DayPicker */
   .day-picker {
+    margin-top: 20px !important;
     background-color: #fff5e6; /* Change the background color */
     padding: 20px;
     border-radius: 10px;
@@ -166,7 +161,7 @@
     flex-direction: column;
     width: 70%;
     height: 200px; /* Adjust height as needed */
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: #fff;
     overflow-y: auto; /* Enable vertical scrolling */
     border-radius: 10px;
     padding: 20px;
