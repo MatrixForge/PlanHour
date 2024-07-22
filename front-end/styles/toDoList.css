@@ -6,6 +6,7 @@
   align-items: center;
   gap: 10px;
   margin: 20px;
+  background-color: rgba(255, 255, 255, 0.9) !important;
 }
 .card-header p {
   margin: 0; /* Remove default margin */
@@ -17,18 +18,13 @@
 .card {
   margin: 0 auto;
   max-width: 600px;
-  margin-top: 90px;
   margin-bottom: 133px;
   overflow: auto;
-  background-color: var(
-    --bs-body-bg,
-    rgba(255, 255, 255, 0.9)
-  ); /* Background color with 90% opacity */
+  background-color: rgba(255, 255, 255, 0.9) !important; /* Background color with 90% opacity */
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3); /* Example shadow */
   height: 700px;
     width: 100%;
     margin: 0 auto;
-    height: 100%;
     max-width: 500px; /* Adjust width as needed */
     margin-top: 60px;
     margin-bottom: 60px !important;
@@ -36,6 +32,7 @@
 
 .card-body {
   overflow-y: auto; /* Enable vertical scrolling */
+  background-color: rgba(255, 255, 255, 0.9) !important; /* Background color with 90% opacity */
 }
 
 .list-group-item {
@@ -49,7 +46,7 @@
   font-weight: 500;
   border: none; /* Remove the border */
   border-bottom: 1px solid lightgrey; /* Add bottom border */
-  background-color: #a76829 !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .list-group-item .text {
@@ -121,8 +118,8 @@
 
 /* Custom styles for DayPicker */
 .day-picker {
-  background-color: #fff5e6; /* Change the background color */
-  padding: 20px;
+  background-color: #ffffff !important; /* Change the background color */
+  padding: 60px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: "Sharp Sans"; /* Change the font */
@@ -172,7 +169,7 @@
   
   /* Custom styles for DayPicker */
   .day-picker {
-    margin-top: 20px !important;
+    margin-top: 60px !important;
     background-color: #fff5e6; /* Change the background color */
     padding: 20px;
     border-radius: 10px;
@@ -219,60 +216,63 @@
     background-color: #90c1ff; /* Even darker blue on active state */
   }
 
-/* New styles for the scrollable event card */
-.event-card {
+  .event-card-header {
+    padding: 20px;
+    margin-bottom: 240px;
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* or the background color you need */
+    z-index: 1;
+  }
+  
+  .fontCustom {
+    font-family: 'Sharp Sans';
+    font-weight: 600;
+  }
+  
+  .event-card {
     display: flex;
     flex-direction: column;
-    width: 70%;
-    height: 200px; /* Adjust height as needed */
+    justify-content: center;
+    width: 350px;
+    height: 300px; /* Adjust height as needed */
     background-color: #fff;
     overflow-y: auto; /* Enable vertical scrolling */
     border-radius: 10px;
-    padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 80px;
     margin-top: 20px;
-}
-
-.event-item {
-  display: flex;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.event-item .left-bg {
-  width: 10px;
-  height: 100%;
-  background-color: #e8a696; /* Thick colored background */
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-
-.event-item .event-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding-left: 10px;
-  font-family: "Sharp Sans";
-}
-
-.event-item .event-name {
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.event-item .event-date {
-  font-weight: 400;
-  font-size: 0.875rem;
-  color: #666;
-}
-
-.left-border-shadow {
-  box-shadow: -5px 0px 15px -5px rgba(0, 0, 0, 0.2);
-}
+  }
+  
+  .event-item {
+    display: flex;
+    align-items: center;
+    padding: 20px 10px;
+    border-radius: 15px;
+    width: auto;
+    margin: 0px 10px 10px 10px;
+  }
+  
+  .event-item .event-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-left: 10px;
+    font-family: 'Sharp Sans';
+  }
+  
+  .event-item .event-name {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .event-item .event-date {
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  .left-border-shadow {
+    box-shadow: -5px 0px 15px -5px rgba(0, 0, 0, 0.2);
+  }
+  
