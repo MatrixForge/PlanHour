@@ -2,3 +2,16 @@ b,strong {
     font-weight: bold !important;
 }
 
+:root {
+    --bs-body-bg: rgba(255, 255, 255, 0.9) !important; /* Assuming your body background is white */
+    --bs-card-cap-bg: rgba(255, 255, 255, 0.9) !important;
+}
+
+.card {
+    background-color: var(--bs-card-bg, var(--bs-body-bg));
+
+    border-radius:30px !important;  /* Other styles for your card */
+
+
+}
+
