@@ -164,7 +164,6 @@
 
 .day-picker .rdp-nav_button:active {
   background-color: #90c1ff; /* Even darker blue on active state */
-}
     display: flex;
     justify-content: center;
     align-items: center;
