@@ -1,53 +1,52 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../../../styles/custom-pagination.css"
-import StarSvg from "./StarSvg"
+import React, { useState, useEffect } from "react";
+import "@styles/custom-pagination.css";
 import ResponsivePagination from "react-responsive-pagination";
-import BuildingSvg from "./BuildingSvg ";
-import LocationSvg from "./LocationSvg";
+import styles from "@styles/addEvent.module.css"
 import Svg from "./Svg";
+import axios from "axios";
 
-const RestaurantList: React.FC = () => {
-  const restaurants = [
-    {
-      id: 1,
-      name: "The Spice House",
-      rating: 4.5,
-      description: "A cozy place with delicious Indian cuisine.njd vdbhvuidsbv sgvhuisgvh vdjghvuisvgh vdhvuidsb  jdgvuidvg vdjvgudb b9b bidb uidbh  kmbnuhb khb uib dz;bsuoihbu9s mksh...",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeFMiJ0XWoXC7UEHNBstXi_1sP2KRfPXvOAA&s",
-    },
-    {
-      id: 2,
-      name: "Ocean's Delight",
-      rating: 4.7,
-      description: "Enjoy the best seafood with a beautiful ocean view.",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3YoaaIe7ntaXtCVYA-M4q6O3YpdSrEp4-6Q&s",
-    },
-    {
-      id: 3,
-      name: "Pasta Paradise",
-      rating: 4.2,
-      description: "Authentic Italian pasta dishes to satisfy your cravings.",
-      image: "https://i.ytimg.com/vi/fg0rJi5FWyo/maxresdefault.jpg",
-    },
-    // Add more restaurant objects here
-  ];
-  const totalPages = 5;
+interface Venue {
+  id: number;
+  name: string;
+  location: string;
+  description: string;
+  image: string;
+  min: number;
+  max: number;
+  email: string;
+  contact: string;
+  rating: number;
+  staff: string[];
+}
+
+const RestaurantList: React.FC<Venue> = () => {
+  const [restaurants, setRestaurants] = useState<Venue[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  function handlePageChange(page) {
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/plans/getVenues"
+        );
+        setRestaurants(response.data);
+      } catch (error) {
+        console.error("Error fetching restaurants:", error);
+      }
+    };
+
+    fetchRestaurants();
+  }, []);
+
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // ... do something with `page`
-  }
-  
-  const itemsPerPage = 2;
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = restaurants.slice(indexOfFirstItem, indexOfLastItem);
-
+  const totalPages = Math.ceil(restaurants.length / itemsPerPage);
   
 
   return (
@@ -73,7 +72,7 @@ const RestaurantList: React.FC = () => {
       </div>
       <div className="col">
         {currentItems.map((restaurant) => (
-          <div key={restaurant.id} className="col-md-12 mb-4">
+          <div className="col-md-12 mb-4">
             <div className="card h-100">
               <div className="row g-0">
                 <div className="col-md-4">
@@ -94,8 +93,8 @@ const RestaurantList: React.FC = () => {
                           <span className="card-text">
                             {<Svg name="star" />}
                             {restaurant.rating}
-                            {<Svg name="building" />}
-                            {restaurant.rating}
+                            {<Svg name="staff" />}
+                            {restaurant.staff[0]}{ restaurant.staff[1]?`, ${restaurant.staff[1]}`:""}
                           </span>
                         </div>
                       </div>
@@ -104,23 +103,23 @@ const RestaurantList: React.FC = () => {
                     <div className="row mt-3">
                       <p className="card-text">
                         {<Svg name="location" />}
-                        {restaurant.name}
+                        {restaurant.location}
                       </p>
                     </div>
                     <p className="card-text mt-4">{restaurant.description}</p>
                     <hr></hr>
-                    <div className="row mt-2">
-                      <div className="col-md-4">
+                    <div className={`row mt-3 ${styles.text_size}`}>
+                      <span className="col-md-7  ps-2 pe-0 mt-2">
                         {<Svg name="mail" />}
-                        {restaurant.id}
-                      </div>
-                      <div className="col-md-4">
+                        {restaurant.email}
                         {<Svg name="phone" />}
-                        {restaurant.id}
-                      </div>
-                      <div className="col-md-4">
-                        <h4>{restaurant.rating}</h4>
-                      </div>
+                        {restaurant.contact}
+                      </span>
+                      <span className="col-md-5">
+                        <p className={`${styles.price_font_size}`}>
+                          Starting at PKR {restaurant.min}
+                        </p>
+                      </span>
                     </div>
                   </div>
                 </div>

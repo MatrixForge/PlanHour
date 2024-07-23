@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "../../../styles/addEvent.module.css";
-import styles_color from "../../../styles/custom-colors.module.css";
+import styles from "@styles/addEvent.module.css";
+import styles_color from "@styles/custom-colors.module.css";
 import CustomImage from "../CustomImage";
 
 const HeroSection: React.FC = () => {
