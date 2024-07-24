@@ -6,11 +6,10 @@ const folderSchema = new mongoose.Schema({
   date: { type: Date, required: true },
   noOfGuests: { type: Number, required: true },
   description: { type: String, required: true },
-  subfolders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'subFolder' }],
   createdAt: { type: Date, default: Date.now },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
-const Folder = mongoose.model('Folder', folderSchema);
+const subFolder = mongoose.model('subFolder', folderSchema);
 
-module.exports = Folder;
+module.exports = subFolder;

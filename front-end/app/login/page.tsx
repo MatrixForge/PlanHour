@@ -7,7 +7,6 @@ import Link from 'next/link';
 import useAuthStore from '../../store/authStore';
 import { useRouter } from 'next/navigation';
 import ForgotPasswordPopup from '../components/ForgotPasswordPopup';
-import useStore from '../../store/authStore';
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);

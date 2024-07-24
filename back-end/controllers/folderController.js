@@ -1,14 +1,5 @@
 const Folder = require('../models/folderModel');
-
-// Get all folders
-exports.getAllFolders = async (req, res) => {
-  try {
-    const folders = await Folder.find().populate('subfolders');
-    res.status(200).json(folders);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+const subFolder = require('../models/subFolderModel');
 
 exports.createFolder = async (req, res) => {
   const { title, eventType, date, noOfGuests, description } = req.body;
@@ -31,38 +22,63 @@ exports.createFolder = async (req, res) => {
 };
 
 
+
 // Get all folders of the logged-in user
 exports.getAllFolders = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const folders = await Folder.find({ createdBy: userId }).populate('subfolders');
+    const folders = await Folder.find({ createdBy: userId });
     res.status(200).json(folders);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Add a subfolder to a folder
-exports.addSubfolder = async (req, res) => {
-  const { id } = req.params;
-  const { title, eventType, date, noOfGuests, image } = req.body;
 
-  const subfolder = new Folder({
-    title,
-    eventType,
-    date,
-    noOfGuests,
-    image,
-  });
+exports.addSubFolder=async (req, res) => {
+  const { mainFolderId } = req.params;
+  const { title, eventType, date, noOfGuests, description, createdBy } = req.body;
+
+  console.log("bitch")
 
   try {
-    const parentFolder = await Folder.findById(id);
-    const newSubfolder = await subfolder.save();
-    parentFolder.subfolders.push(newSubfolder);
-    await parentFolder.save();
-    res.status(201).json(newSubfolder);
+    // Create a new subfolder
+    const subfolder = new subFolder({
+      title,
+      eventType,
+      date,
+      noOfGuests,
+      description,
+      createdBy: req.user.id
+    });
+    await subfolder.save();
+
+    // Update the main folder to include the subfolder ID
+    const mainFolder = await Folder.findById(mainFolderId);
+    if (!mainFolder) {
+      return res.status(404).send('Main folder not found');
+    }
+
+    mainFolder.subfolders.push(subfolder._id);
+    await mainFolder.save();
+
+    res.status(201).send(subfolder);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).send(error.message);
+  }
+}
+
+exports.getSubFolders = async (req, res) => {
+  const { mainFolderId } = req.params;
+
+  try {
+    const mainFolder = await Folder.findById(mainFolderId).populate('subfolders');
+    if (!mainFolder) {
+      return res.status(404).json({ message: 'Main folder not found' });
+    }
+    res.status(200).json(mainFolder.subfolders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

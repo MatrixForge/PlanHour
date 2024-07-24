@@ -7,11 +7,25 @@ import styles_color from "../../styles/custom-colors.module.css"
 const NavBar: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const user = useAuthStore((state) => state.user);
+  const authUser = useAuthStore((state) => state.user);
+  const [user, setUser] = useState<any>(null);
+
 
   useEffect(() => {
-    setLoggedIn(isLoggedIn());
-  }, [isLoggedIn]);
+    const updateAuthStatus = () => {
+      setLoggedIn(isLoggedIn());
+      setUser(authUser);
+    };
+    
+    // Update the auth status on component mount
+    updateAuthStatus();
+    
+    // Set up a listener or subscribe to auth changes
+    const unsubscribe = useAuthStore.subscribe(updateAuthStatus);
+    
+    // Clean up the subscription on component unmount
+    return () => unsubscribe();
+  }, [isLoggedIn, authUser]);
 
   return (
     <nav

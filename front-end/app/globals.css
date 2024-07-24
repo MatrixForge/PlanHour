@@ -11,8 +11,6 @@ b,strong {
     background-color: var(--bs-card-bg, var(--bs-body-bg));
 
     border-radius:30px !important;  /* Other styles for your card */
-
-
 }
 
 .card-header
@@ -20,3 +18,4 @@ b,strong {
     background-color: var(--bs-body-bg) !important;
 
 }
+
