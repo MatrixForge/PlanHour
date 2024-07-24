@@ -1,4 +1,3 @@
-// store/venueStore.ts
 import create from 'zustand';
 import axios from 'axios';
 
@@ -8,6 +7,7 @@ interface Venue {
   location: string;
   description: string;
   image: string;
+  city: string[];
   min: number;
   max: number;
   email: string;
@@ -32,7 +32,7 @@ interface VenueStore {
   setStaffFilter: (staff: string) => void;
 }
 
-const useVenueStore = create<VenueStore>((set) => ({
+const useVenueStore = create<VenueStore>((set, get) => ({
   restaurants: [],
   filteredRestaurants: [],
   filter: "",
@@ -47,49 +47,52 @@ const useVenueStore = create<VenueStore>((set) => ({
       console.error("Error fetching restaurants:", error);
     }
   },
-  setFilter: (filter: string) => set((state) => {
-    const filtered = state.restaurants.filter((restaurant) => restaurant.vendorType === filter);
-    return { filter, filteredRestaurants: filtered };
-  }),
-  setCityFilter: (city: string) => set((state) => {
-    const updatedCityFilter = state.cityFilter.includes(city)
-      ? state.cityFilter.filter(c => c !== city)
-      : [...state.cityFilter, city];
+  setFilter: (filter: string) => {
+    const { cityFilter, budgetFilter, staffFilter, restaurants } = get();
+    const filtered = applyFilters({ restaurants, filter, cityFilter, budgetFilter, staffFilter });
+    set({ filter, filteredRestaurants: filtered });
+  },
+  setCityFilter: (city: string) => {
+    const { cityFilter, filter, budgetFilter, staffFilter, restaurants } = get();
+    const updatedCityFilter = cityFilter.includes(city)
+      ? cityFilter.filter(c => c !== city)
+      : [...cityFilter, city];
 
-    const filtered = state.restaurants.filter((restaurant) =>
-      updatedCityFilter.includes(restaurant.location) &&
-      state.budgetFilter.every(b => restaurant.min >= b.min && restaurant.max <= b.max) &&
-      state.staffFilter.every(s => restaurant.staff.includes(s))
-    );
+    const filtered = applyFilters({ restaurants, filter, cityFilter: updatedCityFilter, budgetFilter, staffFilter });
+    set({ cityFilter: updatedCityFilter, filteredRestaurants: filtered });
+  },
+  setBudgetFilter: (budget: { min: number; max: number }) => {
+    const { budgetFilter, filter, cityFilter, staffFilter, restaurants } = get();
+    const updatedBudgetFilter = budgetFilter.some(b => b.min === budget.min && b.max === budget.max)
+      ? budgetFilter.filter(b => !(b.min === budget.min && b.max === budget.max))
+      : [...budgetFilter, budget];
 
-    return { cityFilter: updatedCityFilter, filteredRestaurants: filtered };
-  }),
-  setBudgetFilter: (budget: { min: number; max: number }) => set((state) => {
-    const updatedBudgetFilter = state.budgetFilter.some(b => b.min === budget.min && b.max === budget.max)
-      ? state.budgetFilter.filter(b => !(b.min === budget.min && b.max === budget.max))
-      : [...state.budgetFilter, budget];
+    const filtered = applyFilters({ restaurants, filter, cityFilter, budgetFilter: updatedBudgetFilter, staffFilter });
+    set({ budgetFilter: updatedBudgetFilter, filteredRestaurants: filtered });
+  },
+  setStaffFilter: (staff: string) => {
+    const { staffFilter, filter, cityFilter, budgetFilter, restaurants } = get();
+    const updatedStaffFilter = staffFilter.includes(staff)
+      ? staffFilter.filter(s => s !== staff)
+      : [...staffFilter, staff];
 
-    const filtered = state.restaurants.filter((restaurant) =>
-      updatedBudgetFilter.some(b => restaurant.min >= b.min && restaurant.max <= b.max) &&
-      state.cityFilter.includes(restaurant.location) &&
-      state.staffFilter.every(s => restaurant.staff.includes(s))
-    );
-
-    return { budgetFilter: updatedBudgetFilter, filteredRestaurants: filtered };
-  }),
-  setStaffFilter: (staff: string) => set((state) => {
-    const updatedStaffFilter = state.staffFilter.includes(staff)
-      ? state.staffFilter.filter(s => s !== staff)
-      : [...state.staffFilter, staff];
-
-    const filtered = state.restaurants.filter((restaurant) =>
-      state.cityFilter.includes(restaurant.location) &&
-      state.budgetFilter.every(b => restaurant.min >= b.min && restaurant.max <= b.max) &&
-      updatedStaffFilter.every(s => restaurant.staff.includes(s))
-    );
-
-    return { staffFilter: updatedStaffFilter, filteredRestaurants: filtered };
-  })
+    const filtered = applyFilters({ restaurants, filter, cityFilter, budgetFilter, staffFilter: updatedStaffFilter });
+    set({ staffFilter: updatedStaffFilter, filteredRestaurants: filtered });
+  },
 }));
+
+const applyFilters = ({ restaurants, filter, cityFilter, budgetFilter, staffFilter }: any) => {
+  return restaurants.filter((restaurant: Venue) => {
+    const matchesFilter = filter ? restaurant.vendorType === filter : true;
+    const matchesCity = cityFilter.length > 0 ? cityFilter.some(city => restaurant.city.includes(city)) : true;
+    const matchesBudget = budgetFilter.length > 0
+      ? budgetFilter.some((b: any) => restaurant.min >= b.min && restaurant.max <= b.max)
+      : true;
+    const matchesStaff = staffFilter.length > 0
+      ? staffFilter.every((s: any) => restaurant.staff.includes(s))
+      : true;
+    return matchesFilter && matchesCity && matchesBudget && matchesStaff;
+  });
+};
 
 export default useVenueStore;

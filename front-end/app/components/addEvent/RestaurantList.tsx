@@ -21,10 +21,7 @@ const RestaurantList: React.FC = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredRestaurants.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentItems = filteredRestaurants.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredRestaurants.length / itemsPerPage);
 
   return (
@@ -75,17 +72,17 @@ const RestaurantList: React.FC = () => {
                     </span>
                     <div className="row">
                       <div className="col-md-12">
-                        <span
-                          className={`card-text ${styles.services_fontsize}`}
-                        >
-                          {<Svg name="star" />}
-                          {restaurant.rating}
-                          {<Svg name="staff" />}
-                          {restaurant.services[0]}
-                          {restaurant.services[1]
-                            ? `, ${restaurant.services[1]}`
-                            : ""}
-                        </span>
+                          <span
+                            className={`card-text ${styles.services_fontsize}`}
+                          >
+                            {<Svg name="star" />}
+                            {restaurant.rating}
+                            {<Svg name="staff" />}
+                            {restaurant.services[0]}
+                            {restaurant.services[1]
+                              ? `, ${restaurant.services[1]}`
+                              : ""}
+                          </span>
                       </div>
                     </div>
                     <div className="row mt-3">

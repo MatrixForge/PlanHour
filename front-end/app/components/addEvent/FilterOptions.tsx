@@ -7,11 +7,11 @@ const FilterOptions: React.FC = () => {
 
   const filters = ["Islamabad", "Rawalpindi"];
   const budgets = [
-    { min: 0, max: 1500 },
-    { min: 1501, max: 2500 },
-    { min: 2501, max: 4000 },
-    { min: 4001, max: 5000 },
-    { min: 5001, max: 6000 },
+    { min: 1000, max: 5000 },
+    { min: 5000, max: 20000 },
+    { min: 20000, max: 50000 },
+    { min: 50000, max: 100000 },
+    { min: 100000, max: 1000000 },
   ];
   const staffs = ["male", "female"];
 
