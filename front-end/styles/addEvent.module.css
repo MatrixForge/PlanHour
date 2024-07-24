@@ -20,23 +20,22 @@
   margin-top: 1.8rem;
 }
 
-.customize-btns:hover{
-  background-color: transparent;
-  
+.customize_btns:hover {
+  background-color: transparent !important;
 }
 @media (max-width: 768px) {
   .btn_responsive {
-    padding:1rem 0.5rem;
+    padding: 1rem 0.5rem;
     margin-left: 1rem;
-    font-size:45%;
+    font-size: 45%;
     line-height: 1;
   }
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
   .btn_responsive {
-    padding:4px 9px;
-    font-size:90%;
+    padding: 4px 9px;
+    font-size: 90%;
     line-height: 1.2;
   }
 }
@@ -80,3 +79,10 @@
   outline: none !important;
 }
 
+.text_size{
+  font-size: 0.7rem;
+}
+.price_font_size{
+  font-size: 1rem;
+  font-weight: 500;
+}

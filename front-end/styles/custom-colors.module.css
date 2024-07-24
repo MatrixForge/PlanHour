@@ -1,36 +1,36 @@
 .customBrown {
-  background-color: #F6EDE4;
-  color: black;
+  background-color: #f6ede4 !important;
+  color: black !important;
 }
 
 .customPink {
-background-color: #EBA0E3;
-color: black;
+  background-color: #eba0e3 !important;
+  color: black !important;
 }
 
 .customGreen {
-background-color: #92D4C9;
-color: black;
+  background-color: #92d4c9 !important;
+  color: black !important;
 }
 
 .customOrange {
-background-color: #E8A696;
-color: black;
+  background-color: #e8a696 !important;
+  color: black !important;
 }
 
 .customPurple {
-background-color: #C5B3E6;
-color: black;
+  background-color: #c5b3e6 !important;
+  color: black !important;
 }
 
 .customLightPurple {
-  background-color: #c5b3e642;
+  background-color: #c5b3e642 !important;
 }
 
 .customLightPink {
-background-color: #eba0e447;
+  background-color: #eba0e447 !important;
 }
 
 .customLightGreen {
-background-color: #92d4c938;
+  background-color: #92d4c938 !important;
 }
