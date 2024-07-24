@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const venueController = require('../controllers/plansController');
+const vendorController = require('../controllers/vendorsController');
 
 // Define the route to get all venues
-router.get('/getVenues', venueController.getAllVenues);
+router.get('/getVendors', vendorController.getAllVenues);
 
 module.exports = router;

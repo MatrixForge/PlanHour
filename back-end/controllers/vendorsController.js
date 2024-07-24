@@ -1,4 +1,4 @@
-const Venue = require('../models/venueModel');
+const Venue = require('../models/vendorModel');
 
 // Controller to get all venues
 exports.getAllVenues = async (req, res) => {

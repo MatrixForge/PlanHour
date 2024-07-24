@@ -1,13 +1,11 @@
 // FilterOptions.tsx
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import useVenueStore from "@/store/venueStore";
 
 const FilterOptions: React.FC = () => {
-  const filters = [
-      "Islamabad",
-    "Rawalpindi",
-  ];
+  const { setCityFilter, setBudgetFilter, setStaffFilter } = useVenueStore();
 
+  const filters = ["Islamabad", "Rawalpindi"];
   const budgets = [
     { min: 0, max: 1500 },
     { min: 1501, max: 2500 },
@@ -15,8 +13,7 @@ const FilterOptions: React.FC = () => {
     { min: 4001, max: 5000 },
     { min: 5001, max: 6000 },
   ];
-
-  const staffs = ["Male", "Female"];
+  const staffs = ["male", "female"];
 
   return (
     <div className="col-md-3 p-3">
@@ -26,7 +23,12 @@ const FilterOptions: React.FC = () => {
         <ul className="">
           {filters.map((filter, index) => (
             <li key={index} className="list-group-item my-4">
-              <input type="checkbox" id={`filter-${index}`} className="me-2" />
+              <input
+                type="checkbox"
+                id={`filter-${index}`}
+                className="me-2"
+                onChange={() => setCityFilter(filter)}
+              />
               <label htmlFor={`filter-${index}`}>{filter}</label>
             </li>
           ))}
@@ -38,8 +40,13 @@ const FilterOptions: React.FC = () => {
         <ul>
           {budgets.map((budget, index) => (
             <li key={index} className="list-group-item my-4">
-              <input type="checkbox" id={`filter-${index}`} className="me-2" />
-              <label htmlFor={`filter-${index}`}>
+              <input
+                type="checkbox"
+                id={`budget-${index}`}
+                className="me-2"
+                onChange={() => setBudgetFilter(budget)}
+              />
+              <label htmlFor={`budget-${index}`}>
                 {budget.min}-{budget.max}
               </label>
             </li>
@@ -52,8 +59,13 @@ const FilterOptions: React.FC = () => {
         <ul className="">
           {staffs.map((staff, index) => (
             <li key={index} className="list-group-item my-4">
-              <input type="checkbox" id={`filter-${index}`} className="me-2" />
-              <label htmlFor={`filter-${index}`}>{staff}</label>
+              <input
+                type="checkbox"
+                id={`staff-${index}`}
+                className="me-2"
+                onChange={() => setStaffFilter(staff)}
+              />
+              <label htmlFor={`staff-${index}`}>{staff}</label>
             </li>
           ))}
         </ul>
