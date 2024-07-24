@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useFolderStore } from '../../store/folderStore'; // Import the Zustand store
 import '../../styles/eventModal.css';
 
 interface EventModalProps {
   onClose: () => void;
+  mainFolderId?: string; // Optional prop for mainFolderId
 }
 
-const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
+const EventModal: React.FC<EventModalProps> = ({ onClose, mainFolderId }) => {
   const backgroundImgSrc = '/Popup.png';
 
   const [formData, setFormData] = useState({
@@ -18,44 +20,52 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
     description: ''
   });
 
+  const { setFolderCreated } = useFolderStore(); // Use the Zustand store
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = async (e :any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { title, eventType, date, noOfGuests, description } = formData;
-    const token = sessionStorage.getItem('token'); // Assuming the token is stored in localStorage
-    console.log("oomm",token);
-    try {
-        const response = await axios.post('http://localhost:5000/api/events/folders', {
-            title,
-            eventType,
-            date,
-            noOfGuests,
-            description,
-        }, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+    const token = sessionStorage.getItem('token'); // Assuming the token is stored in sessionStorage
 
-        console.log(response.data); // Handle successful response
-        onClose(); // Close the modal
-    } catch (error:any) {
-        if (error.response) {
-            // Server responded with a status other than 200 range
-            console.error('Error creating folder:', error.response.data.message);
-        } else if (error.request) {
-            // Request was made but no response was received
-            console.error('Error creating folder:', error.request);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.error('Error creating folder:', error.message);
+    // Determine the URL based on the presence of mainFolderId
+    const url = mainFolderId
+      ? `http://localhost:5000/api/events/folders/${mainFolderId}/subfolder`
+      : 'http://localhost:5000/api/events/folders';
+
+    try {
+      const response = await axios.post(url, {
+        title,
+        eventType,
+        date,
+        noOfGuests,
+        description,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
+      });
+
+      console.log(response.data); // Handle successful response
+      setFolderCreated(true); // Update Zustand store state
+      onClose(); // Close the modal
+    } catch (error: any) {
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        console.error('Error creating folder:', error.response.data.message);
+      } else if (error.request) {
+        // Request was made but no response was received
+        console.error('Error creating folder:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error creating folder:', error.message);
+      }
     }
-};
+  };
 
   return (
     <Modal show={true} onHide={onClose} backdrop="static" keyboard={false} centered dialogClassName="custom-modal">

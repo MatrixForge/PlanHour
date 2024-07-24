@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import '../../styles/searchbar.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import EventModal from '../components/EventModal'; // Import your modal component
+import DropdownModal from '../components/DropdownModal';
 
 const SearchBar: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
-  const openModal = () => {
+  const handleMouseEnter = () => {
     setShowModal(true);
   };
 
-  const closeModal = () => {
+  const handleMouseLeave = () => {
     setShowModal(false);
   };
 
@@ -18,16 +18,18 @@ const SearchBar: React.FC = () => {
     <div className="d-flex justify-content-center h-100">
       <div className="search-container">
         <div className="search">
-          <input type="text" className="search-input" placeholder="search your event" name="search" />
+          <input type="text" className="search-input" placeholder="Search your event" name="search" />
           <button className="search-button">Search</button>
         </div>
-        <div className="plus-icon">
-          <a href="#" onClick={openModal}>
-            <i className="bi bi-sliders"></i>
-          </a>
+        <div 
+          className="plus-icon" 
+          onMouseEnter={handleMouseEnter} 
+          onMouseLeave={handleMouseLeave}
+        >
+          <i className="bi bi-sliders"></i>
+          {showModal && <DropdownModal />} {/* Render modal conditionally */}
         </div>
       </div>
-      {showModal && <EventModal onClose={closeModal} />} {/* Render modal conditionally */}
     </div>
   );
 };

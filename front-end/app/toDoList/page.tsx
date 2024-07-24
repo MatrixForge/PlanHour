@@ -12,6 +12,15 @@ const BootstrapLayout = () => {
   const [todos, setTodos] = useState([
     { id: 1, text: "Cras justo odio", done: false },
     { id: 2, text: "Cras justo odio", done: false },
+    { id: 2, text: "Cras justo odio", done: false },
+    { id: 2, text: "Cras justo odio", done: false },
+    { id: 2, text: "Cras justo odio", done: false },
+    { id: 2, text: "Cras justo odio", done: false },
+    { id: 2, text: "Cras justo odio", done: false },
+    { id: 2, text: "Cras justo odio", done: false },
+    { id: 2, text: "Cras justo odio", done: false },
+    { id: 2, text: "Cras justo odio", done: false },
+
   ]);
 
   const toggleDone = (id) => {
@@ -43,6 +52,7 @@ const BootstrapLayout = () => {
           className="col-md-7"
           style={{
             backgroundImage: "linear-gradient(to right, #EBA0E3, #E8A696)",
+            height:'80%'
           }}
         >
           <div className="card">
@@ -81,7 +91,7 @@ const BootstrapLayout = () => {
           </div>
         </div>
 
-        <div className="col-md-5">
+        <div className="col-md-5 left-border-shadow ">
           <div className="row">
             <div
               className="col-md-12 day-picker-container"
@@ -100,14 +110,13 @@ const BootstrapLayout = () => {
 
           <div className="row">
             <div
-              className="col-md-12"
+              className="col-md-12 "
               style={{
                 backgroundImage: "linear-gradient(to right, #E8A696, #EEBCAE)",
                 width: "120%",
-                height: "700px",
               }}
             >
-              <div className="event-card">
+              <div className="event-card ">
                 <div className="event-card-header fontCustom">Weddings</div>
                 {events.map((event, index) => (
                   <div
