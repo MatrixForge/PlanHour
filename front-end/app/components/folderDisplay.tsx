@@ -52,7 +52,6 @@ const FolderDisplay: React.FC = () => {
             <img src="/folder.png" className="card-img-top cardImg" alt="Card image cap" />
             <div className="card-body">
               <p className="card-text">{folder.title}</p>
-              <div className="card-divider"></div>
               <div className="card-footer">
                 <img src="/clock.png" className="icon-img" alt="Timer icon" />
                 <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
@@ -73,7 +72,6 @@ const FolderDisplay: React.FC = () => {
           <img src="/folder.png" className="card-img-top cardImg" alt="Card image cap" />
           <div className="card-body">
             <p className="card-text" style={{ color: '#F6EDE4' }}>Another Event</p>
-            <div className="card-divider"></div>
             <div className="card-footer">
               <img src="/clock.png" className="icon-img" alt="Timer icon" />
               <span  style={{ color: '#F6EDE4' }} >02/01/2023</span>
