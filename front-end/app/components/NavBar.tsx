@@ -3,6 +3,7 @@ import Link from "next/link";
 import useAuthStore from "../../store/authStore";
 import styles_nav from "../../styles/navbar.module.css"
 import styles_color from "../../styles/custom-colors.module.css"
+
 const NavBar: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -14,7 +15,7 @@ const NavBar: React.FC = () => {
 
   return (
     <nav
-      className={`navbar navbar-expand-lg navbar-light bg-light ${styles_nav.fontCustom}`}
+      className={`navbar navbar-expand-lg ${styles_nav.fontCustom} ${styles_nav.navbarBackground}`}
     >
       <Link href="/" className="navbar-brand">
         <img src="/logo.png" alt="Plan Hour" style={{ width: "100px" }} />

@@ -32,3 +32,27 @@
     color: #333;
     width: auto;
 }
+
+.inputContainer {
+    position: relative;
+    width: 100%; /* Make the container width 100% or adjust as needed */
+  }
+  
+  .inputContainer i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #000 !important; /* Make sure the icon color is black */
+    font-size: 1.2rem; /* Adjust icon size as needed */
+  }
+  
+  .formControl {
+    padding-left: 40px; /* Adjust padding to accommodate the icon */
+    width: 100%; /* Ensure the input field takes full width of its container */
+  }
+  
+  .icon-class
+  {
+    color: #000 ;
+  }
