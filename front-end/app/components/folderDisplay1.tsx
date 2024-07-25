@@ -1,55 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import '@styles/FolderDisplay.css';
-import EventModal from '../components/EventModal'; 
-import FolderOptionsModal from '../components/eventify/FolderOptionsModal';
-import { useFolderStore } from '../../store/folderStore';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "@styles/FolderDisplay.css";
+import EventModal from "./EventModal";
+import { useSearchParams } from "next/navigation";
+import { useFolderStore } from "@/store/folderStore";
+import FolderOptionsModal from "./eventify/FolderOptionsModal";
 
-interface Folder {
-  _id: string;
-  title: string;
-  createdAt: string;
-}
-
-const FolderDisplay: React.FC = () => {
-  const [folders, setFolders] = useState<Folder[]>([]);
+const SubFolderDisplay: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [showOptionsModal, setShowOptionsModal] = useState(false);
-  const { folderCreated, setFolderCreated } = useFolderStore();
-  const { setFolderId } = useFolderStore();
-
-  useEffect(() => {
-    fetchFolders();
-    setFolderCreated(false);
-  }, [folderCreated]);
-
-  const fetchFolders = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/events/folders', {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem('token')}`, 
-        },
-      });
-      setFolders(response.data);
-    } catch (error) {
-      console.error('Error fetching folders:', error);
-    }
-  };
+  const [subfolders, setSubfolders] = useState([]);
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const { folderId, subFolderId, setFolderCreated, setSubFolderId } =
+    useFolderStore();
+  // const mainFolderTitle = searchParams.get("mainFolderTitle");
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-  const handleOptionsModalClose = () => setShowOptionsModal(false);
-  const handleFolderClick = (folderId: string) => {
-    setFolderId(folderId);
+
+  const handleShowOptionsModal = (sub_folderId: string) => {
+    setSubFolderId(sub_folderId);
     setShowOptionsModal(true);
   };
 
+  const handleCloseOptionsModal = () => {
+    setSelectedFolderId(null);
+    setShowOptionsModal(false);
+  };
+
+  useEffect(() => {
+    if (folderId) {
+      fetchSubfolders(folderId);
+    }
+  }, [folderId, setFolderCreated]);
+
+  const fetchSubfolders = async (id: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/events/folders/${id}/subfolders`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        }
+      );
+      setSubfolders(response.data);
+    } catch (error) {
+      console.error("Error fetching subfolders:", error);
+    }
+  };
   return (
     <>
-      <h1>Events</h1>
+      <h1>Events xyz</h1>
       <div className="folder">
-        {folders.map((folder) => (
+        {subfolders.map((folder) => (
           <div
             key={folder._id}
             className="card"
@@ -59,7 +65,7 @@ const FolderDisplay: React.FC = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onClick={() => handleFolderClick(folder._id)}
+            onClick={() => handleShowOptionsModal(folder._id)}
           >
             <i className="bi bi-three-dots-vertical three-dots-icon"></i>
             <img
@@ -69,6 +75,7 @@ const FolderDisplay: React.FC = () => {
             />
             <div className="card-body">
               <p className="card-text">{folder.title}</p>
+              <div className="card-divider"></div>
               <div className="card-footer">
                 <img src="/clock.png" className="icon-img" alt="Timer icon" />
                 <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
@@ -100,6 +107,7 @@ const FolderDisplay: React.FC = () => {
             <p className="card-text" style={{ color: "#F6EDE4" }}>
               Another Event
             </p>
+            <div className="card-divider"></div>
             <div className="card-footer">
               <img src="/clock.png" className="icon-img" alt="Timer icon" />
               <span style={{ color: "#F6EDE4" }}>02/01/2023</span>
@@ -107,13 +115,17 @@ const FolderDisplay: React.FC = () => {
           </div>
         </div>
       </div>
-      {showModal && <EventModal onClose={handleCloseModal} />}
-      <FolderOptionsModal
-        show={showOptionsModal}
-        handleClose={handleOptionsModalClose}
-      />
+      {showModal && (
+        <EventModal onClose={handleCloseModal} mainFolderId={folderId} />
+      )}
+      {showOptionsModal && (
+        <FolderOptionsModal
+          show={showOptionsModal}
+          handleClose={handleCloseOptionsModal}
+        />
+      )}
     </>
   );
 };
 
-export default FolderDisplay;
+export default SubFolderDisplay;
