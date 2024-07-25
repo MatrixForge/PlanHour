@@ -4,14 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db')
 var cors = require('cors');
-
+const { connectDB } = require("./config/db"); 
 
 // var indexRouter = require('./routes/index');
 var authRoutes = require('./routes/authRoutes');
 var folderRoutes = require('./routes/folderRoutes');
 var vendorRoutes = require('./routes/vendorRoutes');
+var guestRoutes = require('./routes/guestListRoutes');
 
 
 var app = express();
@@ -37,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/users', authRoutes);
 app.use('/api/events', folderRoutes);
 app.use('/api/plans', vendorRoutes);
+app.use('/api/guests', guestRoutes);
 
 
 // catch 404 and forward to error handler

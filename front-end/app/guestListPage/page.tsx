@@ -48,6 +48,35 @@ const GuestListPage = () => {
         }
     };
 
+    const handleSendInvitations = async () => {
+        const eventDetails = {
+            summary: 'Your Event Title',
+            location: 'Event Location',
+            description: 'Event Description',
+            start: '2024-07-30T10:00:00',
+            end: '2024-07-30T12:00:00'
+        };
+
+        try {
+            const response = await fetch('http://localhost:5000/api/guests/send-invitations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                     Authorization: `Bearer ${sessionStorage.getItem('token')}`, 
+                },
+                body: JSON.stringify({ checkedGuests, eventDetails })
+            });
+
+            if (response.ok) {
+                alert('Invitations sent successfully');
+            } else {
+                alert('Failed to send invitations');
+            }
+        } catch (error) {
+            console.error('Error sending invitations:', error);
+        }
+    };
+
     useEffect(() => {
         const savedGuests = localStorage.getItem('guests');
         if (savedGuests) {
@@ -83,10 +112,13 @@ const GuestListPage = () => {
                                     <i className={`bi bi-cloud-upload-fill ${styles1.icon}`}></i>
                                     Import
                                 </button>
-                                <Link className={`btn btn-light mx-2 rounded-pill custom d-flex flex-row justify-content-center align-items-center ${styles.customBrown} ${styles1.fontCustom}`} href="/">
+                                <button 
+                                    className={`btn btn-light mx-2 rounded-pill custom d-flex flex-row justify-content-center align-items-center ${styles.customBrown} ${styles1.fontCustom}`}
+                                    onClick={handleSendInvitations}
+                                >
                                     <i className={`bi bi-send-fill ${styles1.icon}`}></i>
                                     Send
-                                </Link>
+                                </button>
                                 <Link className={`btn btn-light mx-2 rounded-pill custom d-flex flex-row justify-content-center align-items-center ${styles.customBrown} ${styles1.fontCustom}`} href="/">
                                     <i className={`bi bi-plus-lg ${styles1.icon}`}></i>
                                     AddGuest

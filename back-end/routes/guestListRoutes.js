@@ -8,3 +8,5 @@ const authenticateToken = require('../middleware/authMiddleware');
 router.post('/send-invitations', authenticateToken, guestController.sendInvitations);
 
 router.get('/oauth2callback',authenticateToken, guestController.oAuth2callback);
+
+module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { sendInvitation, getAccessToken } = require('./googleCalendar');
+const { sendInvitation, getAccessToken } = require('../googleCalendar');
 
 const app = express();
 app.use(bodyParser.json());
