@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import styles from "../../styles/addEvent.module.css"; // Import the new CSS module
+import styles from "@styles/addEvent.module.css"; // Import the new CSS module
 
 interface CustomImageProps {
   imageSrc: string;
