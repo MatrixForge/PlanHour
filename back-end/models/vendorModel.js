@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const vendorSchema = new mongoose.Schema({
-  companyName: {
+  name: {
     type: String,
     required: true
   },
@@ -25,11 +25,11 @@ const vendorSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  minPrice: {
+  min: {
     type: Number,
     required: true
   },
-  maxPrice: {
+  max: {
     type: Number,
     required: true
   },

@@ -22,7 +22,12 @@ const Body = ({ loggedIn }) => {
                 <div className={`d-flex flex-row mb-3 ${cardStyles.bottomBar}`}>
                     
                     <div className={`inputContainer position-relative`}>
-                        <i className="bi bi-send-fill position-absolute icon-class" style={{ top: '50%', left: '20px', transform: 'translateY(-50%)', color: '#000 !important', fontSize: '1.2rem' }}></i>
+                    <img
+                            src="/emailsend.png" // Image from the public folder
+                            alt="Send"
+                            className={`position-absolute`}
+                            style={{ top: '50%', left: '20px', transform: 'translateY(-50%)', width: '24px', height: '24px' }} // Adjust size as needed
+                        />   
                         <input
                             type="text"
                             className={`form-control rounded-pill ps-5 ${cardStyles.inputField} ${cardStyles.customFont} ${cardStyles.noBottomBorder}`}
@@ -30,8 +35,6 @@ const Body = ({ loggedIn }) => {
                             style={{ width: '300px' }} // Adjust this value as needed
                         />
                     </div>
-
-
 
                     <a
                         className={`btn mx-2 rounded-pill ${styles.customBrown} ${cardStyles.customFont} ${cardStyles.bottomShadow}`}

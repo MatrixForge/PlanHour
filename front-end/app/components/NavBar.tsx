@@ -16,14 +16,10 @@ const NavBar: React.FC = () => {
       setLoggedIn(isLoggedIn());
       setUser(authUser);
     };
-    
-    // Update the auth status on component mount
+
     updateAuthStatus();
-    
-    // Set up a listener or subscribe to auth changes
+
     const unsubscribe = useAuthStore.subscribe(updateAuthStatus);
-    
-    // Clean up the subscription on component unmount
     return () => unsubscribe();
   }, [isLoggedIn, authUser]);
 

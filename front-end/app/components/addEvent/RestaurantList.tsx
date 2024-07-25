@@ -1,43 +1,19 @@
+// RestaurantList.tsx
 import React, { useState, useEffect } from "react";
 import "@styles/custom-pagination.css";
 import ResponsivePagination from "react-responsive-pagination";
-import styles from "@styles/addEvent.module.css"
+import styles from "@styles/addEvent.module.css";
 import Svg from "./Svg";
-import axios from "axios";
+import useVenueStore from "@/store/venueStore";
 
-interface Venue {
-  id: number;
-  name: string;
-  location: string;
-  description: string;
-  image: string;
-  min: number;
-  max: number;
-  email: string;
-  contact: string;
-  rating: number;
-  staff: string[];
-}
-
-const RestaurantList: React.FC<Venue> = () => {
-  const [restaurants, setRestaurants] = useState<Venue[]>([]);
+const RestaurantList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const { filteredRestaurants, fetchRestaurants } = useVenueStore();
 
   useEffect(() => {
-    const fetchRestaurants = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/plans/getVenues"
-        );
-        setRestaurants(response.data);
-      } catch (error) {
-        console.error("Error fetching restaurants:", error);
-      }
-    };
-
     fetchRestaurants();
-  }, []);
+  }, [fetchRestaurants]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -45,9 +21,8 @@ const RestaurantList: React.FC<Venue> = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = restaurants.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(restaurants.length / itemsPerPage);
-  
+  const currentItems = filteredRestaurants.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredRestaurants.length / itemsPerPage);
 
   return (
     <div className="col-md-9 p-3 pt-0">
@@ -72,7 +47,7 @@ const RestaurantList: React.FC<Venue> = () => {
       </div>
       <div className="col">
         {currentItems.map((restaurant) => (
-          <div className="col-md-12 mb-4">
+          <div key={restaurant.id} className="col-md-12 mb-4">
             <div className="card h-100">
               <div className="row g-0">
                 <div className="col-md-4">
@@ -85,21 +60,31 @@ const RestaurantList: React.FC<Venue> = () => {
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
-                    <h5 className="card-title">{restaurant.name}</h5>
-                    {/* Rating and category */}
+                    <span className="card-title fs-3">{restaurant.name}</span>
+
+                    <span
+                      className="position-absolute top-2 end-0 me-5 mt-2"
+                      onClick={() => {
+                        console.log("clicked...!");
+                      }}
+                    >
+                      {<Svg name="plus" />}
+                    </span>
                     <div className="row">
-                      <div className="col-md-6">
-                        <div className="row">
-                          <span className="card-text">
+                      <div className="col-md-12">
+                          <span
+                            className={`card-text ${styles.services_fontsize}`}
+                          >
                             {<Svg name="star" />}
                             {restaurant.rating}
                             {<Svg name="staff" />}
-                            {restaurant.staff[0]}{ restaurant.staff[1]?`, ${restaurant.staff[1]}`:""}
+                            {restaurant.services[0]}
+                            {restaurant.services[1]
+                              ? `, ${restaurant.services[1]}`
+                              : ""}
                           </span>
-                        </div>
                       </div>
                     </div>
-                    {/* location section */}
                     <div className="row mt-3">
                       <p className="card-text">
                         {<Svg name="location" />}
@@ -107,11 +92,17 @@ const RestaurantList: React.FC<Venue> = () => {
                       </p>
                     </div>
                     <p className="card-text mt-4">{restaurant.description}</p>
-                    <hr></hr>
+                    <hr />
                     <div className={`row mt-3 ${styles.text_size}`}>
-                      <span className="col-md-7  ps-2 pe-0 mt-2">
-                        {<Svg name="mail" />}
-                        {restaurant.email}
+                      <span className="col-md-7 ps-2 pe-0 mt-2">
+                        {restaurant.email ? (
+                          <>
+                            <Svg name="mail" />
+                            {restaurant.email}
+                          </>
+                        ) : (
+                          ""
+                        )}
                         {<Svg name="phone" />}
                         {restaurant.contact}
                       </span>
@@ -132,7 +123,7 @@ const RestaurantList: React.FC<Venue> = () => {
         <ResponsivePagination
           total={totalPages}
           current={currentPage}
-          onPageChange={(page) => handlePageChange(page)}
+          onPageChange={handlePageChange}
         />
       </div>
     </div>

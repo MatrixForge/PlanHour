@@ -1,5 +1,4 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "@styles/addEvent.module.css";
 import styles_color from "@styles/custom-colors.module.css";
 import CustomImage from "../CustomImage";
@@ -16,13 +15,13 @@ const HeroSection: React.FC = () => {
       <div className="container">
         <div className="d-flex justify-content-center flex-wrap py-4">
           <button
-            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customBrown}`}
+            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customBrown} ${styles.imagesStyling}`}
             onClick={() => handleClick("Home-Icon")}
           >
             <CustomImage imageSrc={"/add-event/home.png"} name={"Home-Icon"} />
           </button>
           <button
-            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customLightPurple}`}
+            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customLightPurple}   ${styles.imagesStyling}`}
             onClick={() => handleClick("Restaurant-Icon")}
           >
             <CustomImage
@@ -31,13 +30,13 @@ const HeroSection: React.FC = () => {
             />
           </button>
           <button
-            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customLightPink}`}
+            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customLightPink}  ${styles.imagesStyling}`}
             onClick={() => handleClick("Tray-Icon")}
           >
             <CustomImage imageSrc={"/add-event/tray.png"} name={"Tray-Icon"} />
           </button>
           <button
-            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customLightGreen}`}
+            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customLightGreen}  ${styles.imagesStyling}`}
             onClick={() => handleClick("Camera-Icon")}
           >
             <CustomImage
@@ -46,7 +45,7 @@ const HeroSection: React.FC = () => {
             />
           </button>
           <button
-            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customLightPink}`}
+            className={`btn btn-link rounded-circle p-2 p-sm-3 p-md-4 ms-3 border ${styles_color.customLightPink}  ${styles.imagesStyling}`}
             onClick={() => handleClick("Flower-Icon")}
           >
             <CustomImage
