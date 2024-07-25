@@ -5,7 +5,6 @@ import '@styles/FolderDisplay.css';
 import EventModal from '../components/EventModal'; 
 import FolderOptionsModal from '../components/eventify/FolderOptionsModal';
 import { useFolderStore } from '../../store/folderStore';
-import FolderOptionsModal from '../components/eventify/FolderOptionsModal';
 
 interface Folder {
   _id: string;
