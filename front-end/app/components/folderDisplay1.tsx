@@ -1,33 +1,34 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useRouter } from 'next/navigation';
-import '../../styles/FolderDisplay.css';
-import EventModal from '../components/EventModal'; 
 import { useSearchParams } from "next/navigation";
 import { useFolderStore } from '../../store/folderStore';
+import FolderOptionsModal from '../components/eventify/FolderOptionsModal1'; // Import the modal
+import '../../styles/FolderDisplay.css';
 
 const SubFolderDisplay = () => {
   const [showModal, setShowModal] = useState(false);
   const [subfolders, setSubfolders] = useState([]);
-
+  const [selectedFolder, setSelectedFolder] = useState(null); // State to store selected folder
 
   const searchParams = useSearchParams();
   const mainFolderId = searchParams.get("mainFolderId");
   const mainFolderTitle = searchParams.get("mainFolderTitle");
   const { folderCreated, setFolderCreated } = useFolderStore();
 
-
-
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModal = (folder) => {
+    setSelectedFolder(folder);
+    setShowModal(true);
+  };
   const handleCloseModal = () => setShowModal(false);
 
   useEffect(() => {
     if (mainFolderId) {
       fetchSubfolders(mainFolderId);
     }
-  }, [mainFolderId,folderCreated]);
+  }, [mainFolderId, folderCreated]);
 
   const fetchSubfolders = async (id) => {
     try {
@@ -47,7 +48,12 @@ const SubFolderDisplay = () => {
       <h1>Events{mainFolderTitle ? ` / ${mainFolderTitle}` : ''}</h1>
       <div className="folder">
         {subfolders.map((folder) => (
-          <div key={folder._id} className="card" style={{ width: '14rem', height: '16rem', justifyContent: 'center', alignItems: 'center' }}>
+          <div
+            key={folder._id}
+            className="card"
+            style={{ width: '14rem', height: '16rem', justifyContent: 'center', alignItems: 'center' }}
+            onClick={() => handleShowModal(folder)}
+          >
             <i className="bi bi-three-dots-vertical three-dots-icon"></i>
             <img src="/folder.png" className="card-img-top cardImg" alt="Card image cap" />
             <div className="card-body">
@@ -78,7 +84,9 @@ const SubFolderDisplay = () => {
           </div>
         </div>
       </div>
-      {showModal && <EventModal onClose={handleCloseModal} mainFolderId={mainFolderId} />}
+      {showModal && (
+        <FolderOptionsModal show={showModal} handleClose={handleCloseModal} />
+      )}
     </>
   );
 };
