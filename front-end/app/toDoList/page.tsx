@@ -52,7 +52,7 @@ const BootstrapLayout = () => {
           className="col-md-7"
           style={{
             backgroundImage: "linear-gradient(to right, #EBA0E3, #E8A696)",
-            height:'80%'
+            height:'120%'
           }}
         >
           <div className="card">
@@ -114,6 +114,7 @@ const BootstrapLayout = () => {
               style={{
                 backgroundImage: "linear-gradient(to right, #E8A696, #EEBCAE)",
                 width: "120%",
+                height: "106%"
               }}
             >
               <div className="event-card ">

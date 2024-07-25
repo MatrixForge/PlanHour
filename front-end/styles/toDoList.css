@@ -109,9 +109,13 @@
 
 /* Center the DayPicker in its column div */
 .day-picker-container {
-  
-  height: 130%; /* Make sure it takes full height of the parent */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically if needed */
+  width: 100%; /* Ensure full width */
+  background: linear-gradient(to right, #E8A696, #EEBCAE); /* Adjust background as needed */
 }
+
 
 /* Custom styles for DayPicker */
 .day-picker {
@@ -228,6 +232,7 @@
     z-index: 1;
   }
   
+  
   .fontCustom {
     font-family: 'Sharp Sans';
     font-weight: 600;
@@ -237,16 +242,23 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 350px;
+    width: 400px; /* Adjust width as needed */
     height: 300px; /* Adjust height as needed */
-    background-color: #fff;
+    background-color: #fff; /* Background color for card */
     overflow-y: auto; /* Enable vertical scrolling */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    margin-left: 50px;
-    margin-bottom: 25px;
+    margin: 20px 0; /* Margin adjustments */
   }
+  
+  .day-picker-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically if needed */
+    width: 100%; /* Ensure full width */
+    background: linear-gradient(to right, #E8A696, #EEBCAE); /* Adjust background as needed */
+  }
+  
   
   .event-item {
     display: flex;
@@ -281,3 +293,29 @@
     box-shadow: -5px 0px 15px -5px rgba(59, 58, 58, 0.1);
   }
 
+
+  .col-md-12 {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    background-color: linear-gradient(to right, #E8A696, #EEBCAE); /* Adjust background as needed */
+    width: 100%; /* Ensure it spans the full width */
+    padding: 0; /* Remove padding if any */
+    margin: 0; /* Remove margin if any */
+  }
+  
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    width: 100%; /* Ensure it spans the full width */
+    margin: 0; /* Remove margin if any */
+  }
+  
+  
+  .col-md-5 {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center column items horizontally */
+    padding: 0;
+  }
+  

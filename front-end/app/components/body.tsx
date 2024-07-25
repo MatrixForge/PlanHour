@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '../../styles/custom-colors.module.css';
-import cardStyles from '../../styles/card.module.css';
-import '../../styles/body.module.css'
+import styles from '@styles/custom-colors.module.css';
+import cardStyles from '@styles/card.module.css';
+import '@styles/body.module.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Body = ({ loggedIn }) => {

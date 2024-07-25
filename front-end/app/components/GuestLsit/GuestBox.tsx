@@ -1,5 +1,5 @@
 import React from 'react';
-import styles1 from '../../../styles/guestBox.module.css'; 
+import styles1 from '@styles/guestBox.module.css'; 
 
 interface GuestBoxProps {
   guest: {

@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../../styles/FolderDisplay.css';
 import EventModal from '../components/EventModal'; 
+import FolderOptionsModal from '../components/eventify/FolderOptionsModal';
 import Link from 'next/link';
 import { useFolderStore } from '../../store/folderStore';
 
@@ -12,16 +13,16 @@ interface Folder {
   title: string;
   createdAt: string;
 }
+
 const FolderDisplay: React.FC = () => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [showOptionsModal, setShowOptionsModal] = useState(false);
   const { folderCreated, setFolderCreated } = useFolderStore();
 
   useEffect(() => {
-    // Fetch folders when component mounts
     fetchFolders();
     setFolderCreated(false);
-
   }, [folderCreated]);
 
   const fetchFolders = async () => {
@@ -34,20 +35,21 @@ const FolderDisplay: React.FC = () => {
       setFolders(response.data);
     } catch (error) {
       console.error('Error fetching folders:', error);
-      // Handle error as needed
     }
   };
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+  const handleFolderClick = () => setShowOptionsModal(true);
+  const handleOptionsModalClose = () => setShowOptionsModal(false);
+
   return (
     <>
       <h1>Events</h1>
       <div className="folder">
-      {folders.map((folder) => (
-        <Link href={`/subEvent?mainFolderId=${encodeURIComponent(folder._id)}&mainFolderTitle=${encodeURIComponent(folder.title)}`}>
-          <div key={folder._id} className="card" style={{ width: '14rem', height: '16rem', justifyContent: 'center', alignItems: 'center' }}>
+        {folders.map((folder) => (
+          <div key={folder._id} className="card" style={{ width: '14rem', height: '16rem', justifyContent: 'center', alignItems: 'center' }} onClick={handleFolderClick}>
             <i className="bi bi-three-dots-vertical three-dots-icon"></i>
             <img src="/folder.png" className="card-img-top cardImg" alt="Card image cap" />
             <div className="card-body">
@@ -57,10 +59,7 @@ const FolderDisplay: React.FC = () => {
                 <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
-
           </div>
-        </Link>
-
         ))}
         <div className="card" style={{ width: '14rem', height: '16rem', justifyContent: 'center', alignItems: 'center' }}>
           <div className="grey-overlay">
@@ -80,6 +79,7 @@ const FolderDisplay: React.FC = () => {
         </div>
       </div>
       {showModal && <EventModal onClose={handleCloseModal} />}
+      <FolderOptionsModal show={showOptionsModal} handleClose={handleOptionsModalClose} />
     </>
   );
 };
