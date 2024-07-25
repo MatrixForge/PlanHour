@@ -1,12 +1,12 @@
 "use client";
-import React, { useState } from 'react';
-import axios from 'axios';
-import '../../styles/signin.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import Link from 'next/link';
-import useAuthStore from '../../store/authStore';
-import { useRouter } from 'next/navigation';
-import ForgotPasswordPopup from '../components/ForgotPasswordPopup';
+import React, { useState } from "react";
+import axios from "axios";
+import "../../styles/signin.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import Link from "next/link";
+import useAuthStore from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import ForgotPasswordPopup from "../components/ForgotPasswordPopup";
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,10 +26,7 @@ const Login: React.FC = () => {
   };
 
   const toggleRememberMe = () => {
-    setRememberMe((prevRememberMe) => {
-      const newRememberMe = !prevRememberMe;
-      return newRememberMe;
-    });
+    setRememberMe((prevRememberMe) => !prevRememberMe);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -37,25 +34,27 @@ const Login: React.FC = () => {
 
     try {
       const response = await fetch("http://localhost:5000/api/users/login", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, rememberMe })
+        body: JSON.stringify({ email, password, rememberMe }),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Server responded with status ${response.status}: ${errorText}`);
+        throw new Error(
+          `Server responded with status ${response.status}: ${errorText}`
+        );
       }
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.token) {
         if (rememberMe) {
-          localStorage.setItem('token', data.token);
+          localStorage.setItem("token", data.token);
         } else {
-          sessionStorage.setItem('token', data.token);
+          sessionStorage.setItem("token", data.token);
         }
         setUser(data);
         router.push("/");
@@ -63,7 +62,7 @@ const Login: React.FC = () => {
         console.error("Login failed:", data.message);
       }
     } catch (error: any) {
-      console.error("Login failed:", error.response?.data?.message || error.message);
+      console.error("Login failed:", error.message);
     }
   };
 
@@ -82,6 +81,7 @@ const Login: React.FC = () => {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
             <div className="form-group unique-form-group">
@@ -93,9 +93,12 @@ const Login: React.FC = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
                 <i
-                  className={`bi ${showPassword ? "bi-eye-fill" : "bi-eye-slash"} custom-icon`}
+                  className={`bi ${
+                    showPassword ? "bi-eye-fill" : "bi-eye-slash"
+                  } custom-icon`}
                   onClick={togglePasswordVisibility}
                 ></i>
               </div>
@@ -117,7 +120,10 @@ const Login: React.FC = () => {
                 Forgot Password?
               </p>
             </div>
-            <button type="submit" className="btn btn-primary unique-btn-primary rounded-pill">
+            <button
+              type="submit"
+              className="btn btn-primary unique-btn-primary rounded-pill"
+            >
               Login
             </button>
           </form>

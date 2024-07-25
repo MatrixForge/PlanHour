@@ -1,13 +1,23 @@
 .heroSection {
   background-image: url("/add-event/hero-section-bg.png");
   background-repeat: no-repeat;
-  background-position: left;
+  background-position: center;
 }
 
 .responsiveImage {
   width: 100px;
   height: 100px;
 }
+.imagesStyling {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.imagesStyling:hover {
+  background-color: transparent !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
 
 @media (max-width: 768px) {
   .responsiveImage {

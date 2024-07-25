@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import '../../styles/FolderDisplay.css';
-import EventModal from '../components/EventModal';
-import Link from 'next/link';
+import '@styles/FolderDisplay.css';
+import EventModal from '../components/EventModal'; 
+import FolderOptionsModal from '../components/eventify/FolderOptionsModal';
 import { useFolderStore } from '../../store/folderStore';
 
 interface Folder {
@@ -15,11 +14,12 @@ interface Folder {
 
 const FolderDisplay: React.FC = () => {
   const [folders, setFolders] = useState<Folder[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [showOptionsModal, setShowOptionsModal] = useState(false);
   const { folderCreated, setFolderCreated } = useFolderStore();
+  const { setFolderId } = useFolderStore();
 
   useEffect(() => {
-    // Fetch folders when component mounts
     fetchFolders();
     setFolderCreated(false);
   }, [folderCreated]);
@@ -34,50 +34,85 @@ const FolderDisplay: React.FC = () => {
       setFolders(response.data);
     } catch (error) {
       console.error('Error fetching folders:', error);
-      // Handle error as needed
     }
   };
 
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleShowEventModal = () => setShowEventModal(true);
+  const handleCloseEventModal = () => setShowEventModal(false);
+
+  const handleShowOptionsModal = (folderId: string) => {
+    setFolderId(folderId);
+    setShowOptionsModal(true);
+  };
+  const handleCloseOptionsModal = () => setShowOptionsModal(false);
 
   return (
     <>
       <h1>Events</h1>
       <div className="folder">
         {folders.map((folder) => (
-          <Link href={`/subEvent?mainFolderId=${encodeURIComponent(folder._id)}&mainFolderTitle=${encodeURIComponent(folder.title)}`} key={folder._id}>
-            <div className="card" style={{ width: '14rem', height: '16rem', justifyContent: 'center', alignItems: 'center' }}>
-              <i className="bi bi-three-dots-vertical three-dots-icon"></i>
-              <img src="/folder.png" className="card-img-top cardImg" alt="Card image cap" />
-              <div className="card-body">
-                <p className="card-text">{folder.title}</p>
-                <div className="card-footer">
-                  <img src="/clock.png" className="icon-img" alt="Timer icon" />
-                  <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
-                </div>
+          <div
+            key={folder._id}
+            className="card"
+            style={{
+              width: "14rem",
+              height: "16rem",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handleShowOptionsModal(folder._id)}
+          >
+            <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+            <img
+              src="/folder.png"
+              className="card-img-top cardImg"
+              alt="Card image cap"
+            />
+            <div className="card-body">
+              <p className="card-text">{folder.title}</p>
+              <div className="card-footer">
+                <img src="/clock.png" className="icon-img" alt="Timer icon" />
+                <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
-          </Link>
+          </div>
         ))}
-        <div className="card" style={{ width: '14rem', height: '16rem', justifyContent: 'center', alignItems: 'center' }}>
+        <div
+          className="card"
+          style={{
+            width: "14rem",
+            height: "16rem",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <div className="grey-overlay">
-            <a href="#" onClick={handleShowModal}>
+            <a href="#" onClick={handleShowEventModal}>
               <img src="/addbtn.png" className="add-btn" alt="Add button" />
             </a>
           </div>
           <i className="bi bi-three-dots-vertical three-dots-icon"></i>
-          <img src="/folder.png" className="card-img-top cardImg" alt="Card image cap" />
+          <img
+            src="/folder.png"
+            className="card-img-top cardImg"
+            alt="Card image cap"
+          />
           <div className="card-body">
-            <p className="card-text" style={{ color: '#F6EDE4' }}>Another Event</p>
+            <p className="card-text" style={{ color: "#F6EDE4" }}>
+              Another Event
+            </p>
             <div className="card-footer">
               <img src="/clock.png" className="icon-img" alt="Timer icon" />
-              <span style={{ color: '#F6EDE4' }}>02/01/2023</span>
+              <span style={{ color: "#F6EDE4" }}>02/01/2023</span>
             </div>
           </div>
         </div>
       </div>
-      {showModal && <EventModal onClose={handleCloseModal} />}
+      {showEventModal && <EventModal onClose={handleCloseEventModal} />}
+      <FolderOptionsModal
+        show={showOptionsModal}
+        handleClose={handleCloseOptionsModal}
+      />
     </>
   );
 };

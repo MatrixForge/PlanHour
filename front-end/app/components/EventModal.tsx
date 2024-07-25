@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { useFolderStore } from '../../store/folderStore'; // Import the Zustand store
+import { useFolderStore } from '@/store/folderStore'; // Import the Zustand store
 import '../../styles/eventModal.css';
 
 interface EventModalProps {
@@ -11,7 +11,7 @@ interface EventModalProps {
 
 const EventModal: React.FC<EventModalProps> = ({ onClose, mainFolderId }) => {
   const backgroundImgSrc = '/Popup.png';
-
+  const { folderId } = useFolderStore();
   const [formData, setFormData] = useState({
     title: '',
     eventType: '',
@@ -34,8 +34,8 @@ const EventModal: React.FC<EventModalProps> = ({ onClose, mainFolderId }) => {
 
     // Determine the URL based on the presence of mainFolderId
     const url = mainFolderId
-      ? `http://localhost:5000/api/events/folders/${mainFolderId}/subfolder`
-      : 'http://localhost:5000/api/events/folders';
+      ? `http://localhost:5000/api/events/folders/${folderId}/subfolder`
+      : "http://localhost:5000/api/events/folders";
 
     try {
       const response = await axios.post(url, {
@@ -44,6 +44,7 @@ const EventModal: React.FC<EventModalProps> = ({ onClose, mainFolderId }) => {
         date,
         noOfGuests,
         description,
+        
       }, {
         headers: {
           'Authorization': `Bearer ${token}`

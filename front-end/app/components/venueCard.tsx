@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import styles1 from '../../styles/venueCard.module.css';
+import styles1 from '@styles/venueCard.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const VenueCard = ({ venue }) => {

@@ -38,7 +38,7 @@ exports.getAllFolders = async (req, res) => {
 
 exports.addSubFolder=async (req, res) => {
   const { mainFolderId } = req.params;
-  const { title, eventType, date, noOfGuests, description, createdBy } = req.body;
+  const { title, eventType, date, noOfGuests, description, createdBy, vendors } = req.body;
 
   console.log("bitch")
 
@@ -50,7 +50,8 @@ exports.addSubFolder=async (req, res) => {
       date,
       noOfGuests,
       description,
-      createdBy: req.user.id
+      createdBy: req.user.id,
+      vendors:[]
     });
     await subfolder.save();
 

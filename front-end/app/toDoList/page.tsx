@@ -52,14 +52,14 @@ const BootstrapLayout = () => {
           className="col-md-7"
           style={{
             backgroundImage: "linear-gradient(to right, #EBA0E3, #E8A696)",
-            height:'80%'
+            height:'120%'
           }}
         >
           <div className="card">
-            <div className="card-body">
               <div className="card-header" style={{ borderBottom: "none" }}>
                 To-do <p> (03)</p>
               </div>
+            <div className="card-body">
               <ol className="list-group list-group-numbered">
                 {todos.map((todo) => (
                   <li
@@ -81,13 +81,6 @@ const BootstrapLayout = () => {
                 ))}
               </ol>
             </div>
-            <div
-              className="card-footer"
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                borderTop: "none",
-              }}
-            ></div>
           </div>
         </div>
 
@@ -114,6 +107,7 @@ const BootstrapLayout = () => {
               style={{
                 backgroundImage: "linear-gradient(to right, #E8A696, #EEBCAE)",
                 width: "120%",
+                height: "106%"
               }}
             >
               <div className="event-card ">
