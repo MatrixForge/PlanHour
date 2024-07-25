@@ -1,21 +1,22 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomNavbar from '../components/NavBar';
 import Footer from '../components/footer';
 import GuestBox from '../components/GuestLsit/GuestBox';
 import styles from '../../styles/custom-colors.module.css'; 
 import styles1 from '../../styles/guestList.module.css'; 
 import Link from 'next/link';
+import Papa from 'papaparse';
 
 const GuestListPage = () => {
     const [checkedGuests, setCheckedGuests] = useState<{ [key: string]: boolean }>({});
     const [headerChecked, setHeaderChecked] = useState(false);
+    const [guests, setGuests] = useState<Array<{ name: string; email: string; number: string }>>([]);
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, checked } = event.target;
 
         if (id === 'header-checkbox') {
-            // Toggle all checkboxes based on header checkbox state
             setHeaderChecked(checked);
             setCheckedGuests((prev) => {
                 const newCheckedGuests = Object.keys(prev).reduce((acc, key) => {
@@ -25,7 +26,6 @@ const GuestListPage = () => {
                 return newCheckedGuests;
             });
         } else {
-            // Update individual checkbox state
             setCheckedGuests((prev) => ({
                 ...prev,
                 [id]: checked
@@ -33,25 +33,29 @@ const GuestListPage = () => {
         }
     };
 
-    const guests = [
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'John Doe', email: 'john@example.com', number: '123-456-7890' },
-        { name: 'Jane Smith', email: 'jane@example.com', number: '987-654-3210' }
-        // Add more guests as needed
-    ];
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            Papa.parse(file, {
+                header: true,
+                complete: (results) => {
+                    const guestsData = results.data as Array<{ name: string; email: string; number: string }>;
+                    setGuests(guestsData);
+                    localStorage.setItem('guests', JSON.stringify(guestsData));
+                },
+                skipEmptyLines: true
+            });
+        }
+    };
 
-    // Initialize checkedGuests state to ensure all checkboxes reflect the header checkbox state
-    React.useEffect(() => {
+    useEffect(() => {
+        const savedGuests = localStorage.getItem('guests');
+        if (savedGuests) {
+            setGuests(JSON.parse(savedGuests));
+        }
+    }, []);
+
+    useEffect(() => {
         const initialCheckedState = guests.reduce((acc, _, index) => {
             acc[`checkbox-${index}`] = headerChecked;
             return acc;
@@ -72,10 +76,13 @@ const GuestListPage = () => {
                             <div className={styles1.guestListText}>Guest List</div>
                             <input type="text" className={`form-control ${styles1.searchBar}`} placeholder="Search..." />
                             <div className={styles1.buttons}>
-                                <Link className={`btn btn-light mx-2 rounded-pill custom d-flex flex-row justify-content-center align-items-center ${styles.customBrown} ${styles1.fontCustom}`} href="/">
+                                <button 
+                                    className={`btn btn-light mx-2 rounded-pill custom d-flex flex-row justify-content-center align-items-center ${styles.customBrown} ${styles1.fontCustom}`}
+                                    onClick={() => document.getElementById('file-input')?.click()}
+                                >
                                     <i className={`bi bi-cloud-upload-fill ${styles1.icon}`}></i>
                                     Import
-                                </Link>
+                                </button>
                                 <Link className={`btn btn-light mx-2 rounded-pill custom d-flex flex-row justify-content-center align-items-center ${styles.customBrown} ${styles1.fontCustom}`} href="/">
                                     <i className={`bi bi-send-fill ${styles1.icon}`}></i>
                                     Send
@@ -114,6 +121,13 @@ const GuestListPage = () => {
                     </div>
                 </div>
             </div>
+            <input
+                type="file"
+                id="file-input"
+                style={{ display: 'none' }}
+                accept=".csv"
+                onChange={handleFileUpload}
+            />
             <Footer />
         </div>
     );

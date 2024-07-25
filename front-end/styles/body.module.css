@@ -43,16 +43,16 @@
     top: 50%;
     left: 10px;
     transform: translateY(-50%);
-    color: #000 !important; /* Make sure the icon color is black */
     font-size: 1.2rem; /* Adjust icon size as needed */
   }
   
   .formControl {
     padding-left: 40px; /* Adjust padding to accommodate the icon */
-    width: 100%; /* Ensure the input field takes full width of its container */
+    width: 100%; 
+    border: solid 2px black !important;/* Ensure the input field takes full width of its container */
   }
   
-  .icon-class
+  .icon
   {
     color: #000 ;
   }
