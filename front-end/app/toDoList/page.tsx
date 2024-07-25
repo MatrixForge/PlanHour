@@ -56,10 +56,10 @@ const BootstrapLayout = () => {
           }}
         >
           <div className="card">
-            <div className="card-body">
               <div className="card-header" style={{ borderBottom: "none" }}>
                 To-do <p> (03)</p>
               </div>
+            <div className="card-body">
               <ol className="list-group list-group-numbered">
                 {todos.map((todo) => (
                   <li
@@ -81,13 +81,6 @@ const BootstrapLayout = () => {
                 ))}
               </ol>
             </div>
-            <div
-              className="card-footer"
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                borderTop: "none",
-              }}
-            ></div>
           </div>
         </div>
 
