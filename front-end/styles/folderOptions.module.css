@@ -55,11 +55,12 @@
 }
 
 .optionsBackground {
-    width: 80%;
+    width: 80%; /* Ensure it takes the full width of the parent */
     height: 80%;
     background-color: #fff;
     border-radius: 30px;
     padding: 20px 30px;
+    box-sizing: border-box; /* Include padding in width and height calculation */
 }
 
 .optionsHeader {
@@ -78,6 +79,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%; /* Ensure buttons take the full width of the parent */
     padding: 10px 20px;
     border: none;
     background-color: #ffffff; /* Adjust button background color as needed */
@@ -108,5 +110,5 @@
 .optionsIcon {
     width: 30px; /* Adjust the size as needed */
     height: 30px; /* Adjust the size as needed */
-    margin-Right: 10px;
+    margin-right: 10px;
 }

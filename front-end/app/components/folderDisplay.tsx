@@ -14,7 +14,8 @@ interface Folder {
 
 const FolderDisplay: React.FC = () => {
   const [folders, setFolders] = useState<Folder[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [showOptionsModal, setShowOptionsModal] = useState(false);
   const { folderCreated, setFolderCreated } = useFolderStore();
   const { setFolderId } = useFolderStore();
 
@@ -36,19 +37,14 @@ const FolderDisplay: React.FC = () => {
     }
   };
 
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = (e) => {
-    if (e.target.classList.contains('popup')) {
-      return;
-    }
-    setShowModal(false);
-  };
+  const handleShowEventModal = () => setShowEventModal(true);
+  const handleCloseEventModal = () => setShowEventModal(false);
 
-  const handleFolderClick = (folderId: string) => {
+  const handleShowOptionsModal = (folderId: string) => {
     setFolderId(folderId);
-    setShowModal(true);
+    setShowOptionsModal(true);
   };
-  const handleOptionsModalClose = () => setShowOptionsModal(false);
+  const handleCloseOptionsModal = () => setShowOptionsModal(false);
 
   return (
     <>
@@ -64,7 +60,7 @@ const FolderDisplay: React.FC = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onClick={() => handleFolderClick(folder._id)}
+            onClick={() => handleShowOptionsModal(folder._id)}
           >
             <i className="bi bi-three-dots-vertical three-dots-icon"></i>
             <img
@@ -91,7 +87,7 @@ const FolderDisplay: React.FC = () => {
           }}
         >
           <div className="grey-overlay">
-            <a href="#" onClick={handleFolderClick}>
+            <a href="#" onClick={handleShowEventModal}>
               <img src="/addbtn.png" className="add-btn" alt="Add button" />
             </a>
           </div>
@@ -112,10 +108,10 @@ const FolderDisplay: React.FC = () => {
           </div>
         </div>
       </div>
-      {showModal && <EventModal onClose={handleCloseModal} />}
+      {showEventModal && <EventModal onClose={handleCloseEventModal} />}
       <FolderOptionsModal
         show={showOptionsModal}
-        handleClose={handleOptionsModalClose}
+        handleClose={handleCloseOptionsModal}
       />
     </>
   );
