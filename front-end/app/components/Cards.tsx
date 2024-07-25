@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from '../../styles/custom-colors.module.css'; 
-import styles1 from '../../styles/navbar.module.css'; 
+import styles from '@styles/custom-colors.module.css'; 
+import styles1 from '@styles/navbar.module.css'; 
 import Link from 'next/link';
 
 const Cards = () => {

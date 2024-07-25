@@ -5,6 +5,9 @@ import ResponsivePagination from "react-responsive-pagination";
 import styles from "@styles/addEvent.module.css";
 import Svg from "./Svg";
 import useVenueStore from "@/store/venueStore";
+import axios from "axios";
+import { useFolderStore } from "@/store/folderStore";
+
 
 const RestaurantList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,9 +24,43 @@ const RestaurantList: React.FC = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredRestaurants.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredRestaurants.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const totalPages = Math.ceil(filteredRestaurants.length / itemsPerPage);
 
+
+  const addPlanToFolder = async (vendorId: string) => {
+    const { folderId, subFolderId } = useFolderStore.getState();
+
+    try {
+      if(folderId && subFolderId){
+        const response = await axios.patch(
+          `http://localhost:5000/api/plans/addVendorToSubFolder/${subFolderId}/${vendorId}`
+          ,{
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        console.log("Saved successfully:", response.data);
+      }else if(folderId && !subFolderId){
+        const response = await axios.patch(
+          `http://localhost:5000/api/plans/addVendorToFolder/${folderId}/${vendorId}`
+          // {
+          //   headers: {
+          //     Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          //   },
+          // }
+        );
+        console.log("Saved successfully:", response.data);
+      }
+      
+    } catch (error) {
+      console.error("Error saving to database:", error);
+    }
+  };
   return (
     <div className="col-md-9 p-3 pt-0">
       <div className="d-flex justify-content-between align-items-center my-3">
@@ -64,25 +101,23 @@ const RestaurantList: React.FC = () => {
 
                     <span
                       className="position-absolute top-2 end-0 me-5 mt-2"
-                      onClick={() => {
-                        console.log("clicked...!");
-                      }}
+                      onClick={()=>addPlanToFolder(restaurant._id)}
                     >
                       {<Svg name="plus" />}
                     </span>
                     <div className="row">
                       <div className="col-md-12">
-                          <span
-                            className={`card-text ${styles.services_fontsize}`}
-                          >
-                            {<Svg name="star" />}
-                            {restaurant.rating}
-                            {<Svg name="staff" />}
-                            {restaurant.services[0]}
-                            {restaurant.services[1]
-                              ? `, ${restaurant.services[1]}`
-                              : ""}
-                          </span>
+                        <span
+                          className={`card-text ${styles.services_fontsize}`}
+                        >
+                          {<Svg name="star" />}
+                          {restaurant.rating}
+                          {<Svg name="staff" />}
+                          {restaurant.services[0]}
+                          {restaurant.services[1]
+                            ? `, ${restaurant.services[1]}`
+                            : ""}
+                        </span>
                       </div>
                     </div>
                     <div className="row mt-3">
