@@ -3,7 +3,7 @@ import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@styles/FolderDisplay.css';
 import EventModal from '../components/EventModal'; 
-import FolderOptionsModal from '../components/eventify/FolderOptionsModal';
+import FolderOptionsModal from '../components/eventify/FolderOptionsModal1';
 import { useFolderStore } from '../../store/folderStore';
 
 interface Folder {
