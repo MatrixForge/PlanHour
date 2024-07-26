@@ -5,7 +5,7 @@ import ResponsivePagination from "react-responsive-pagination";
 import styles from "@styles/addEvent.module.css";
 import Svg from "./Svg";
 import useVenueStore from "@/store/venueStore";
-import axios from "axios";
+import axios from "@/lib/axios"; // Importing the axios instance
 import { useFolderStore } from "@/store/folderStore";
 
 
@@ -13,7 +13,6 @@ const RestaurantList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const { filteredRestaurants, fetchRestaurants } = useVenueStore();
-
   useEffect(() => {
     fetchRestaurants();
   }, [fetchRestaurants]);
@@ -33,32 +32,23 @@ const RestaurantList: React.FC = () => {
 
   const addPlanToFolder = async (vendorId: string) => {
     const { folderId, subFolderId } = useFolderStore.getState();
-
     try {
-      if(folderId && subFolderId){
-        const response = await axios.patch(
-          `http://localhost:5000/api/plans/addVendorToSubFolder/${subFolderId}/${vendorId}`
-          ,{
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
+      let response;
+      if (folderId && subFolderId) {
+        response = await axios.patch(
+          `/plans/addVendorToSubFolder/${subFolderId}/${vendorId}`
         );
-        console.log("Saved successfully:", response.data);
-      }else if(folderId && !subFolderId){
-        const response = await axios.patch(
-          `http://localhost:5000/api/plans/addVendorToFolder/${folderId}/${vendorId}`
-          // {
-          //   headers: {
-          //     Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          //   },
-          // }
+      } else if (folderId && !subFolderId) {
+        response = await axios.patch(
+          `/plans/addVendorToFolder/${folderId}/${vendorId}`
         );
+      }
+
+      if (response) {
         console.log("Saved successfully:", response.data);
       }
-      
-    } catch (error) {
-      console.error("Error saving to database:", error);
+    } catch (error:any) {
+        console.error("Error saving to database:", error.response?.data);
     }
   };
   return (

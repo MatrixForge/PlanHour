@@ -29,11 +29,12 @@ const SubFolderDisplay = () => {
 
 
   const { folderCreated, setFolderCreated } = useFolderStore();
-  const { folderId ,folderTitle,setFolderId } = useFolderStore();
+  const { folderId ,folderTitle,setFolderId, setSubFolderId } = useFolderStore();
 
 
   const handleShowModal = (folder) => {
     setSelectedFolder(folder);
+    setSubFolderId(folder._id);
     setShowModal(true);
   };
   const handleCloseModal = () => setShowModal(false);
@@ -46,7 +47,7 @@ const SubFolderDisplay = () => {
 
   const fetchSubfolders = async (id:any) => {
     try {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                const response = await axios.get(`http://localhost:5000/api/events/folders/${id}/subfolders`, {
+      const response = await axios.get(`http://localhost:5000/api/events/folders/${id}/subfolders`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         },

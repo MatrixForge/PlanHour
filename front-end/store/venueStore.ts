@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import axios from 'axios';
+import axios from "@/lib/axios";
 
 interface Venue {
   id: number;
@@ -41,8 +41,10 @@ const useVenueStore = create<VenueStore>((set, get) => ({
   staffFilter: [],
   fetchRestaurants: async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/plans/getVendors");
-      set({ restaurants: response.data, filteredRestaurants: response.data });
+      var response = await axios.get("http://localhost:5000/api/plans/getVendors");
+      if (response) {
+         set({ restaurants: response.data, filteredRestaurants: response.data });
+      }
     } catch (error) {
       console.error("Error fetching restaurants:", error);
     }
