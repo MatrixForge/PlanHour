@@ -27,6 +27,7 @@ const Body = ({ loggedIn }) => {
                 position: 'relative',
                 display: 'flex',
                 alignItems: 'flex-end',
+                backgroundColor: '#fff'
             }}
         >
             {!loggedIn && (
