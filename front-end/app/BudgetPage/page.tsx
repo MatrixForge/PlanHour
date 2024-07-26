@@ -12,6 +12,11 @@ const BudgetPage = () => {
   const budgetData = {
     venue: [
       { name: 'Avalon', price: 250 },
+      { name: 'Avalon', price: 250 },
+      { name: 'Avalon', price: 250 },
+      { name: 'Avalon', price: 250 },
+      { name: 'Avalon', price: 250 },
+      { name: 'Avalon', price: 250 },
       { name: 'Rose Garden', price: 300 }
     ],
     restaurants: [
