@@ -6,7 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import Footer from "../components/footer";
-import "../../styles/toDoList.css"; // Adjust the path as necessary
+import "./toDoList.css"; // Adjust the path as necessary
 
 const BootstrapLayout = () => {
   const [todos, setTodos] = useState([
@@ -20,7 +20,6 @@ const BootstrapLayout = () => {
     { id: 2, text: "Cras justo odio", done: false },
     { id: 2, text: "Cras justo odio", done: false },
     { id: 2, text: "Cras justo odio", done: false },
-
   ]);
 
   const toggleDone = (id) => {
@@ -52,13 +51,13 @@ const BootstrapLayout = () => {
           className="col-md-7"
           style={{
             backgroundImage: "linear-gradient(to right, #EBA0E3, #E8A696)",
-            height:'120%'
+            height: "120%",
           }}
         >
           <div className="card">
-              <div className="card-header" style={{ borderBottom: "none" }}>
-                To-do <p> (03)</p>
-              </div>
+            <div className="card-header" style={{ borderBottom: "none" }}>
+              To-do <p> (03)</p>
+            </div>
             <div className="card-body">
               <ol className="list-group list-group-numbered">
                 {todos.map((todo) => (
@@ -107,7 +106,7 @@ const BootstrapLayout = () => {
               style={{
                 backgroundImage: "linear-gradient(to right, #E8A696, #EEBCAE)",
                 width: "120%",
-                height: "106%"
+                height: "106%",
               }}
             >
               <div className="event-card ">
