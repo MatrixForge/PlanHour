@@ -6,10 +6,9 @@ import '../../styles/eventModal.css';
 
 interface EventModalProps {
   onClose: () => void;
-  mainFolderId?: string; // Optional prop for mainFolderId
 }
 
-const EventModal: React.FC<EventModalProps> = ({ onClose, mainFolderId }) => {
+const EventModal: React.FC<EventModalProps> = ({ onClose}) => {
   const backgroundImgSrc = '/Popup.png';
   const { folderId } = useFolderStore();
   const [formData, setFormData] = useState({
@@ -33,10 +32,11 @@ const EventModal: React.FC<EventModalProps> = ({ onClose, mainFolderId }) => {
     const token = sessionStorage.getItem('token'); // Assuming the token is stored in sessionStorage
 
     // Determine the URL based on the presence of mainFolderId
-    const url = mainFolderId
+    const url = folderId
       ? `http://localhost:5000/api/events/folders/${folderId}/subfolder`
-      : "http://localhost:5000/api/events/folders";
+      : `http://localhost:5000/api/events/folders`;
 
+      console.log ("yss",url);
     try {
       const response = await axios.post(url, {
         title,

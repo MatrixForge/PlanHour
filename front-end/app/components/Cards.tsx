@@ -1,18 +1,19 @@
-import React from 'react';
+// components/Cards.tsx
+import React, { forwardRef } from 'react';
 import styles from '@styles/custom-colors.module.css'; 
 import styles1 from '@styles/navbar.module.css'; 
 import Link from 'next/link';
 
-const Cards = () => {
+const Cards = forwardRef<HTMLDivElement>((_, ref) => {
     return (
-        <div className={`bg-brown p-4  ${styles.customBrown}`}>
+        <div ref={ref} className={`bg-brown p-4 ${styles.customBrown}`}>
             <div className="d-flex justify-content-center">
                 {/* Card 1 */}
                 <div className="card rounded-pill mx-3 shadow-lg" style={{ width: '18rem' }}>
                     <Link href='/eventify'>
-                    <button className={styles1.customButton}>
-                        <img src="/1.png" className="card-img-top" alt="Card 1" />
-                    </button>
+                        <button className={styles1.customButton}>
+                            <img src="/1.png" className="card-img-top" alt="Card 1" />
+                        </button>
                     </Link>
                 </div>
 
@@ -32,17 +33,9 @@ const Cards = () => {
                 <div className="card rounded-pill mx-3 shadow-lg" style={{ width: '18rem' }}>
                     <img src="/4.png" className="card-img-top" alt="Card 4" />
                 </div>
-
-                {/* <div className={cardStyles.semicircleContainer}>
-                    a
-                    <div className={cardStyles.semicircle}>b</div>
-                        <div className={cardStyles.content}>
-                            a
-                        </div>
-                </div> */}
             </div>
         </div>
     );
-};
+});
 
 export default Cards;

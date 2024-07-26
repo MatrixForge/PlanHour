@@ -1,0 +1,15 @@
+.sidebar {
+  width: 250px;
+  transition: transform 0.3s ease;
+  transform: translateX(100%);
+  top: 0;
+  right: 0;
+}
+
+.show {
+  transform: translateX(0);
+}
+
+.hide {
+  transform: translateX(100%);
+}

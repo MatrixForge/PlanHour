@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '@styles/signup.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
-import { ok } from 'assert';
+
 const Signup: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
@@ -15,6 +15,15 @@ const Signup: React.FC = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    useEffect(() => {
+        // Retrieve the email from session storage
+        const storedEmail = sessionStorage.getItem('signupEmail');
+        if (storedEmail) {
+            setEmail(storedEmail);
+            sessionStorage.removeItem('signupEmail'); // Clear it after use
+        }
+    }, []);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -67,18 +76,15 @@ const Signup: React.FC = () => {
                 { name, email, password },
                 config
             );
-             if (response.status === 201) {
-               setMessage("Registration successful!");
-               setError("");
-               setLoading(false);
-               router.push("/login");
-             } else {
-               setError("Registration failed. Please try again.");
-               setLoading(false);
-             }
-            // You can also save the user info to local storage or state here if needed
-            // localStorage.setItem('userInfo', JSON.stringify(data));
-
+            if (response.status === 201) {
+                setMessage("Registration successful!");
+                setError("");
+                setLoading(false);
+                router.push("/login");
+            } else {
+                setError("Registration failed. Please try again.");
+                setLoading(false);
+            }
         } catch (error: any) {
             setError(error.response && error.response.data.message
                 ? error.response.data.message

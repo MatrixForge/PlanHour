@@ -17,10 +17,11 @@ const FolderDisplay: React.FC = () => {
   const [showEventModal, setShowEventModal] = useState(false);
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const { folderCreated, setFolderCreated } = useFolderStore();
-  const { setFolderId } = useFolderStore();
+  const { setFolderId , setFolderTitle } = useFolderStore();
 
   useEffect(() => {
     fetchFolders();
+    setFolderId(undefined);
     setFolderCreated(false);
   }, [folderCreated]);
 
@@ -40,8 +41,10 @@ const FolderDisplay: React.FC = () => {
   const handleShowEventModal = () => setShowEventModal(true);
   const handleCloseEventModal = () => setShowEventModal(false);
 
-  const handleShowOptionsModal = (folderId: string) => {
+  const handleShowOptionsModal = (folderId: string, folderTitle:string) => {
     setFolderId(folderId);
+    setFolderTitle(folderTitle);
+    console.log("folder id is",folderId);
     setShowOptionsModal(true);
   };
   const handleCloseOptionsModal = () => setShowOptionsModal(false);
@@ -60,7 +63,7 @@ const FolderDisplay: React.FC = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onClick={() => handleShowOptionsModal(folder._id)}
+            onClick={() => handleShowOptionsModal(folder._id , folder.title)}
           >
             <i className="bi bi-three-dots-vertical three-dots-icon"></i>
             <img

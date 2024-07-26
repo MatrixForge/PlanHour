@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '@styles/custom-colors.module.css';
 import cardStyles from '@styles/card.module.css';
-import '@styles/body.module.css'
+import '@styles/body.module.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useRouter } from 'next/navigation';
 
 const Body = ({ loggedIn }) => {
+    const [email, setEmail] = useState('');
+    const router = useRouter();
+
+    const handleSignUpClick = () => {
+        if (email) {
+            sessionStorage.setItem('signupEmail', email);
+            router.push('/signup');
+        }
+    };
+
     return (
         <div 
             className="w-100 d-flex justify-content-center"
@@ -20,9 +31,8 @@ const Body = ({ loggedIn }) => {
         >
             {!loggedIn && (
                 <div className={`d-flex flex-row mb-3 ${cardStyles.bottomBar}`}>
-                    
                     <div className={`inputContainer position-relative`}>
-                    <img
+                        <img
                             src="/emailsend.png" // Image from the public folder
                             alt="Send"
                             className={`position-absolute`}
@@ -33,6 +43,8 @@ const Body = ({ loggedIn }) => {
                             className={`form-control rounded-pill ps-5 ${cardStyles.inputField} ${cardStyles.customFont} ${cardStyles.noBottomBorder}`}
                             placeholder="Your Email"
                             style={{ width: '300px' }} // Adjust this value as needed
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
 
@@ -41,7 +53,7 @@ const Body = ({ loggedIn }) => {
                         style={{ 
                             minWidth: '100px',
                         }}
-                        href="#"
+                        onClick={handleSignUpClick}
                     >
                         Sign Up
                     </a>

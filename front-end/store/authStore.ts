@@ -13,6 +13,7 @@ interface AuthState {
   setUser: (user: User) => void;
   isLoggedIn: () => boolean;
   clearAuth: () => void;
+  logout: () => void; // Add the logout function to the interface
 }
 
 const useAuthStore = create<AuthState>(
@@ -22,6 +23,11 @@ const useAuthStore = create<AuthState>(
       setUser: (user) => set({ user }),
       isLoggedIn: () => !!(localStorage.getItem('token') || sessionStorage.getItem('token')),
       clearAuth: () => set({ user: null }),
+      logout: () => {
+        set({ user: null });
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+      },
     }),
     {
       name: 'auth-storage', // name of the item in storage

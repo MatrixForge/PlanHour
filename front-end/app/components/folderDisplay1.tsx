@@ -7,16 +7,30 @@ import { useSearchParams } from "next/navigation";
 import { useFolderStore } from '../../store/folderStore';
 import FolderOptionsModal from '../components/eventify/FolderOptionsModal1'; // Import the modal
 import '../../styles/FolderDisplay.css';
+import EventModal from '../components/EventModal'; 
+
+interface Folder {
+  _id: string;
+  title: string;
+  createdAt: string;
+}
+
 
 const SubFolderDisplay = () => {
   const [showModal, setShowModal] = useState(false);
-  const [subfolders, setSubfolders] = useState([]);
+  const [subfolders, setSubfolders] = useState<Folder[]>([]);
   const [selectedFolder, setSelectedFolder] = useState(null); // State to store selected folder
+  const [showEventModal, setShowEventModal] = useState(false);
 
-  const searchParams = useSearchParams();
-  const mainFolderId = searchParams.get("mainFolderId");
-  const mainFolderTitle = searchParams.get("mainFolderTitle");
+
+
+  const handleShowEventModal = () => setShowEventModal(true);
+  const handleCloseEventModal = () => setShowEventModal(false);
+
+
   const { folderCreated, setFolderCreated } = useFolderStore();
+  const { folderId ,folderTitle,setFolderId } = useFolderStore();
+
 
   const handleShowModal = (folder) => {
     setSelectedFolder(folder);
@@ -25,12 +39,12 @@ const SubFolderDisplay = () => {
   const handleCloseModal = () => setShowModal(false);
 
   useEffect(() => {
-    if (mainFolderId) {
-      fetchSubfolders(mainFolderId);
+    if (folderId) {
+      fetchSubfolders(folderId);
     }
-  }, [mainFolderId, folderCreated]);
+  }, [folderId, folderCreated]);
 
-  const fetchSubfolders = async (id) => {
+  const fetchSubfolders = async (id:any) => {
     try {
                                                                                                                                                                                                                                                                                                                                                                                                                                                 const response = await axios.get(`http://localhost:5000/api/events/folders/${id}/subfolders`, {
         headers: {
@@ -38,6 +52,9 @@ const SubFolderDisplay = () => {
         },
       });
       setSubfolders(response.data);
+      console.log("folder id is",folderId);
+
+      
     } catch (error) {
       console.error('Error fetching subfolders:', error);
     }
@@ -45,7 +62,7 @@ const SubFolderDisplay = () => {
 
   return (
     <>
-      <h1>Events{mainFolderTitle ? ` / ${mainFolderTitle}` : ''}</h1>
+      <h1>Events{folderTitle ? ` / ${folderTitle}` : ''}</h1>
       <div className="folder">
         {subfolders.map((folder) => (
           <div
@@ -68,7 +85,7 @@ const SubFolderDisplay = () => {
         ))}
         <div className="card" style={{ width: '14rem', height: '16rem', justifyContent: 'center', alignItems: 'center' }}>
           <div className="grey-overlay">
-            <a href="#" onClick={handleShowModal}>
+            <a href="#"  onClick={handleShowEventModal}>
               <img src="/addbtn.png" className="add-btn" alt="Add button" />
             </a>
           </div>
@@ -84,6 +101,7 @@ const SubFolderDisplay = () => {
           </div>
         </div>
       </div>
+      {showEventModal && <EventModal onClose={handleCloseEventModal} />}
       {showModal && (
         <FolderOptionsModal show={showModal} handleClose={handleCloseModal} />
       )}
