@@ -1,0 +1,99 @@
+.card {
+  display: flex;
+  flex-direction: row; /* Default direction: image on the left, content on the right */
+  width: 100%;
+  height: fit-content !important;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+  margin-bottom: 60px;
+}
+
+.imageContainer {
+  flex: 0 0 30%; /* Takes up 30% of the width */
+}
+
+.image {
+  width: 100%;
+  height: auto; /* Ensure the image scales correctly */
+  object-fit: cover; /* Ensures the image covers the container */
+}
+
+.contentContainer {
+  flex: 1; /* Takes up the remaining 70% of the width */
+  padding: 20px; /* Add padding if needed */
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between; /* Distributes space between the title and button */
+  align-items: center; /* Vertically centers the items */
+}
+
+.fontCustom {
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+
+.cardTitle {
+  font-size: x-large;
+}
+
+.addButton {
+  cursor: pointer; /* Makes the button look clickable */
+}
+
+.text1 {
+  margin: 5px 0px;
+}
+
+.infoContainer {
+  display: flex;
+  justify-content: space-between; /* Distributes space between contact info and price info */
+  align-items: center; /* Vertically centers the items */
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: row; /* Default direction: icons next to text */
+  align-items: center; /* Vertically centers the items */
+}
+
+.contactInfo > * {
+  margin-right: 10px; /* Space between icons and text */
+}
+
+.priceInfo {
+  text-align: right; /* Aligns text to the right */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column; /* Stack image on top and content below */
+  }
+
+  .imageContainer {
+    flex: 0 0 auto; /* Make the image container only as large as its content */
+    width: 100%; /* Ensure the image container takes full width */
+    height: auto; /* Allow height to adjust automatically */
+  }
+
+  .image {
+    width: 100%;
+    height: auto; /* Ensure image scales correctly */
+  }
+
+  .contentContainer {
+    flex: 1; /* Allow the content container to take full width */
+  }
+
+  .contactInfo {
+    flex-direction: column; /* Stack mail and phone vertically on smaller screens */
+    align-items: flex-start; /* Align items to the start (left) */
+    margin: 10px 0; /* Add space between contact info and price info */
+  }
+
+  .contactInfo > * {
+    margin-right: 0; /* Remove margin between icons and text */
+    margin-bottom: 5px; /* Add space between mail and phone */
+  }
+}
