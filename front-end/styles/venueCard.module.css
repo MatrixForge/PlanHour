@@ -1,60 +1,53 @@
 .fontCustom {
-    font-family: 'Montserrat'; 
-    font-weight:600;
-  }
+  font-family: "Montserrat";
+  font-weight: 600;
+}
 
-  .card{
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 180px;
-    height: fit-content;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
-  
-  }
+.card {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 200px;
+  height: fit-content;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+}
 
-  .topText{
-    padding-top: 10px;
-  }
+.topText {
+  padding-top: 10px;
+}
 
-  .priceText{
-    padding-left: 5px;
-    padding-bottom: 5px;
-    font-size: small;
-    color: gray;
-  }
+.priceText {
+  padding-left: 5px;
+  padding-bottom: 5px;
+  font-size: small;
+  color: gray;
+}
 
-  .checkbox {
-    -webkit-appearance: none; /* Remove default appearance */
-    width: 20px; /* Adjust width as needed */
-    height: 20px; /* Adjust height as needed */
-    border: 2px solid #ccc; /* Gray border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer;
-    margin-right: 8px; /* Adjust spacing */
-    position: relative; /* Ensure relative positioning */
-  }
-  
-  .checkbox:checked {
-    background-color: #fff; /* White background when checked */
-    border-color: #888; /* Gray border when checked */
-  }
-  
-  .checkbox:checked::after {
-    content: ''; /* Empty content for pseudo-element */
-    position: absolute; /* Position relative to checkbox */
-    top: 40%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, -50%) rotate(45deg); /* Center and rotate the checkmark */
-    width: 6px; /* Adjust size of the checkmark */
-    height: 15px; /* Adjust size of the checkmark */
-    border: solid #888; /* Gray border for checkmark */
-    border-width: 0 3px 3px 0; /* Diagonal lines for checkmark */
-    
-  }
-  
-  
-  
-  
-  
+.checkbox {
+  -webkit-appearance: none; /* Remove default appearance */
+  width: 20px; /* Adjust width as needed */
+  height: 20px; /* Adjust height as needed */
+  border: 2px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  margin-right: 8px; /* Adjust spacing */
+  position: relative; /* Ensure relative positioning */
+}
+
+.checkbox:checked {
+  background-color: #fff; /* White background when checked */
+  border-color: #888; /* Gray border when checked */
+}
+
+.checkbox:checked::after {
+  content: ""; /* Empty content for pseudo-element */
+  position: absolute; /* Position relative to checkbox */
+  top: 40%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%) rotate(45deg); /* Center and rotate the checkmark */
+  width: 6px; /* Adjust size of the checkmark */
+  height: 15px; /* Adjust size of the checkmark */
+  border: solid #888; /* Gray border for checkmark */
+  border-width: 0 3px 3px 0; /* Diagonal lines for checkmark */
+}
