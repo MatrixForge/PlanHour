@@ -18,11 +18,12 @@ const BudgetPage = () => {
     photographer: [],
     decor: [],
   });
+  const [totalCost, setTotalCost] = useState(0);
 
   useEffect(() => {
     const userId = user._id;
     fetchPlans(userId);
-  }, []);
+  }, [user]);
 
   const fetchPlans = async (userId) => {
     try {
@@ -51,6 +52,16 @@ const BudgetPage = () => {
         };
 
         setBudgetData(newBudgetData);
+
+        // Calculate total cost
+        const totalCost = Object.values(newBudgetData).reduce(
+          (total, vendors) => {
+            return total + vendors.reduce((sum, vendor) => sum + vendor.min, 0);
+          },
+          0
+        );
+
+        setTotalCost(totalCost);
       }
     } catch (error: any) {
       console.error("Error saving to database:", error.response?.data);
@@ -115,6 +126,9 @@ const BudgetPage = () => {
             ))}
           </div>
         </div>
+        <h2 className={`${styles1.total} ${styles1.fontCustom}`}>
+          Total Starting Cost: PKR {totalCost}
+        </h2>
       </div>
       <Footer />
     </div>
