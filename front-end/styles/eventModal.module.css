@@ -45,9 +45,10 @@
   align-items: flex-end; /* Align items to the bottom */
 }
 
-.cancel-button, .save-button {
+.cancel-button,
+.save-button {
   margin: 0 5px;
-  background-color: #F6EDE4 !important;
+  background-color: #f6ede4 !important;
   border-style: none !important;
   color: black !important;
   border-radius: 20px !important;
@@ -64,6 +65,22 @@
 }
 
 .fontCustom {
-  font-family: 'Montserrat'; 
+  font-family: "Montserrat";
   font-weight: 600;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+  align-items: flex-end; /* Align items to the bottom */
+}
+
+.cancelButton,
+.saveButton {
+  margin: 0 5px;
+  background-color: #f6ede4 !important;
+  border-style: none !important;
+  color: black !important;
+  border-radius: 20px !important;
+  min-width: 100px;
 }

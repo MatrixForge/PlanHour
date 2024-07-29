@@ -1,16 +1,18 @@
-// RestaurantList.tsx
 import React, { useState, useEffect } from "react";
 import "@styles/custom-pagination.css";
 import ResponsivePagination from "react-responsive-pagination";
 import styles from "@styles/addEvent.module.css";
-import Svg from "./Svg";
+import RestaurantCard from "./RestaurantCard";
 import useVenueStore from "@/store/venueStore";
 import axios from "@/lib/axios"; // Importing the axios instance
 import { useFolderStore } from "@/store/folderStore";
-
+import Popup from "./Popup"; // Import the Popup component
 
 const RestaurantList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupType, setPopupType] = useState<"success" | "error">("success");
   const itemsPerPage = 5;
   const { filteredRestaurants, fetchRestaurants } = useVenueStore();
   useEffect(() => {
@@ -28,7 +30,6 @@ const RestaurantList: React.FC = () => {
     indexOfLastItem
   );
   const totalPages = Math.ceil(filteredRestaurants.length / itemsPerPage);
-
 
   const addPlanToFolder = async (vendorId: string) => {
     const { folderId, subFolderId } = useFolderStore.getState();
@@ -50,7 +51,16 @@ const RestaurantList: React.FC = () => {
     } catch (error:any) {
         console.error("Error saving to database:", error.response?.data);
     }
+
+    setTimeout(() => {
+      setPopupVisible(false);
+    }, 2000);
   };
+
+  const closePopup = () => {
+    setPopupVisible(false);
+  };
+
   return (
     <div className="col-md-9 p-3 pt-0">
       <div className="d-flex justify-content-between align-items-center my-3">
@@ -74,74 +84,11 @@ const RestaurantList: React.FC = () => {
       </div>
       <div className="col">
         {currentItems.map((restaurant) => (
-          <div key={restaurant.id} className="col-md-12 mb-4">
-            <div className="card h-100">
-              <div className="row g-0">
-                <div className="col-md-4">
-                  <img
-                    src={restaurant.image}
-                    alt={restaurant.name}
-                    className="img-fluid rounded-start"
-                    style={{ height: "100%", objectFit: "cover" }}
-                  />
-                </div>
-                <div className="col-md-8">
-                  <div className="card-body">
-                    <span className="card-title fs-3">{restaurant.name}</span>
-
-                    <span
-                      className="position-absolute top-2 end-0 me-5 mt-2"
-                      onClick={()=>addPlanToFolder(restaurant._id)}
-                    >
-                      {<Svg name="plus" />}
-                    </span>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <span
-                          className={`card-text ${styles.services_fontsize}`}
-                        >
-                          {<Svg name="star" />}
-                          {restaurant.rating}
-                          {<Svg name="staff" />}
-                          {restaurant.services[0]}
-                          {restaurant.services[1]
-                            ? `, ${restaurant.services[1]}`
-                            : ""}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="row mt-3">
-                      <p className="card-text">
-                        {<Svg name="location" />}
-                        {restaurant.location}
-                      </p>
-                    </div>
-                    <p className="card-text mt-4">{restaurant.description}</p>
-                    <hr />
-                    <div className={`row mt-3 ${styles.text_size}`}>
-                      <span className="col-md-7 ps-2 pe-0 mt-2">
-                        {restaurant.email ? (
-                          <>
-                            <Svg name="mail" />
-                            {restaurant.email}
-                          </>
-                        ) : (
-                          ""
-                        )}
-                        {<Svg name="phone" />}
-                        {restaurant.contact}
-                      </span>
-                      <span className="col-md-5">
-                        <p className={`${styles.price_font_size}`}>
-                          Starting at PKR {restaurant.min}
-                        </p>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <RestaurantCard
+            key={restaurant.id}
+            restaurant={restaurant}
+            addPlanToFolder={addPlanToFolder}
+          />
         ))}
       </div>
       <div className="d-flex justify-content-center">
@@ -151,6 +98,9 @@ const RestaurantList: React.FC = () => {
           onPageChange={handlePageChange}
         />
       </div>
+      {popupVisible && (
+        <Popup message={popupMessage} type={popupType} onClose={closePopup} />
+      )}
     </div>
   );
 };

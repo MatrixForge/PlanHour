@@ -1,0 +1,31 @@
+.dropdown-modal {
+  position: absolute;
+  right: 18%;
+  top: 25%;
+  margin-top: 10px;
+  width: 200px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-family: "Sharp Sans";
+  font-weight: 600;
+}
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-content a {
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.dropdown-content a:hover {
+  background-color: #e8a696;
+  color: white;
+}

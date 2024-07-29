@@ -19,7 +19,7 @@
 .customCheckbox {
   width: 30px;
   height: 30px;
-  background-color: #C5B3E6;
+  background-color: #c5b3e6;
   border-radius: 5px; /* Optional: Rounded corners */
   display: flex;
   align-items: center;
@@ -30,12 +30,12 @@
 
 /* Checkmark styling */
 .customCheckbox::after {
-  content: '';
+  content: "";
   position: absolute;
   display: none;
   width: 24px; /* Increase width for checkmark */
   height: 24px; /* Increase height for checkmark */
-  background-color: #C5B3E6;
+  background-color: #c5b3e6;
   border-radius: 3px;
   font-size: 20px; /* Adjust font size */
   line-height: 24px; /* Align checkmark vertically */
@@ -45,13 +45,13 @@
 
 /* Use a straight checkmark */
 .checkbox:checked + .customCheckbox::after {
-  content: '\2714'; /* Straight checkmark character */
+  content: "\2714"; /* Straight checkmark character */
   display: block;
 }
 
 /* Use a larger minus sign */
 .checkbox:not(:checked) + .customCheckbox::after {
-  content: '\2212'; /* Unicode minus sign character */
+  content: "\2212"; /* Unicode minus sign character */
   display: block;
   font-weight: 700;
   font-size: 30px; /* Adjust font size */
@@ -89,6 +89,6 @@
   gap: 10px;
   padding: 10px;
   border-bottom: 1px solid #ddd;
-  background-color: #F8F1E9;
+  background-color: #f8f1e9;
   font-weight: 300;
 }
