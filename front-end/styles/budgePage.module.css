@@ -44,3 +44,9 @@
     gap: 20px; /* Further increase the gap for larger screens */
   }
 }
+
+.total {
+  display: flex;
+  justify-content: end;
+  margin-right: 20px;
+}
