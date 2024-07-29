@@ -34,7 +34,7 @@ const useAuthStore = create<any>(
     }),
     {
       name: "auth-storage", // name of the item in storage
-      getStorage: () => localStorage, // (optional) by default, 'localStorage' is used
+      getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
     }
   )
 );
