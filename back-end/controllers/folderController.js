@@ -10,7 +10,9 @@ exports.createFolder = async (req, res) => {
     date,
     noOfGuests,
     description,
-    createdBy: req.user.id 
+    createdBy: req.user.id,
+    vendors: [],
+    toDoList: []
   });
 
   try {
@@ -40,8 +42,6 @@ exports.addSubFolder=async (req, res) => {
   const { mainFolderId } = req.params;
   const { title, eventType, date, noOfGuests, description, createdBy, vendors } = req.body;
 
-  console.log("bitch")
-
   try {
     // Create a new subfolder
     const subfolder = new subFolder({
@@ -51,7 +51,8 @@ exports.addSubFolder=async (req, res) => {
       noOfGuests,
       description,
       createdBy: req.user.id,
-      vendors:[]
+      vendors:[],
+      toDoList:[]
     });
     await subfolder.save();
 
@@ -81,5 +82,69 @@ exports.getSubFolders = async (req, res) => {
     res.status(200).json(mainFolder.subfolders);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+//Get toDoList 
+exports.getToDoList = async (req, res) => {
+  const { folderOrSubFolder, id } = req.body; // Expecting an ID of folder or subFolder
+  try {
+    let targetFolderOrSubFolder;
+
+    if (folderOrSubFolder === 'folder') {
+      // Populate subfolders field
+      targetFolderOrSubFolder = await Folder.findById(id).populate('subfolders');
+      if (!targetFolderOrSubFolder) {
+        return res.status(404).json({ message: 'Folder not found' });
+      }
+      console.log('Folder:', targetFolderOrSubFolder);
+    } else if (folderOrSubFolder === 'subFolder') {
+      targetFolderOrSubFolder = await subFolder.findById(id);
+      if (!targetFolderOrSubFolder) {
+        return res.status(404).json({ message: 'SubFolder not found' });
+      }
+      console.log('SubFolder:', targetFolderOrSubFolder);
+    }
+
+    const toDoLists = targetFolderOrSubFolder.toDoList || [];
+
+    // For folders, also include the populated subfolders
+    if (folderOrSubFolder === 'folder') {
+      const subfolders = targetFolderOrSubFolder.subfolders || [];
+      res.status(200).json({ toDoLists, subfolders });
+    } else {
+      res.status(200).json({ toDoLists });
+    }
+  } catch (error) {
+    console.error('Error:', error); // Log error for debugging
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Add Task to To-Do List
+exports.addTask = async (req, res) => {
+  const { folderOrSubFolder, id, task } = req.body; // Expecting an ID of folder or subFolder and a task object
+  try {
+    let targetFolderOrSubFolder;
+
+    if (folderOrSubFolder === 'folder') {
+      targetFolderOrSubFolder = await Folder.findById(id);
+    } else if (folderOrSubFolder === 'subFolder') {
+      targetFolderOrSubFolder = await subFolder.findById(id);
+    }
+
+    if (!targetFolderOrSubFolder) {
+      return res.status(404).json({ message: 'Folder or SubFolder not found' });
+    }
+
+    targetFolderOrSubFolder.toDoList.push(task);
+    await targetFolderOrSubFolder.save();
+
+    res.status(200).json(targetFolderOrSubFolder.toDoList);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
