@@ -11,6 +11,7 @@ const { connectDB } = require("./config/db");
 var authRoutes = require('./routes/authRoutes');
 var folderRoutes = require('./routes/folderRoutes');
 var vendorRoutes = require('./routes/vendorRoutes');
+var budgetRoutes = require('./routes/budgetRoute');
 
 
 var app = express();
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/users', authRoutes);
 app.use('/api/events', folderRoutes);
 app.use('/api/plans', vendorRoutes);
+app.use('/api/budget', budgetRoutes);
 
 
 // catch 404 and forward to error handler

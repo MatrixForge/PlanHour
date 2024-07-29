@@ -4,9 +4,9 @@ import ResponsivePagination from "react-responsive-pagination";
 import styles from "@styles/addEvent.module.css";
 import RestaurantCard from "./RestaurantCard";
 import useVenueStore from "@/store/venueStore";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore";
-import Popup from "./Popup"; // Import the Popup component
+import Popup from "./Popup";
 
 const RestaurantList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,11 +14,16 @@ const RestaurantList: React.FC = () => {
   const [popupMessage, setPopupMessage] = useState("");
   const [popupType, setPopupType] = useState<"success" | "error">("success");
   const itemsPerPage = 5;
-  const { filteredRestaurants, fetchRestaurants } = useVenueStore();
+  const {
+    filteredRestaurants,
+    fetchRestaurants,
+    setSearchQuery,
+    setSortOption,
+  } = useVenueStore();
 
   useEffect(() => {
     fetchRestaurants();
-  }, [fetchRestaurants]);
+  }, []);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -34,35 +39,29 @@ const RestaurantList: React.FC = () => {
 
   const addPlanToFolder = async (vendorId: string) => {
     const { folderId, subFolderId } = useFolderStore.getState();
-
     try {
+      let response;
       if (folderId && subFolderId) {
-        const response = await axios.patch(
-          `http://localhost:5000/api/plans/addVendorToSubFolder/${subFolderId}/${vendorId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
+        response = await axios.patch(
+          `/plans/addVendorToSubFolder/${subFolderId}/${vendorId}`
         );
-        setPopupMessage("Successfully Added!");
-        setPopupType("success");
-        setPopupVisible(true);
-        console.log("Saved successfully:", response.data);
       } else if (folderId && !subFolderId) {
-        const response = await axios.patch(
-          `http://localhost:5000/api/plans/addVendorToFolder/${folderId}/${vendorId}`
+        response = await axios.patch(
+          `/plans/addVendorToFolder/${folderId}/${vendorId}`
         );
-        setPopupMessage("Successfully Added!");
+      }
+
+      if (response) {
+        console.log("Saved successfully:", response.data);
+        setPopupMessage("Saved successfully!");
         setPopupType("success");
         setPopupVisible(true);
-        console.log("Saved successfully:", response.data);
       }
-    } catch (error) {
-      setPopupMessage("Error saving, try again.");
+    } catch (error: any) {
+      console.error("Error saving to database:", error.response?.data);
+      setPopupMessage("Error saving to database.");
       setPopupType("error");
       setPopupVisible(true);
-      console.error("Error saving to database:", error);
     }
 
     setTimeout(() => {
@@ -84,14 +83,18 @@ const RestaurantList: React.FC = () => {
             name="search"
             id="search"
             placeholder="Search Restaurant"
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="sort-by">
-          <select className="form-select rounded-5 border-light border-3">
+          <select
+            className="form-select rounded-5 border-light border-3"
+            onChange={(e) => setSortOption(e.target.value)}
+          >
             <option value="Relevance">Sort By: Relevance</option>
             <option value="name">Sort By: Name</option>
             <option value="rating">Sort By: Rating</option>
-            <option value="popularity">Sort By: Popularity</option>
+            <option value="price">Sort By: Price</option>
           </select>
         </div>
       </div>
