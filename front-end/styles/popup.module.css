@@ -1,3 +1,5 @@
+/* popup.module.css */
+
 .popup {
   position: fixed;
   top: 0;
@@ -18,16 +20,15 @@
   text-align: center;
 }
 
+.success {
+  border-bottom: 5px solid #92d4c9; /* Border color for success messages */
+}
+
+.error {
+  border-bottom: 5px solid #e8a696; /* Border color for error messages */
+}
+
 .popupMessage {
   font-size: 18px;
   margin-bottom: 10px;
-}
-
-.closeButton {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
 }

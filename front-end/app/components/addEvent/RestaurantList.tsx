@@ -12,6 +12,7 @@ const RestaurantList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+  const [popupType, setPopupType] = useState<"success" | "error">("success");
   const itemsPerPage = 5;
   const { filteredRestaurants, fetchRestaurants } = useVenueStore();
 
@@ -44,26 +45,32 @@ const RestaurantList: React.FC = () => {
             },
           }
         );
-        setPopupMessage("Saved successfully!");
+        setPopupMessage("Successfully Added!");
+        setPopupType("success");
         setPopupVisible(true);
         console.log("Saved successfully:", response.data);
       } else if (folderId && !subFolderId) {
         const response = await axios.patch(
           `http://localhost:5000/api/plans/addVendorToFolder/${folderId}/${vendorId}`
         );
-        setPopupMessage("Saved successfully!");
+        setPopupMessage("Successfully Added!");
+        setPopupType("success");
         setPopupVisible(true);
         console.log("Saved successfully:", response.data);
       }
     } catch (error) {
-      setPopupMessage("Error saving to database.");
+      setPopupMessage("Error saving, try again.");
+      setPopupType("error");
       setPopupVisible(true);
       console.error("Error saving to database:", error);
     }
+
+    setTimeout(() => {
+      setPopupVisible(false);
+    }, 2000);
   };
 
   const closePopup = () => {
-    console.log("Popup closed");
     setPopupVisible(false);
   };
 
@@ -104,7 +111,9 @@ const RestaurantList: React.FC = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      {popupVisible && <Popup message={popupMessage} onClose={closePopup} />}
+      {popupVisible && (
+        <Popup message={popupMessage} type={popupType} onClose={closePopup} />
+      )}
     </div>
   );
 };
