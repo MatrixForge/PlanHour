@@ -7,13 +7,15 @@ import Link from "next/link";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import ForgotPasswordPopup from "../components/ForgotPasswordPopup";
+import Image from "next/image";
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const setUser = useAuthStore((state) => state.setUser);
+  const setUser = useAuthStore((state:any) => state.setUser);
+
   const router = useRouter();
 
   const [showPopup, setShowPopup] = useState(false);
@@ -26,45 +28,47 @@ const Login: React.FC = () => {
   };
 
   const toggleRememberMe = () => {
-    setRememberMe((prevRememberMe) => !prevRememberMe);
+    setRememberMe((prevRememberMe) =>{ 
+      return !prevRememberMe});
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+ const handleLogin = async (e: React.FormEvent) => {
+   e.preventDefault();
 
-    try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, rememberMe }),
-      });
+   try {
+     const response = await fetch("http://localhost:5000/api/users/login", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({ email, password, rememberMe }),
+     });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `Server responded with status ${response.status}: ${errorText}`
-        );
-      }
+     if (!response.ok) {
+       const errorText = await response.text();
+       throw new Error(
+         `Server responded with status ${response.status}: ${errorText}`
+       );
+     }
 
-      const data = await response.json();
+     const data = await response.json();
 
-      if (data.token) {
-        if (rememberMe) {
-          localStorage.setItem("token", data.token);
-        } else {
-          sessionStorage.setItem("token", data.token);
-        }
-        setUser(data);
-        router.push("/");
-      } else {
-        console.error("Login failed:", data.message);
-      }
-    } catch (error: any) {
-      console.error("Login failed:", error.message);
-    }
-  };
+     if (data.token) {
+       if (rememberMe) {
+         localStorage.setItem("token", data.token); // Store token in localStorage
+         useAuthStore.setState({ user: data }); // Update Zustand state
+       } else {
+         sessionStorage.setItem("token", data.token); // Store token in sessionStorage
+         useAuthStore.setState({ user: data }); // Update Zustand state
+       }
+       router.push("/");
+     } else {
+       console.error("Login failed:", data.message);
+     }
+   } catch (error: any) {
+     console.error("Login failed:", error.message);
+   }
+ };
 
   return (
     <div className="outerdiv">
@@ -132,7 +136,12 @@ const Login: React.FC = () => {
           </p>
         </div>
         <div className="rightBox">
-          <img src="/cover.png" alt="Cover" />
+          <Image
+            src="/cover.png"
+            alt="Cover"
+            layout="fill" // Adjust the layout to fill
+            className="customImage"
+          />
         </div>
       </div>
       <ForgotPasswordPopup show={showPopup} handleClose={handleClose} />

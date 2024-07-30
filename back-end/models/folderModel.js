@@ -9,8 +9,12 @@ const folderSchema = new mongoose.Schema({
   subfolders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'subFolder' }],
   createdAt: { type: Date, default: Date.now },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  vendors:[{
-    type: mongoose.Schema.Types.ObjectId, ref:"Vendor"
+  toDoList: [{
+    title: { type: String, required: true },
+    completed: { type: Boolean, default: false }
+  }],
+  vendors: [{
+    type: mongoose.Schema.Types.ObjectId, ref: "Vendor"
   }]
 });
 

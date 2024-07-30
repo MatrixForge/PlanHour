@@ -16,14 +16,12 @@ async function authenticateToken(req, res, next) {
       }
 
       try {
-        console.log(decoded)
         const user = await User.findById(decoded.id);
         if (!user) {
           return res.status(404).json({ message: 'ddUser not found' });
         }
 
         req.user = user;
-        console.log(req.user)
         next();
       } catch (error) {
         console.error('Error fetching user:', error);

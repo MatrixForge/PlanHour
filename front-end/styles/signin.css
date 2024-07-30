@@ -35,12 +35,11 @@ body {
   height: 80vh !important;
   width: 60vh !important;
   overflow: hidden !important;
+  position: relative; /* Needed for the fill layout to work properly */
 }
 
-.rightBox img {
-  width: 100%;
-  height: 80vh;
-  object-fit: fill;
+.customImage {
+  object-fit: fill; /* Apply the object-fit property */
 }
 
 .unique-form-group {
@@ -135,7 +134,7 @@ h1 {
   margin-bottom: 1rem;
   margin-top: 2rem;
   font-size: 0.9rem;
-  font-family: 'Sharp Sans';
+  font-family: "Sharp Sans";
   font-weight: 500;
 }
 

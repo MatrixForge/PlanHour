@@ -7,11 +7,13 @@ import styles from '../../styles/custom-colors.module.css';
 import styles1 from '../../styles/guestList.module.css'; 
 import Link from 'next/link';
 import Papa from 'papaparse';
+import AddGuestPopUp from '../components/GuestLsit/AddGuestPopUp'; // Import AddGuestPopUp
 
 const GuestListPage = () => {
     const [checkedGuests, setCheckedGuests] = useState<{ [key: string]: boolean }>({});
     const [headerChecked, setHeaderChecked] = useState(false);
     const [guests, setGuests] = useState<Array<{ name: string; email: string; number: string }>>([]);
+    const [showPopup, setShowPopup] = useState(false); // State to manage popup visibility
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, checked } = event.target;
@@ -119,10 +121,13 @@ const GuestListPage = () => {
                                     <i className={`bi bi-send-fill ${styles1.icon}`}></i>
                                     Send
                                 </button>
-                                <Link className={`btn btn-light mx-2 rounded-pill custom d-flex flex-row justify-content-center align-items-center ${styles.customBrown} ${styles1.fontCustom}`} href="/">
+                                <button 
+                                    className={`btn btn-light mx-2 rounded-pill custom d-flex flex-row justify-content-center align-items-center ${styles.customBrown} ${styles1.fontCustom}`}
+                                    onClick={() => setShowPopup(true)} // Open popup on click
+                                >
                                     <i className={`bi bi-plus-lg ${styles1.icon}`}></i>
-                                    AddGuest
-                                </Link>
+                                    Add Guest
+                                </button>
                             </div>
                         </div>
 
@@ -161,6 +166,7 @@ const GuestListPage = () => {
                 onChange={handleFileUpload}
             />
             <Footer />
+            {showPopup && <AddGuestPopUp show={showPopup} handleClose={() => setShowPopup(false)} />} {/* Render popup */}
         </div>
     );
 };

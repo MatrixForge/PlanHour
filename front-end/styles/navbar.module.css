@@ -1,30 +1,29 @@
 .customButton {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    box-shadow: none;
-    padding: 0; /* Remove any default padding */
-  }
-  
-  .customIcon {
-    font-size: 2rem; /* Adjust the size as needed */
-    width: 2rem; /* Ensure the width matches the desired size */
-    height: 2rem; /* Ensure the height matches the desired size */
+  background-color: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0; /* Remove any default padding */
+}
+
+.customIcon {
+  font-size: 2rem; /* Adjust the size as needed */
+  width: 2rem; /* Ensure the width matches the desired size */
+  height: 2rem; /* Ensure the height matches the desired size */
     cursor: pointer;
     
-  }
+}
 
+.fontCustom {
+  font-family: "Montserrat";
+  font-weight: 600;
+}
 
-  .fontCustom {
-    font-family: 'Montserrat'; 
-    font-weight: 600;
-  }
+.navbarBackground {
+  background-color: #fff !important;
+}
 
-  .navbarBackground{
-    background-color: #fff !important;
-  }
-
-  /* navbar.module.css */
+/* navbar.module.css */
 .logoutDropdown {
   top: 100%;
   right: 0;
@@ -39,7 +38,6 @@
 .logoutDropdown:hover {
   background-color: #f8f9fa;
 }
-
 
 .card-img-top {
   width: 100%; /* Ensure the image fits the width of the card */

@@ -5,7 +5,8 @@ import useAuthStore from "../../store/authStore";
 import Sidebar from "../components/sideBar"; // Adjust the path as needed
 import styles_nav from "../../styles/navbar.module.css";
 import styles_color from "../../styles/custom-colors.module.css";
-
+import axios from '@/lib/axios'
+import Image from "next/image";
 interface NavBarProps {
   cardsRef: React.RefObject<HTMLDivElement>;
 }
@@ -20,10 +21,27 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
     setPathname(window.location.pathname); // Get the current pathname
   }, []);
 
-  useEffect(() => {
-    const updateAuthStatus = () => {
-      const storedUser = useAuthStore.getState().user;
-      setUser(storedUser);
+    useEffect(() => {
+    const updateAuthStatus = async () => {
+      // Check for token in localStorage
+      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+
+      if (token) {
+        try {
+          const response = await axios.get("/users/me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          setUser(response.data);
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+          setUser(null); // Clear user if the token is invalid or request fails
+        }
+      } else {
+        setUser(null);
+      }
     };
 
     updateAuthStatus();
@@ -35,7 +53,21 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
     useAuthStore.getState().logout();
     window.location.reload(); // Fetch the page again
   };
+  const handleLogout = () => {
+    useAuthStore.getState().logout();
+    window.location.reload(); // Fetch the page again
+  };
 
+  const handleGetStartedClick = () => {
+    if (cardsRef.current) {
+      const offsetTop = cardsRef.current.offsetTop;
+      const scrollPosition = offsetTop - 100; // Adjust this value to control how much you want to scroll
+
+      window.scrollTo({
+        top: scrollPosition,
+        behavior: "smooth",
+      });
+    }
   const handleGetStartedClick = () => {
     if (cardsRef.current) {
       const offsetTop = cardsRef.current.offsetTop;

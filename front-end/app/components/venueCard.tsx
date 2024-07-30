@@ -14,7 +14,7 @@ const VenueCard = ({ venue }) => {
         </div>
       </div>
       <hr />
-      <div className={`${styles1.priceText}`}>Starting Price ${venue.price}</div>
+      <div className={`${styles1.priceText}`}>Starting Price PKR {venue.min}</div>
     </div>
   );
 };

@@ -1,0 +1,86 @@
+.modal-background {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-size: contain; /* Adjust this property to fit your needs */
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+.form-container {
+  width: 90%; /* Increase the width as needed */
+  max-width: 900px; /* Adjust the width as needed */
+}
+
+.form-heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin: 20px 0;
+}
+
+.form-control-custom {
+  border: 2px solid orange;
+  border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+  align-items: flex-end; /* Align items to the bottom */
+}
+
+.cancel-button,
+.save-button {
+  margin: 0 5px;
+  background-color: #f6ede4 !important;
+  border-style: none !important;
+  color: black !important;
+  border-radius: 20px !important;
+  min-width: 100px;
+}
+
+.custom-modal .modal-dialog {
+  width: 90%; /* Optional: set width percentage */
+  max-height: 30%; /* Decrease the height as needed */
+}
+
+.custom-modal .modal-body {
+  padding: 0;
+}
+
+.fontCustom {
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+  align-items: flex-end; /* Align items to the bottom */
+}
+
+.cancelButton,
+.saveButton {
+  margin: 0 5px;
+  background-color: #f6ede4 !important;
+  border-style: none !important;
+  color: black !important;
+  border-radius: 20px !important;
+  min-width: 100px;
+}
