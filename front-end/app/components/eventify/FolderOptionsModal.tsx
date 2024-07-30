@@ -23,19 +23,19 @@ const FolderOptionsModal = ({ show, handleClose }) => {
                 <div className={`${styles.optionsText}`}>Add Plan</div>
               </button>
             </Link>
-            <Link href=''>
+            <Link href='toDoList'>
               <button className={`${styles.button3}`}>
                 <img className={`${styles.optionsIcon}`} src='checklist.png' alt='add-plan-icon'/>
                 <div className={`${styles.optionsText}`}>To-Do</div>
               </button>
             </Link>
-            <Link href=''>
+            <Link href='BudgetPage'>
               <button className={`${styles.button1}`}>
                 <img className={`${styles.optionsIcon}`} src='budget.png' alt='add-plan-icon'/>
                 <div className={`${styles.optionsText}`}>Budget</div>
               </button>
             </Link>
-            <Link href=''>
+            <Link href='guestListPage'>
               <button className={`${styles.button2}`}>
                 <img className={`${styles.optionsIcon}`} src='group.png' alt='add-plan-icon'/>
                 <div className={`${styles.optionsText}`}>Guest List</div>

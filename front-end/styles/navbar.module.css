@@ -10,6 +10,8 @@
     font-size: 2rem; /* Adjust the size as needed */
     width: 2rem; /* Ensure the width matches the desired size */
     height: 2rem; /* Ensure the height matches the desired size */
+    cursor: pointer;
+    
   }
 
 
@@ -26,7 +28,7 @@
 .logoutDropdown {
   top: 100%;
   right: 0;
-  background-color: white;
+  background-color: rgb(218, 152, 208);
   border: 1px solid #ccc;
   padding: 5px 10px;
   cursor: pointer;
@@ -36,4 +38,10 @@
 /* Optional: Add hover effect for logout dropdown */
 .logoutDropdown:hover {
   background-color: #f8f9fa;
+}
+
+
+.card-img-top {
+  width: 100%; /* Ensure the image fits the width of the card */
+  height: auto; /* Maintain aspect ratio */
 }
