@@ -4,6 +4,7 @@ import cardStyles from "@styles/card.module.css";
 import "@styles/body.module.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const Body = ({ loggedIn }) => {
   const [email, setEmail] = useState("");
@@ -30,13 +31,15 @@ const Body = ({ loggedIn }) => {
         backgroundColor: "#fff",
       }}
     >
-      {loggedIn && (
+      {!loggedIn && (
         <div className={`d-flex flex-row mb-3 ${cardStyles.bottomBar}`}>
           <div className={`inputContainer position-relative`}>
-            <img
+            <Image
               src="/emailsend.png" // Image from the public folder
               alt="Send"
               className={`position-absolute`}
+              width={24}
+              height={24}
               style={{
                 top: "50%",
                 left: "20px",

@@ -3,7 +3,7 @@ import Link from "next/link";
 import useAuthStore from "../../store/authStore";
 import styles_nav from "../../styles/navbar.module.css";
 import styles_color from "../../styles/custom-colors.module.css";
-
+import Image from "next/image";
 interface NavBarProps {
   cardsRef: React.RefObject<HTMLDivElement>;
 }
@@ -54,7 +54,13 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
       className={`navbar navbar-expand-lg ${styles_nav.fontCustom} ${styles_nav.navbarBackground}`}
     >
       <Link href="/" className="navbar-brand">
-        <img src="/logo.png" alt="Plan Hour" style={{ width: "100px" }} />
+        <Image
+          src="/logo.png"
+          alt="Plan Hour"
+          width={100}
+          height={100}
+          style={{ width: "100px" }}
+        />
         <span className={`ms-2 ${styles_nav.fontCustom}`}>
           <b>Plan Hour</b>{" "}
         </span>
