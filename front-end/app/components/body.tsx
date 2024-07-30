@@ -5,11 +5,13 @@ import "@styles/body.module.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import useAuthStore from "@/store/authStore";
 
-const Body = ({ loggedIn }) => {
+const Body = () => {
+  const found = localStorage.getItem("loggedIn");
   const [email, setEmail] = useState("");
   const router = useRouter();
-
+  const { loggedIn } = useAuthStore((state) => state);
   const handleSignUpClick = () => {
     if (email) {
       sessionStorage.setItem("signupEmail", email);
@@ -31,7 +33,7 @@ const Body = ({ loggedIn }) => {
         backgroundColor: "#fff",
       }}
     >
-      {!loggedIn && (
+      {(sessionStorage.getItem("loggedIn") !== "true") && (found !== "true")&&(
         <div className={`d-flex flex-row mb-3 ${cardStyles.bottomBar}`}>
           <div className={`inputContainer position-relative`}>
             <Image
