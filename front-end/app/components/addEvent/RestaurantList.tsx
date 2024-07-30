@@ -55,8 +55,7 @@ const RestaurantList: React.FC = () => {
         setPopupMessage("Saved successfully!");
         setPopupType("success");
         setPopupVisible(true);
-      }
-      else{
+      } else {
         setPopupMessage("Error saving to database.");
         setPopupType("error");
         setPopupVisible(true);
@@ -84,7 +83,7 @@ const RestaurantList: React.FC = () => {
       <div className="d-flex justify-content-between align-items-center my-3">
         <div className="search">
           <input
-            className="rounded-5 border-light border-3 form-control"
+            className="border-light border-3 form-control"
             type="text"
             name="search"
             id="search"

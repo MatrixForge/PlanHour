@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "@styles/custom-colors.module.css";
 import styles_button from "@styles/addEvent.module.css";
-import useVenueStore
- from "@/store/venueStore";
+import useVenueStore from "@/store/venueStore";
 const ButtonList: React.FC = () => {
-   const { setFilter } = useVenueStore();
-   const [activeButton, setActiveButton] = useState<string | null>(null);
+  const { setFilter } = useVenueStore();
+  const [activeButton, setActiveButton] = useState<string | null>(null);
   const buttons = [
     { name: "Venue", color: "customBrown" },
     { name: "Restaurant", color: "customLightPurple" },
@@ -13,10 +12,10 @@ const ButtonList: React.FC = () => {
     { name: "Photographer", color: "customLightGreen" },
     { name: "Decor", color: "customLightPink" },
   ];
-  const handleClick = (filter: string,index:number) => {
-  setFilter(filter === "All" ? "" : filter);
-  setActiveButton(buttons[index].name);
-};
+  const handleClick = (filter: string, index: number) => {
+    setFilter(filter === "All" ? "" : filter);
+    setActiveButton(buttons[index].name);
+  };
   return (
     <section className={`d-flex align-items-center m-0 pt-0`}>
       <div className="container">
@@ -26,7 +25,7 @@ const ButtonList: React.FC = () => {
             return (
               <button
                 key={index}
-                className={`btn rounded-3 px-lg-4 py-2 ms-lg-5 border ${
+                className={`btn rounded-3 px-lg-4 py-2 ms-lg-5 ${
                   activeButton === button.name
                     ? "transparent-bg"
                     : styles[button.color]

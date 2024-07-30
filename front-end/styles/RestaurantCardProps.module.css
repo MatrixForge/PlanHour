@@ -9,17 +9,22 @@
 
 .imageContainer {
   flex: 0 0 30%; /* Takes up 30% of the width */
+  display: flex;
+  align-items: stretch; /* Ensure the image container stretches to match the height of the content container */
 }
 
 .image {
   width: 100%;
-  height: auto; /* Ensure the image scales correctly */
   object-fit: cover; /* Ensures the image covers the container */
+  height: 100%; /* Ensure the image scales correctly to the container height */
 }
 
 .contentContainer {
   flex: 1; /* Takes up the remaining 70% of the width */
   padding: 20px; /* Add padding if needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute space evenly */
 }
 
 .cardHeader {

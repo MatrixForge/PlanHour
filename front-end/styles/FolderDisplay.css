@@ -1,11 +1,15 @@
+.eventify-background {
+  background-color: #fff !important;
+}
+
 .folder {
-  display: flex!important;
+  display: flex !important;
   flex-direction: row;
-  flex-wrap: wrap!important;
+  flex-wrap: wrap !important;
   margin-left: 34px !important;
 }
 h1 {
-  font-family: 'Sharp Sans';
+  font-family: "Sharp Sans";
   font-weight: 600;
   font-size: x-large;
   margin-left: 55px;
@@ -24,7 +28,7 @@ h1 {
 }
 
 .card-text {
-  font-family: 'Sharp Sans';
+  font-family: "Sharp Sans";
   font-weight: 600;
   color: black;
   align-self: center; /* Center the card-text horizontally within the card-body */
@@ -32,7 +36,7 @@ h1 {
 
 .card {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2) !important;
-  background-color: #F6EDE4 !important;
+  background-color: #f6ede4 !important;
   margin: 30px !important; /* Adjust margin */
   display: flex;
   flex-direction: column;
@@ -43,7 +47,7 @@ h1 {
 }
 .card-add {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2) !important;
-  background-color: #F6EDE4 !;
+  background-color: #f6ede4 !;
   margin: 30px !important; /* Adjust margin */
   border-radius: 20px !important;
   border-style: none;
@@ -61,13 +65,13 @@ h1 {
   align-items: center; /* Center items vertically if needed */
   padding: 10px 5px;
   font-size: smaller;
-  background-color: #F6EDE4;
-  font-family: 'Sharp Sans';
+  background-color: #f6ede4;
+  font-family: "Sharp Sans";
   font-weight: 600;
   width: 12rem; /* Ensure it doesn’t exceed the card’s width */
   min-width: auto;
   margin: 0; /* Remove default margins */
-  border-top: #A5A5A5 solid 2px !important;
+  border-top: #a5a5a5 solid 2px !important;
 }
 
 .icon-img {
@@ -81,14 +85,18 @@ h1 {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background-color: rgba(217, 217, 217, 0.5) !important; /* #D9D9D9 with 50% opacity */
+  background-color: rgba(
+    217,
+    217,
+    217,
+    0.5
+  ) !important; /* #D9D9D9 with 50% opacity */
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-   border-radius: 20px;
+  border-radius: 20px;
 }
 .add-btn {
   width: 80px; /* Adjust size as needed */
   height: 80px; /* Adjust size as needed */
 }
-
