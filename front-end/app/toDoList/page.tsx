@@ -7,6 +7,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import Footer from "../components/footer";
 import "./toDoList.css"; // Adjust the path as necessary
+import Image from "next/image";
 
 const BootstrapLayout = () => {
   const [todos, setTodos] = useState([
@@ -68,11 +69,13 @@ const BootstrapLayout = () => {
                   >
                     <span className="text">{todo.text}</span>
                     <div className="icon-container">
-                      <img
-                        src={todo.done ? "correct-filled.png" : "correct.png"}
+                      <Image
+                        src={todo.done ? "/correct-filled.png" : "/correct.png"}
                         alt="tick icon"
                         className="tick-icon"
                         onClick={() => toggleDone(todo.id)}
+                        width={100}
+                        height={100}
                       />
                       <i className="bi bi-x-circle x-icon"></i>
                     </div>

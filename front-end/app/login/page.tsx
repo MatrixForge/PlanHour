@@ -7,6 +7,7 @@ import Link from "next/link";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import ForgotPasswordPopup from "../components/ForgotPasswordPopup";
+import Image from "next/image";
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -132,7 +133,12 @@ const Login: React.FC = () => {
           </p>
         </div>
         <div className="rightBox">
-          <img src="/cover.png" alt="Cover" />
+          <Image
+            src="/cover.png"
+            alt="Cover"
+            layout="fill" // Adjust the layout to fill
+            className="customImage"
+          />
         </div>
       </div>
       <ForgotPasswordPopup show={showPopup} handleClose={handleClose} />
