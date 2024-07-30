@@ -17,7 +17,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
   const [showLogout, setShowLogout] = useState(false);
   const [pathname, setPathname] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
+  
   useEffect(() => {
     setPathname(window.location.pathname); // Get the current pathname
   }, []);

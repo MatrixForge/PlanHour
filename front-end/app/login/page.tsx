@@ -57,9 +57,13 @@ const Login: React.FC = () => {
        if (rememberMe) {
          localStorage.setItem("token", data.token); // Store token in localStorage
          useAuthStore.setState({ user: data }); // Update Zustand state
+         useAuthStore.setState({ loggedIn: true });
+         localStorage.setItem("loggedIn", "true");
        } else {
          sessionStorage.setItem("token", data.token); // Store token in sessionStorage
          useAuthStore.setState({ user: data }); // Update Zustand state
+         useAuthStore.setState({ loggedIn: true });
+         sessionStorage.setItem("loggedIn", "true");
        }
        router.push("/");
      } else {
