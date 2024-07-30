@@ -1,7 +1,7 @@
 // pages/index.tsx
 "use client";
 import React, { useState } from "react";
-import LandingPage from "./landingPage/page";
+import LandingPage from "./landing-page/page";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
