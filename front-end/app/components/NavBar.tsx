@@ -5,13 +5,14 @@ import useAuthStore from "../../store/authStore";
 import Sidebar from "../components/sideBar"; // Adjust the path as needed
 import styles_nav from "../../styles/navbar.module.css";
 import styles_color from "../../styles/custom-colors.module.css";
-import axios from '@/lib/axios'
+import axios from "@/lib/axios";
 import Image from "next/image";
 interface NavBarProps {
+  loggedIn: boolean;
   cardsRef: React.RefObject<HTMLDivElement>;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
+const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
   const [user, setUser] = useState<any>(null);
   const [showLogout, setShowLogout] = useState(false);
   const [pathname, setPathname] = useState("");
@@ -21,10 +22,11 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
     setPathname(window.location.pathname); // Get the current pathname
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     const updateAuthStatus = async () => {
       // Check for token in localStorage
-      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+      const token =
+        localStorage.getItem("token") || sessionStorage.getItem("token");
 
       if (token) {
         try {
@@ -53,21 +55,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
     useAuthStore.getState().logout();
     window.location.reload(); // Fetch the page again
   };
-  const handleLogout = () => {
-    useAuthStore.getState().logout();
-    window.location.reload(); // Fetch the page again
-  };
 
-  const handleGetStartedClick = () => {
-    if (cardsRef.current) {
-      const offsetTop = cardsRef.current.offsetTop;
-      const scrollPosition = offsetTop - 100; // Adjust this value to control how much you want to scroll
-
-      window.scrollTo({
-        top: scrollPosition,
-        behavior: "smooth",
-      });
-    }
   const handleGetStartedClick = () => {
     if (cardsRef.current) {
       const offsetTop = cardsRef.current.offsetTop;
@@ -81,7 +69,12 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
   };
 
   // List of routes where the hamburger icon should be shown
-  const showHamburgerRoutes = ["/budgetpage", "/toDoList", "/guestListPage","/addEvent"];
+  const showHamburgerRoutes = [
+    "/budgetpage",
+    "/toDoList",
+    "/guestListPage",
+    "/addEvent",
+  ];
   const showHamburgerIcon = showHamburgerRoutes.includes(pathname);
 
   return (
@@ -124,7 +117,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
                 onMouseEnter={() => setShowLogout(true)}
                 onMouseLeave={() => setShowLogout(false)}
               >
-                {user.name}
+                {user?.name || "User"}
                 {showLogout && (
                   <div
                     className={`position-absolute ${styles_nav.logoutDropdown}`}
@@ -135,7 +128,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
                 )}
               </li>
             )}
-             {user && showHamburgerIcon && (
+            {user && showHamburgerIcon && (
               <li className="nav-item">
                 <span
                   className={`navbar-toggler-icon ${styles_nav.customIcon}`}
@@ -158,9 +151,8 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
       </nav>
       {showHamburgerIcon && (
         <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
-        )}
+      )}
     </>
   );
 };
-
 export default NavBar;
