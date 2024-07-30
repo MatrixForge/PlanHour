@@ -53,7 +53,7 @@ const FolderDisplay: React.FC = () => {
   const handleCloseOptionsModal = () => setShowOptionsModal(false);
 
   return (
-    <>
+    <div className="eventify-background">
       <h1>Events</h1>
       <div className="folder">
         {folders.map((folder) => (
@@ -141,7 +141,7 @@ const FolderDisplay: React.FC = () => {
         show={showOptionsModal}
         handleClose={handleCloseOptionsModal}
       />
-    </>
+    </div>
   );
 };
 

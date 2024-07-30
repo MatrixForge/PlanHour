@@ -113,14 +113,14 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
             )}
             {user && (
               <li
-                className="nav-item d-flex align-items-center me-1 position-relative"
+                className={`nav-item d-flex align-items-center me-1 position-relative btn btn-light mx-2 rounded-pill px-4 ${styles_nav.fontCustom} ${styles_color.customBrown}`}
                 onMouseEnter={() => setShowLogout(true)}
                 onMouseLeave={() => setShowLogout(false)}
               >
                 {user?.name || "User"}
                 {showLogout && (
                   <div
-                    className={`position-absolute ${styles_nav.logoutDropdown}`}
+                    className={`${styles_nav.logoutDropdown}`}
                     onClick={handleLogout}
                   >
                     Logout

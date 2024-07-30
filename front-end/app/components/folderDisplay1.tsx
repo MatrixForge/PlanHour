@@ -60,7 +60,7 @@ const SubFolderDisplay = () => {
   };
 
   return (
-    <>
+    <div className="eventify-background">
       <h1>Events{folderTitle ? ` / ${folderTitle}` : ""}</h1>
       <div className="folder">
         {subfolders.map((folder) => (
@@ -149,7 +149,7 @@ const SubFolderDisplay = () => {
       {showModal && (
         <FolderOptionsModal show={showModal} handleClose={handleCloseModal} />
       )}
-    </>
+    </div>
   );
 };
 
