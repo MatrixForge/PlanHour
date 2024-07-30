@@ -1,4 +1,4 @@
-import { create, SetState } from "zustand";
+import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface User {
@@ -13,16 +13,14 @@ interface AuthState {
   setUser: (user: User) => void;
   isLoggedIn: () => boolean;
   clearAuth: () => void;
-  logout: () => void; // Add the logout function to the interface
+  logout: () => void;
 }
 
-
-// StateCreator<AuthState, [], [["zustand/persist", AuthState], ...[]]>;
-const useAuthStore = create<any>(
+const useAuthStore = create<AuthState>(
   persist(
     (set) => ({
       user: null,
-      setUser: (user) => set({ user }),
+      setUser: (user: User) => set({ user }),
       isLoggedIn: () =>
         !!(localStorage.getItem("token") || sessionStorage.getItem("token")),
       clearAuth: () => set({ user: null }),
@@ -33,8 +31,8 @@ const useAuthStore = create<any>(
       },
     }),
     {
-      name: "auth-storage", // name of the item in storage
-      getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
+      name: "auth-storage",
+      getStorage: () => sessionStorage, // Use sessionStorage by default
     }
   )
 );

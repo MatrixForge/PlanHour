@@ -52,11 +52,14 @@ const RestaurantList: React.FC = () => {
       }
 
       if (response) {
-        console.log("Saved successfully:", response.data);
         setPopupMessage("Saved successfully!");
         setPopupType("success");
         setPopupVisible(true);
-        console.log("Popup should be visible now"); // Log added
+      }
+      else{
+        setPopupMessage("Error saving to database.");
+        setPopupType("error");
+        setPopupVisible(true);
       }
     } catch (error: any) {
       console.error("Error saving to database:", error.response?.data);
@@ -67,7 +70,6 @@ const RestaurantList: React.FC = () => {
     }
 
     setTimeout(() => {
-      console.log("Hiding popup"); // Log added
       setPopupVisible(false);
     }, 2000);
   };

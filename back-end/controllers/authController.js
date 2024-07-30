@@ -142,4 +142,24 @@ const resetPassword = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, resetPassword,forgotPassword };
+
+const getUserByToken = asyncHandler(async (req, res) => {
+    try {
+        const user = req.user; // The user should be set by the authenticateToken middleware
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+        });
+    } catch (error) {
+        console.error('Error fetching user by token:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+module.exports = { registerUser, loginUser, resetPassword, forgotPassword, getUserByToken };

@@ -3,6 +3,7 @@ import Link from "next/link";
 import useAuthStore from "../../store/authStore";
 import styles_nav from "../../styles/navbar.module.css";
 import styles_color from "../../styles/custom-colors.module.css";
+import axios from '@/lib/axios'
 import Image from "next/image";
 interface NavBarProps {
   cardsRef: React.RefObject<HTMLDivElement>;
@@ -17,16 +18,34 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
     setPathname(window.location.pathname); // Get the current pathname
   }, []);
 
-  useEffect(() => {
-    const updateAuthStatus = () => {
-      const storedUser = useAuthStore.getState().user;
-      setUser(storedUser);
+    useEffect(() => {
+    const updateAuthStatus = async () => {
+      // Check for token in localStorage
+      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+
+      if (token) {
+        try {
+          const response = await axios.get("/users/me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          setUser(response.data);
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+          setUser(null); // Clear user if the token is invalid or request fails
+        }
+      } else {
+        setUser(null);
+      }
     };
 
     updateAuthStatus();
     const unsubscribe = useAuthStore.subscribe(updateAuthStatus);
     return () => unsubscribe();
   }, []);
+
 
   const handleLogout = () => {
     useAuthStore.getState().logout();
