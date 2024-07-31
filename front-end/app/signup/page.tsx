@@ -1,11 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "@styles/signup.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import axios from "@/lib/axios";
 
 const Signup: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -67,19 +67,15 @@ const Signup: React.FC = () => {
 
     try {
       setLoading(true);
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
 
+      console.log("wooww");
       const name = extractNameFromEmail(email);
 
-      const response = await axios.post(
-        "http://localhost:5000/api/users/register",
-        { name, email, password },
-        config
-      );
+      const response = await axios.post(`/users/register`, {
+        name,
+        email,
+        password,
+      });
       if (response.status === 201) {
         setMessage("Registration successful!");
         setError("");

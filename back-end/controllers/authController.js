@@ -15,10 +15,10 @@ const registerUser = asyncHandler(async (req, res) => {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-        res.status(400);
-        throw new Error('User already exists');
+        res.status(400).json({ message: 'The email address is not available.Choose another email.' });
+        return;
     }
-
+    
     const user = await User.create({
         name,
         email,
