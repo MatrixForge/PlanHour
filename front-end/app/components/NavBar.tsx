@@ -71,7 +71,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
   // List of routes where the hamburger icon should be shown
   const showHamburgerRoutes = [
     "/budget",
-    "/toDoList",
+    "/to-do-list",
     "/guestListPage",
     "/add-event",
   ];

@@ -29,7 +29,7 @@ const FolderOptionsModal = ({ show, handleClose }) => {
                 <div className={`${styles.optionsText}`}>Add Plan</div>
               </button>
             </Link>
-            <Link href="toDoList">
+            <Link href="to-do-list">
               <button className={`${styles.button3}`}>
                 <Image
                   className={`${styles.optionsIcon}`}

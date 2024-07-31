@@ -20,7 +20,7 @@ const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
           <Link href="/budget">Budget Page</Link>
         </li>
         <li>
-          <Link href="/toDoList">To-Do List</Link>
+          <Link href="/to-do-list">To-Do List</Link>
         </li>
         <li>
           <Link href="/guestListPage">Guest List</Link>
