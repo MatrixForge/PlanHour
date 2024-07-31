@@ -17,7 +17,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
   const [showLogout, setShowLogout] = useState(false);
   const [pathname, setPathname] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  
+
   useEffect(() => {
     setPathname(window.location.pathname); // Get the current pathname
   }, []);
@@ -70,10 +70,10 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
 
   // List of routes where the hamburger icon should be shown
   const showHamburgerRoutes = [
-    "/budgetpage",
+    "/budget",
     "/toDoList",
     "/guestListPage",
-    "/addEvent",
+    "/add-event",
   ];
   const showHamburgerIcon = showHamburgerRoutes.includes(pathname);
 

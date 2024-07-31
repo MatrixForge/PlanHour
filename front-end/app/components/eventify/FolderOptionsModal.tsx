@@ -29,7 +29,7 @@ const FolderOptionsModal = ({ show, handleClose }) => {
                 <div className={`${styles.optionsText}`}>Add Sub-Folder</div>
               </button>
             </Link>
-            <Link href="/addEvent">
+            <Link href="/add-event">
               <button className={`${styles.button2}`}>
                 <Image
                   className={`${styles.optionsIcon}`}
@@ -41,7 +41,7 @@ const FolderOptionsModal = ({ show, handleClose }) => {
                 <div className={`${styles.optionsText}`}>Add Plan</div>
               </button>
             </Link>
-            <Link href='toDoList'>
+            <Link href="toDoList">
               <button className={`${styles.button3}`}>
                 <Image
                   className={`${styles.optionsIcon}`}
@@ -53,7 +53,7 @@ const FolderOptionsModal = ({ show, handleClose }) => {
                 <div className={`${styles.optionsText}`}>To-Do</div>
               </button>
             </Link>
-            <Link href="BudgetPage">
+            <Link href="budget">
               <button className={`${styles.button1}`}>
                 <Image
                   className={`${styles.optionsIcon}`}
@@ -65,7 +65,7 @@ const FolderOptionsModal = ({ show, handleClose }) => {
                 <div className={`${styles.optionsText}`}>Budget</div>
               </button>
             </Link>
-            <Link href='guestListPage'>
+            <Link href="guestListPage">
               <button className={`${styles.button2}`}>
                 <Image
                   className={`${styles.optionsIcon}`}

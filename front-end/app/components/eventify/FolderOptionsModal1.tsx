@@ -17,7 +17,7 @@ const FolderOptionsModal = ({ show, handleClose }) => {
         <div className={styles.optionsBackground}>
           <h2 className={`${styles.optionsHeader}`}>Navigate</h2>
           <div className={styles.options}>
-            <Link href="/addEvent">
+            <Link href="/add-event">
               <button className={`${styles.button2}`}>
                 <Image
                   className={`${styles.optionsIcon}`}
@@ -41,7 +41,7 @@ const FolderOptionsModal = ({ show, handleClose }) => {
                 <div className={`${styles.optionsText}`}>To-Do</div>
               </button>
             </Link>
-            <Link href="BudgetPage">
+            <Link href="budget">
               <button className={`${styles.button1}`}>
                 <Image
                   className={`${styles.optionsIcon}`}
