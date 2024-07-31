@@ -8,7 +8,7 @@ import Image from "next/image";
 import useAuthStore from "@/store/authStore";
 
 const Body = () => {
-  const found = localStorage.getItem("loggedIn");
+  const found = localStorage.getItem("loggedIn")||"";
   const [email, setEmail] = useState("");
   const router = useRouter();
   const { loggedIn } = useAuthStore((state) => state);
