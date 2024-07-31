@@ -17,7 +17,7 @@ const FolderOptionsModal = ({ show, handleClose }) => {
         <div className={styles.optionsBackground}>
           <h2 className={`${styles.optionsHeader}`}>Navigate</h2>
           <div className={styles.options}>
-            <Link href="/subEvent">
+            <Link href="/sub-event">
               <button className={`${styles.button1}`}>
                 <Image
                   className={`${styles.optionsIcon}`}
