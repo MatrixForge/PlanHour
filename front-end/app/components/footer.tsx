@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "@styles/footer.module.css";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -38,16 +39,36 @@ const Footer = () => {
           </div>
           <div className="bottomtext3 d-flex justify-content-center align-items-center ms-5">
             <div className="mx-2">
-              <img src="/linkedin.png" />
+              <Image
+                src="/linkedin.png"
+                width={50}
+                height={50}
+                alt={"Linkedin"}
+              />
             </div>
             <div className="mx-2">
-              <img src="/Facebook.png" />
+              <Image
+                src="/Facebook.png"
+                width={50}
+                height={50}
+                alt={"Facebook"}
+              />
             </div>
             <div className="mx-2">
-              <img src="/instagram.png" />
+              <Image
+                src="/instagram.png"
+                width={50}
+                height={50}
+                alt={"Instagram"}
+              />
             </div>
             <div className="mx-2">
-              <img src="/Youtube.png" />
+              <Image
+                src="/Youtube.png"
+                width={50}
+                height={50}
+                alt={"Youtube"}
+              />
             </div>
           </div>
         </div>

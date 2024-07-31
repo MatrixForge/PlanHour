@@ -83,7 +83,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
         className={`navbar navbar-expand-lg ${styles_nav.fontCustom} ${styles_nav.navbarBackground}`}
       >
         <Link href="/" className="navbar-brand">
-          <img src="/logo.png" alt="Plan Hour" style={{ width: "100px" }} />
+          <Image src="/logo.png" alt="Plan Hour" width={100} height={100} />
           <span className={`ms-2 ${styles_nav.fontCustom}`}>
             <b>Plan Hour</b>{" "}
           </span>
