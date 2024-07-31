@@ -1,12 +1,25 @@
-import React from "react";
-import styles from "@styles/footer.module.css";
+import React, { useState } from "react";
+import styles from "../../styles/footer.module.css";
+import TermsOfService from "./TermsOfService";
+import PrivacyPolicy from "./PrivacyPolicy";
+import Popup from "./Popup";
 import Image from "next/image";
 
 const Footer = () => {
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupContent, setPopupContent] = useState(null);
+
+  const handleOpenPopup = (content) => {
+    setPopupContent(content);
+    setPopupVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setPopupVisible(false);
+  };
+
   return (
-    <div
-      className={`d-flex justify-content-center align-items-center ${styles.footerBackground}`}
-    >
+    <div className="d-flex justify-content-center align-items-center">
       <div className="d-flex flex-column align-items-center">
         <div className="mb-3 text-center">
           <div className={styles.text1}>
@@ -30,8 +43,22 @@ const Footer = () => {
         >
           <div className="d-flex align-items-center">
             <div className="d-flex bottomtext1 me-5">
-              <div className="mx-2">Terms of Service</div>
-              <div className="mx-2">Privacy Policy</div>
+              <div
+                className="mx-2"
+                onClick={() =>
+                  handleOpenPopup(<TermsOfService onClose={handleClosePopup} />)
+                }
+              >
+                Terms of Service
+              </div>
+              <div
+                className="mx-2"
+                onClick={() =>
+                  handleOpenPopup(<PrivacyPolicy onClose={handleClosePopup} />)
+                }
+              >
+                Privacy Policy
+              </div>
             </div>
           </div>
           <div className="ms-5 me-5">
@@ -73,6 +100,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      {popupVisible && <Popup onClose={handleClosePopup}>{popupContent}</Popup>}
     </div>
   );
 };
