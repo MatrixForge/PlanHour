@@ -2,7 +2,7 @@ import React from "react";
 import VenueCard from "./venueCard";
 import styles1 from "@styles/venueBoard.module.css";
 
-const VenueBoard = ({ title, venues, className }) => {
+const VenueBoard = ({ title, venues, className, onSelect, selectedVenues }) => {
   if (venues.length === 0) return null; // Don't render if there are no venues
 
   return (
@@ -13,8 +13,14 @@ const VenueBoard = ({ title, venues, className }) => {
         {title}
       </div>
       <div className={`${styles1.cardContainer} ${styles1.fontCustom}`}>
-        {venues.map((venue, index) => (
-          <VenueCard key={index} venue={venue} />
+        {venues.map((venue) => (
+          <VenueCard
+            key={venue._id}
+            venue={venue}
+            onSelect={onSelect}
+            isSelected={selectedVenues.includes(venue._id)}
+            vendorType={title.toLowerCase()}
+          />
         ))}
       </div>
     </div>
