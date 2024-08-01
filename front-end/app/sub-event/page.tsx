@@ -6,9 +6,6 @@ import Footer from "../components/footer";
 import NavBar2 from "../components/secondNavbg";
 
 const FolderManager = () => {
-  const [showPopup, setShowPopup] = useState(false);
-  const [folders, setFolders] = useState([]);
-
   return (
     <div>
       <NavBar />

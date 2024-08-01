@@ -1,10 +1,10 @@
 "use client";
 
-import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
-import axios from "@/lib/axios";
-import { Modal, Button, Form } from "react-bootstrap";
-import Link from "next/link";
+import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react';
+import axios from '@/lib/axios';
+import { Modal, Button, Form } from 'react-bootstrap';
+import Link from 'next/link';
 
 const ResetPassword: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -24,20 +24,17 @@ const ResetPassword: React.FC = () => {
       return;
     }
 
-    try {
-      const response = await axios.post("users/reset-password", {
-        token,
-        newPassword: password,
-      });
-      setMessage(response.data.message);
-    } catch (error: any) {
-      console.error(
-        "Reset password error:",
-        error.response?.data?.message || error.message
-      );
-      setMessage("Failed to reset password");
-    }
-  };
+        try {
+            const response = await axios.post('/users/reset-password', {
+                token,
+                newPassword: password
+            });
+            setMessage(response.data.message);
+        } catch (error: any) {
+            console.error('Reset password error:', error.response?.data?.message || error.message);
+            setMessage('Failed to reset password');
+        }
+    };
 
   return (
     <Modal>

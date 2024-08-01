@@ -5,7 +5,7 @@ import CustomImage from "../CustomImage";
 
 const HeroSection: React.FC = () => {
   const handleClick = (name: string) => {
-    console.log(`Clicked ${name}`);
+    // console.log(`Clicked ${name}`);
   };
 
   return (

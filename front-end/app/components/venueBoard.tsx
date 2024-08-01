@@ -1,7 +1,6 @@
 import React from "react";
 import VenueCard from "./venueCard";
 import styles1 from "@styles/venueBoard.module.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const VenueBoard = ({ title, venues, className }) => {
   if (venues.length === 0) return null; // Don't render if there are no venues

@@ -8,11 +8,10 @@ import styles_color from "../../styles/custom-colors.module.css";
 import axios from "@/lib/axios";
 import Image from "next/image";
 interface NavBarProps {
-  loggedIn: boolean;
-  cardsRef: React.RefObject<HTMLDivElement>;
+  cardsRef?: React.RefObject<HTMLDivElement>;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
+const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
   const [user, setUser] = useState<any>(null);
   const [showLogout, setShowLogout] = useState(false);
   const [pathname, setPathname] = useState("");
@@ -24,26 +23,15 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
 
   useEffect(() => {
     const updateAuthStatus = async () => {
-      // Check for token in localStorage
-      const token =
-        localStorage.getItem("token") || sessionStorage.getItem("token");
 
-      if (token) {
         try {
-          const response = await axios.get("/users/me", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await axios.get("/users/me");
 
           setUser(response.data);
         } catch (error) {
           console.error("Failed to fetch user:", error);
           setUser(null); // Clear user if the token is invalid or request fails
         }
-      } else {
-        setUser(null);
-      }
     };
 
     updateAuthStatus();
@@ -57,7 +45,7 @@ const NavBar: React.FC<NavBarProps> = ({ loggedIn, cardsRef }) => {
   };
 
   const handleGetStartedClick = () => {
-    if (cardsRef.current) {
+    if (cardsRef?.current) {
       const offsetTop = cardsRef.current.offsetTop;
       const scrollPosition = offsetTop - 100; // Adjust this value to control how much you want to scroll
 

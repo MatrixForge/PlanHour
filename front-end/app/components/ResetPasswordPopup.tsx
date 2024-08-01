@@ -1,7 +1,7 @@
 // components/ResetPasswordPopup.tsx
 
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '@/lib/axios';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 interface ResetPasswordProps {
@@ -17,7 +17,7 @@ const ResetPasswordPopup: React.FC<ResetPasswordProps> = ({ show, handleClose })
     const handleResetPassword = async () => {
         try {
             const token = window.location.pathname.split('/reset/')[1];
-            const response = await axios.post('http://localhost:5000/api/users/reset-password', {
+            const response = await axios.post('/users/reset-password', {
                 token,
                 newPassword: password
             });

@@ -1,5 +1,6 @@
+"use client";
 import { create } from "zustand";
-import {persist} from 'zustand/middleware'
+import { persist } from "zustand/middleware";
 
 interface User {
   _id: string;
@@ -10,7 +11,7 @@ interface User {
 
 interface AuthState {
   user: User | null;
-  loggedIn : boolean;
+  loggedIn: boolean;
   setUser: (user: User) => void;
   isLoggedIn: () => boolean;
   clearAuth: () => void;
@@ -28,11 +29,13 @@ const useAuthStore = create<AuthState>()(
       clearAuth: () => set({ user: null, loggedIn: false }),
       logout: () => {
         set({ user: null, loggedIn: false });
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("loggedIn");
-        localStorage.removeItem("loggedIn");
-        sessionStorage.removeItem("auth-storage");
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("token");
+          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("loggedIn");
+          localStorage.removeItem("loggedIn");
+          sessionStorage.removeItem("auth-storage");
+        }
       },
     }),
     {

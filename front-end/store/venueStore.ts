@@ -2,7 +2,8 @@ import { create } from "zustand";
 import axios from "@/lib/axios";
 
 interface Venue {
-  id: number;
+  _id:string;
+  id: string;
   name: string;
   location: string;
   description: string;
@@ -34,6 +35,7 @@ interface VenueStore {
   setStaffFilter: (staff: string) => void;
   setSearchQuery: (query: string) => void;
   setSortOption: (option: string) => void;
+  filterRestaurants: () => void;
 }
 
 const useVenueStore = create<VenueStore>((set, get) => ({
