@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/TermsOfServicePrivacyPolicy.module.css";
+import styles from "@/styles/TermsOfServicePrivacyPolicy.module.css";
 
 const PrivacyPolicy = ({ onClose }) => {
   return (
@@ -9,10 +9,10 @@ const PrivacyPolicy = ({ onClose }) => {
       </h2>
       <div className={styles.popupContent}>
         <div className={`${styles.popupparagraphs}`}>
-          Plan Hour ("we," "our," "us") is committed to protecting your privacy.
+          Plan Hour (&quot;we,&quot; &quot;our,&quot; &quot;us&quot;) is committed to protecting your privacy.
           This Privacy Policy explains how we collect, use, disclose, and
           safeguard your information when you use our web application
-          ("Service").
+          (&quot;Service&quot;).
         </div>
         <div className={`${styles.popupparagraphs}`}>
           <div className={`${styles.popupparagraphheaders}`}>
