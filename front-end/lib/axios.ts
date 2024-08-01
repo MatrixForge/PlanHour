@@ -1,3 +1,4 @@
+"use client"
 // lib/axios.ts
 import axios, { AxiosError } from 'axios';
 import { Router } from 'next/router';
@@ -13,7 +14,12 @@ const instance = axios.create({
 // Request interceptor to add token to headers
 instance.interceptors.request.use(
   (config) => {
-    const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("token")
+          ? localStorage.getItem("token")
+          : sessionStorage.getItem("token")
+        : null;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

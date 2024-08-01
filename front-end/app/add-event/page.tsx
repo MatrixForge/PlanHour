@@ -7,11 +7,10 @@ import Footer from "../components/footer";
 import ButtonList from "../components/addEvent/Buttons";
 import MainPage from "../components/addEvent/MainPage";
 
-const AddEvent = ({ loggedInBool }) => {
-  const [loggedIn, setLoggedIn] = useState(loggedInBool);
+const AddEvent = () => {
   return (
     <div>
-      <CustomNavbar loggedIn={loggedIn} />
+      <CustomNavbar />
       <HeroSection />
       <ButtonList />
       <MainPage />

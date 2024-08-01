@@ -1,7 +1,7 @@
 // components/ForgotPasswordPopup.tsx
 
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '@/lib/axios';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 interface ForgotPasswordPopupProps {
@@ -15,7 +15,7 @@ const ForgotPasswordPopup: React.FC<ForgotPasswordPopupProps> = ({ show, handleC
 
     const handleForgotPassword = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/api/users/forgot-password', { email });
+            const response = await axios.post('/users/forgot-password', { email });
             setMessage(response.data.message);
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || error.message;

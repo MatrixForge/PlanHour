@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import "../../styles/signin.css";
@@ -8,7 +8,7 @@ import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import ForgotPasswordPopup from "../components/ForgotPasswordPopup";
 import Image from "next/image";
-
+import axios from "@/lib/axios";
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
 
-  const setUser = useAuthStore((state:any) => state.setUser);
+  const setUser = useAuthStore((state: any) => state.setUser);
   const router = useRouter();
 
   const handleShow = () => setShowPopup(true);
@@ -28,38 +28,40 @@ const Login: React.FC = () => {
   };
 
   const toggleRememberMe = () => {
-    setRememberMe(prevRememberMe => !prevRememberMe);
+    setRememberMe((prevRememberMe) => !prevRememberMe);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, rememberMe }),
+      const response = await axios.post("/users/login", {
+        email,
+        password,
+        rememberMe,
       });
 
-      if (!response.ok) {
+      if (!response) {
         throw new Error("Invalid email or password");
       }
 
-      const data = await response.json();
+      const data = await response.data;
 
       if (data.token) {
         if (rememberMe) {
-          localStorage.setItem("token", data.token); // Store token in localStorage
-          useAuthStore.setState({ user: data }); // Update Zustand state
-          useAuthStore.setState({ loggedIn: true });
-          localStorage.setItem("loggedIn", "true");
+          if (typeof window !== "undefined") {
+            localStorage.setItem("token", data.token); // Store token in localStorage
+            useAuthStore.setState({ user: data }); // Update Zustand state
+            useAuthStore.setState({ loggedIn: true });
+            localStorage.setItem("loggedIn", "true");
+          }
         } else {
-          sessionStorage.setItem("token", data.token); // Store token in sessionStorage
-          useAuthStore.setState({ user: data }); // Update Zustand state
-          useAuthStore.setState({ loggedIn: true });
-          sessionStorage.setItem("loggedIn", "true");
+          if (typeof window !== "undefined") {
+            sessionStorage.setItem("token", data.token); // Store token in sessionStorage
+            useAuthStore.setState({ user: data }); // Update Zustand state
+            useAuthStore.setState({ loggedIn: true });
+            sessionStorage.setItem("loggedIn", "true");
+          }
         }
         router.push("/");
       } else {
@@ -112,7 +114,8 @@ const Login: React.FC = () => {
               <div className="alert alert-danger" role="alert">
                 {errorMessage}
               </div>
-            )} {/* Display error message using Bootstrap alert */}
+            )}{" "}
+            {/* Display error message using Bootstrap alert */}
             <div className="form-options">
               <div className="form-check">
                 <input
@@ -138,7 +141,7 @@ const Login: React.FC = () => {
             </button>
           </form>
           <p className="signin-link">
-            Don't have an account? <Link href="/signup">Sign Up</Link>
+            Don&apos;t have an account? <Link href="/signup">Sign Up</Link>
           </p>
         </div>
         <div className="rightBox">

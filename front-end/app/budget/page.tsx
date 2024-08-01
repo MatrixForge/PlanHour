@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import CustomNavbar from "../components/NavBar";
 import Footer from "../components/footer";
 import VenueBoard from "../components/venueBoard";
-import styles from "../../styles/custom-colors.module.css";
-import styles1 from "../../styles/budgePage.module.css";
+import styles from "@/styles/custom-colors.module.css";
+import styles1 from "@/styles/budgePage.module.css";
 import Link from "next/link";
 import useAuthStore from "@/store/authStore";
 import axios from "@/lib/axios";
@@ -21,11 +21,11 @@ const BudgetPage = () => {
   const [totalCost, setTotalCost] = useState(0);
 
   useEffect(() => {
-    const userId = user._id;
+    const userId = user?._id;
     fetchPlans(userId);
   }, [user]);
 
-  const fetchPlans = async (userId) => {
+  const fetchPlans = async (userId:any) => {
     try {
       const response = await axios.post("/budget/getAllPlansForSpecificUser", {
         userId,
@@ -56,7 +56,7 @@ const BudgetPage = () => {
         // Calculate total cost
         const totalCost = Object.values(newBudgetData).reduce(
           (total, vendors) => {
-            return total + vendors.reduce((sum, vendor) => sum + vendor.min, 0);
+            return total + vendors.reduce((sum:any, vendor:any) => sum + vendor.min, 0);
           },
           0
         );
@@ -68,7 +68,7 @@ const BudgetPage = () => {
     }
   };
 
-  const getClassName = (key) => {
+  const getClassName = (key:any) => {
     switch (key) {
       case "venue":
         return styles.customOrange;

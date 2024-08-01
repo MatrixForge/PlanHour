@@ -3,12 +3,11 @@ import React, { useState, useEffect } from 'react';
 import CustomNavbar from '../components/NavBar';
 import Footer from '../components/footer';
 import GuestBox from '../components/GuestLsit/GuestBox';
-import styles from '../../styles/custom-colors.module.css'; 
-import styles1 from '../../styles/guestList.module.css'; 
-import Link from 'next/link';
-import Papa from 'papaparse';
+import styles from '@/styles/custom-colors.module.css'; 
+import styles1 from '@/styles/guestList.module.css'; 
+import Papa from "papaparse"
 import AddGuestPopUp from '../components/GuestLsit/AddGuestPopUp'; // Import AddGuestPopUp
-
+import axios from "@/lib/axios"
 const GuestListPage = () => {
     const [checkedGuests, setCheckedGuests] = useState<{ [key: string]: boolean }>({});
     const [headerChecked, setHeaderChecked] = useState(false);
@@ -43,7 +42,12 @@ const GuestListPage = () => {
                 complete: (results) => {
                     const guestsData = results.data as Array<{ name: string; email: string; number: string }>;
                     setGuests(guestsData);
-                    localStorage.setItem('guests', JSON.stringify(guestsData));
+                    if (typeof window !== "undefined") {
+                      localStorage.setItem(
+                        "guests",
+                        JSON.stringify(guestsData)
+                      );
+                    }
                 },
                 skipEmptyLines: true
             });
@@ -60,16 +64,15 @@ const GuestListPage = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/guests/send-invitations', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                     Authorization: `Bearer ${sessionStorage.getItem('token')}`, 
-                },
-                body: JSON.stringify({ checkedGuests, eventDetails })
-            });
+             const response = await axios.post(
+               "/guests/send-invitations",
+               {
+                 checkedGuests,
+                 eventDetails,
+               }
+             );
 
-            if (response.ok) {
+            if (response) {
                 alert('Invitations sent successfully');
             } else {
                 alert('Failed to send invitations');

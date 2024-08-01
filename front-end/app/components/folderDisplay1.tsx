@@ -1,12 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "@/lib/axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useSearchParams } from "next/navigation";
 import { useFolderStore } from "../../store/folderStore";
 import FolderOptionsModal from "../components/eventify/FolderOptionsModal1"; // Import the modal
-import "../../styles/FolderDisplay.css";
+import "@/styles/FolderDisplay.css";
 import EventModal from "../components/EventModal";
 import Image from "next/image";
 
@@ -45,12 +43,7 @@ const SubFolderDisplay = () => {
   const fetchSubfolders = async (id: any) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/events/folders/${id}/subfolders`,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
+        `/events/folders/${id}/subfolders`
       );
       setSubfolders(response.data);
       console.log("folder id is", folderId);

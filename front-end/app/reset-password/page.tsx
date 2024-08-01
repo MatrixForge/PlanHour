@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '@/lib/axios';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Link from 'next/link';
 
@@ -25,7 +25,7 @@ const ResetPassword: React.FC = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/users/reset-password', {
+            const response = await axios.post('/users/reset-password', {
                 token,
                 newPassword: password
             });

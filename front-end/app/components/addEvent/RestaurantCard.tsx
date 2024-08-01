@@ -15,6 +15,7 @@ interface RestaurantCardProps {
     contact: string;
     min: number;
     _id: string;
+    
   };
   addPlanToFolder: (vendorId: string) => void;
 }

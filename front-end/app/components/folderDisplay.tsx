@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "@/lib/axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "@styles/FolderDisplay.css";
 import EventModal from "../components/EventModal";
@@ -28,12 +28,7 @@ const FolderDisplay: React.FC = () => {
   const fetchFolders = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/events/folders",
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
+        "/events/folders",
       );
       setFolders(response.data);
     } catch (error) {
