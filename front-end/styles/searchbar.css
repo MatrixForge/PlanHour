@@ -42,17 +42,17 @@
   padding: 0 20px;
   border: none;
   border-radius: 10px; /* Rounded edges */
-  background-color: #F6EDE4;
+  background-color: #f6ede4;
   color: black;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
-  font-family: 'Sharp Sans';
+  font-family: "Sharp Sans";
   font-weight: 500;
 }
 
 .search-button:hover {
-  background-color: #E8A696;
+  background-color: #e8a696;
 }
 
 .plus-icon {
@@ -66,10 +66,14 @@
 }
 
 .plus-icon i {
-  font-size: 30px; /* Adjust size as needed */
+  font-size: 50px; /* Adjust size as needed */
   color: black; /* Optional: Adjust color */
 }
 
 a:link {
   text-decoration: none;
+}
+
+.icon-size {
+  font-size: 240px;
 }
