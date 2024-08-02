@@ -7,6 +7,7 @@ import FolderOptionsModal from "../components/eventify/FolderOptionsModal1"; // 
 import "@/styles/FolderDisplay.css";
 import EventModal from "../components/EventModal";
 import Image from "next/image";
+import CustomIIcon from "./customiIcon";
 
 interface Folder {
   _id: string;
@@ -42,9 +43,7 @@ const SubFolderDisplay = () => {
 
   const fetchSubfolders = async (id: any) => {
     try {
-      const response = await axios.get(
-        `/events/folders/${id}/subfolders`
-      );
+      const response = await axios.get(`/events/folders/${id}/subfolders`);
       setSubfolders(response.data);
       console.log("folder id is", folderId);
     } catch (error) {
@@ -88,6 +87,7 @@ const SubFolderDisplay = () => {
                   height={10}
                 />
                 <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
+                <CustomIIcon message="Click the folder to create your event" />
               </div>
             </div>
           </div>
