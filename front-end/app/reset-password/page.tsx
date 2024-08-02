@@ -25,7 +25,7 @@ const ResetPassword: React.FC = () => {
     }
 
     try {
-      const response = await axios.post("users/reset-password", {
+      const response = await axios.post(`users/reset-password`, {
         token,
         newPassword: password,
       });
@@ -40,8 +40,8 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <Modal>
-      <Modal.Header closeButton>
+<Modal show={true} onHide={() => {}}>
+<Modal.Header closeButton>
         <Modal.Title>Reset Password</Modal.Title>
       </Modal.Header>
       <Modal.Body>

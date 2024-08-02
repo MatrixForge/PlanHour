@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import {persist} from 'zustand/middleware'
+import { persist } from "zustand/middleware";
 
 interface User {
   _id: string;
@@ -10,7 +10,7 @@ interface User {
 
 interface AuthState {
   user: User | null;
-  loggedIn : boolean;
+  loggedIn: boolean;
   setUser: (user: User) => void;
   isLoggedIn: () => boolean;
   clearAuth: () => void;

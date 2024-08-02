@@ -26,7 +26,6 @@ const GuestBox = ({ guest, index, checked, onCheckboxChange }: GuestBoxProps) =>
       <div className={styles1.guestName}>{guest.name}</div>
       <div className={styles1.email}>{guest.email}</div>
       <div className={styles1.number}>{guest.number}</div>
-      <div className={styles1.icon}><i className="bi bi-three-dots"></i></div> {/* Icon for options */}
     </div>
   );
 };

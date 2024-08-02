@@ -6,6 +6,7 @@ var logger = require('morgan');
 const dotenv = require('dotenv');
 var cors = require('cors');
 const { connectDB } = require("./config/db"); 
+var guestRoutes = require('./routes/guestRoutes'); // Adjust path if necessary
 
 // var indexRouter = require('./routes/index');
 var authRoutes = require('./routes/authRoutes');
@@ -38,6 +39,7 @@ app.use('/api/users', authRoutes);
 app.use('/api/events', folderRoutes);
 app.use('/api/plans', vendorRoutes);
 app.use('/api/budget', budgetRoutes);
+app.use('/api/guests', guestRoutes); 
 
 
 // catch 404 and forward to error handler
