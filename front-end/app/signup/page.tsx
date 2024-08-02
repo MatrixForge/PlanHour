@@ -19,10 +19,12 @@ const Signup: React.FC = () => {
 
   useEffect(() => {
     // Retrieve the email from session storage
-    const storedEmail = sessionStorage.getItem("signupEmail");
-    if (storedEmail) {
-      setEmail(storedEmail);
-      sessionStorage.removeItem("signupEmail"); // Clear it after use
+    if (typeof window !== "undefined") {
+      const storedEmail = sessionStorage.getItem("signupEmail");
+      if (storedEmail) {
+        setEmail(storedEmail);
+        sessionStorage.removeItem("signupEmail"); // Clear it after use
+      }
     }
   }, []);
 

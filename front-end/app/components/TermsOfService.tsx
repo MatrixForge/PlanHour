@@ -9,9 +9,9 @@ const TermsOfService = ({ onClose }) => {
       </h2>
       <div className={styles.popupContent}>
         <div className={`${styles.popupparagraphs}`}>
-          Welcome to Plan Hour! These terms of service ("Terms") apply to your
-          access and use of our web application ("Service"). Please read them
-          carefully.
+          Welcome to Plan Hour! These terms of service (&quot;Terms&quot;) apply to
+          your access and use of our web application (&quot;Service&quot;). Please read
+          them carefully.
         </div>
         <div className={`${styles.popupparagraphs}`}>
           <div className={`${styles.popupparagraphheaders}`}>

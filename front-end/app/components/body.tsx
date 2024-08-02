@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import styles from "@styles/custom-colors.module.css";
 import cardStyles from "@styles/card.module.css";
 import "@styles/body.module.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import useAuthStore from "@/store/authStore";
 
 const Body = () => {
-  const found = localStorage.getItem("loggedIn")||"";
+  const[localFound, setlocalFound] = useState("");
+  const [sessionFound, setSessionFound] = useState("");
+  useEffect(()=>{
+    setlocalFound(localStorage.getItem("loggedIn")||"");
+    setSessionFound(sessionStorage.getItem("loggedIn")||"");
+  })
+  
   const [email, setEmail] = useState("");
   const router = useRouter();
-  const { loggedIn } = useAuthStore((state) => state);
   const handleSignUpClick = () => {
     if (email) {
-      sessionStorage.setItem("signupEmail", email);
+      if (typeof window !== "undefined")
+{        sessionStorage.setItem("signupEmail", email);}
       router.push("/signup");
     }
   };
@@ -33,7 +38,7 @@ const Body = () => {
         backgroundColor: "#fff",
       }}
     >
-      {(sessionStorage.getItem("loggedIn") !== "true") && (found !== "true")&&(
+      {(sessionFound !== "true") && (localFound !== "true")&&(
         <div className={`d-flex flex-row mb-3 ${cardStyles.bottomBar}`}>
           <div className={`inputContainer position-relative`}>
             <Image

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore"; // Import the Zustand store
 import styles from "@styles/eventModal.module.css";
 
@@ -33,14 +33,12 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { title, eventType, date, noOfGuests, description } = formData;
-    const token = sessionStorage.getItem("token"); // Assuming the token is stored in sessionStorage
-
+    
     // Determine the URL based on the presence of mainFolderId
     const url = folderId
-      ? `http://localhost:5000/api/events/folders/${folderId}/subfolder`
-      : `http://localhost:5000/api/events/folders`;
+      ? `/events/folders/${folderId}/subfolder`
+      : `/events/folders`;
 
-    console.log("yss", url);
     try {
       const response = await axios.post(
         url,
@@ -51,14 +49,7 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
           noOfGuests,
           description,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
       );
-
-      console.log(response.data); // Handle successful response
       setFolderCreated(true); // Update Zustand store state
       onClose(); // Close the modal
     } catch (error: any) {

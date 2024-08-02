@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
-import axios from "@/lib/axios";
-import { Modal, Button, Form } from "react-bootstrap";
-import Link from "next/link";
+import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react';
+import axios from '@/lib/axios';
+import { Modal, Button, Form } from 'react-bootstrap';
+import Link from 'next/link';
 
 const ResetPassword: React.FC = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
+    const [token, setToken] = useState<string | null>(null);
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const tokenFromUrl = params.get("token");
-    setToken(tokenFromUrl);
-  }, []);
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const tokenFromUrl = params.get('token');
+        setToken(tokenFromUrl);
+    }, []);
 
-  const handleResetPassword = async () => {
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
-      return;
-    }
+    const handleResetPassword = async () => {
+        if (password !== confirmPassword) {
+            setMessage('Passwords do not match');
+            return;
+        }
 
     try {
       const response = await axios.post(`users/reset-password`, {

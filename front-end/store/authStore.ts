@@ -1,3 +1,4 @@
+"use client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -28,11 +29,13 @@ const useAuthStore = create<AuthState>()(
       clearAuth: () => set({ user: null, loggedIn: false }),
       logout: () => {
         set({ user: null, loggedIn: false });
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("loggedIn");
-        localStorage.removeItem("loggedIn");
-        sessionStorage.removeItem("auth-storage");
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("token");
+          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("loggedIn");
+          localStorage.removeItem("loggedIn");
+          sessionStorage.removeItem("auth-storage");
+        }
       },
     }),
     {

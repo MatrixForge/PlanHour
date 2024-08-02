@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "@/lib/axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "@styles/FolderDisplay.css";
 import EventModal from "../components/EventModal";
 import FolderOptionsModal from "../components/eventify/FolderOptionsModal";
 import { useFolderStore } from "../../store/folderStore";
 import Image from "next/image";
+import CustomIIcon from "./customiIcon";
+
 interface Folder {
   _id: string;
   title: string;
@@ -27,14 +29,7 @@ const FolderDisplay: React.FC = () => {
 
   const fetchFolders = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/events/folders",
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get("/events/folders");
       setFolders(response.data);
     } catch (error) {
       console.error("Error fetching folders:", error);
@@ -68,7 +63,13 @@ const FolderDisplay: React.FC = () => {
             }}
             onClick={() => handleShowOptionsModal(folder._id, folder.title)}
           >
-            <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+            <div className="three-dots-container">
+              <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+              <div className="popup">
+                <div className="popup-option">Edit</div>
+                <div className="popup-option">Delete</div>
+              </div>
+            </div>
             <Image
               src="/folder.png"
               className="card-img-top cardImg"
@@ -87,6 +88,7 @@ const FolderDisplay: React.FC = () => {
                   height={10}
                 />
                 <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
+                <CustomIIcon message="Click the folder to create your event" />
               </div>
             </div>
           </div>

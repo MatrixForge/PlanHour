@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Form, Button, Container, Card } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ResetPasswordPage: React.FC = () => {
     const router = useRouter();

@@ -3,6 +3,7 @@ import styles from "../../styles/footer.module.css";
 import TermsOfService from "./TermsOfService";
 import PrivacyPolicy from "./PrivacyPolicy";
 import Popup from "./Popup";
+import ContactUs from "./ContactUs";
 import Image from "next/image";
 
 const Footer = () => {
@@ -33,6 +34,9 @@ const Footer = () => {
           <div className="d-flex align-items-center justify-content-center">
             <button
               className={`shadow-lg d-flex align-items-center justify-content-center ${styles.button1}`}
+              onClick={() =>
+                handleOpenPopup(<ContactUs onClose={handleClosePopup} />)
+              }
             >
               Contact Us
             </button>
