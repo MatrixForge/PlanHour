@@ -3,7 +3,7 @@ import styles from "../../styles/footer.module.css";
 import TermsOfService from "./TermsOfService";
 import PrivacyPolicy from "./PrivacyPolicy";
 import Popup from "./Popup";
-import ContactUs from "./ContactUs";
+import ContactUs from "./contactUs";
 import Image from "next/image";
 
 const Footer = () => {

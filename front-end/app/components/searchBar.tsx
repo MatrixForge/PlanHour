@@ -31,7 +31,7 @@ const SearchBar: React.FC = () => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <i class="bi bi-filter"></i>
+          <i className="bi bi-filter"></i>
           {showModal && <DropdownModal />} {/* Render modal conditionally */}
         </div>
       </div>
