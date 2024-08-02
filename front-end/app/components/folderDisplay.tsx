@@ -7,6 +7,7 @@ import FolderOptionsModal from "../components/eventify/FolderOptionsModal";
 import { useFolderStore } from "../../store/folderStore";
 import Image from "next/image";
 import CustomIIcon from "./customiIcon";
+
 interface Folder {
   _id: string;
   title: string;
@@ -62,7 +63,13 @@ const FolderDisplay: React.FC = () => {
             }}
             onClick={() => handleShowOptionsModal(folder._id, folder.title)}
           >
-            <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+            <div className="three-dots-container">
+              <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+              <div className="popup">
+                <div className="popup-option">Edit</div>
+                <div className="popup-option">Delete</div>
+              </div>
+            </div>
             <Image
               src="/folder.png"
               className="card-img-top cardImg"
