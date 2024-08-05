@@ -1,0 +1,86 @@
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popupContent {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 70%;
+  max-width: 800px;
+  max-height: 90%;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.fontMontserrat6 {
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+
+.fontMontserrat7 {
+  font-family: "Montserrat";
+  font-weight: 700;
+}
+
+.fontSharpSans {
+  font-family: "Sharp Sans" !important;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.popupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  padding-left: 10mm; /* Add padding on the left */
+}
+
+.popupBody {
+  font-family: "Sharp Sans";
+  padding-left: 10mm; /* Add padding on the left */
+}
+
+.vendorSection {
+  margin-bottom: 20px;
+  page-break-inside: avoid; /* Prevent breaking within sections */
+}
+
+.vendorSection h3 {
+  margin-bottom: 10px;
+}
+
+.vendorSection ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.vendorSection li {
+  margin-bottom: 5px;
+}
+
+.pageBreak {
+  page-break-after: auto; /* Ensure this class does not cause a page break */
+}
+
+.cost {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
