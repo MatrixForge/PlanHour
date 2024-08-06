@@ -32,15 +32,20 @@ const BudgetPage = () => {
   const [showExportPopup, setShowExportPopup] = useState(false);
 
   useEffect(() => {
+    console.log('first')
     fetchPlans();
-  }, [user]);
+    console.log('second')
+  }, []);
 
   const fetchPlans = async () => {
     try {
-      const response = await axios.post("/budget/getAllPlansForSpecificUser", {
-        folderId,
-        subFolderId,
-      });
+      const response = await axios.post(
+        "/budget/get-all-plans-for-specific-user",
+        {
+          folderId,
+          subFolderId,
+        }
+      );
       if (response) {
         const fetchedVendors = response.data;
 

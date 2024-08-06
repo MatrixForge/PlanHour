@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "../components/NavBar";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -8,21 +8,13 @@ import "react-day-picker/dist/style.css";
 import Footer from "../components/footer";
 import "./toDoList.css"; // Adjust the path as necessary
 import Image from "next/image";
+import axios from "@/lib/axios";
+import { useFolderStore } from "@/store/folderStore";
 
 const BootstrapLayout = () => {
-  const [todos, setTodos] = useState([
-    { id: 1, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-    { id: 2, text: "Cras justo odio", done: false },
-  ]);
-
+  const { folderId, subFolderId } = useFolderStore();
+  const [todos, setTodos] = useState([]);
+  const [events, setEvents] = useState([]);
   const toggleDone = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -30,17 +22,34 @@ const BootstrapLayout = () => {
       )
     );
   };
+  useEffect(() => {
+    fetchData();
+  }, [folderId, subFolderId]);
 
+  const fetchData = async () => {
+    if (!subFolderId && folderId) {
+      const folderOrSubFolder = "folder";
+      const id = folderId;
+      console.log(id, folderOrSubFolder);
+      try {
+        const response = await axios.post("/events/get-to-do-list", {
+          folderOrSubFolder,
+          id,
+        });
+
+        if (response) {
+          const data = await response.data;
+          setTodos(data.toDoLists);
+          setEvents(data.subfolders);
+          console.log(data);
+          console.log(events)
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  };
   const [selectedDates, setSelectedDates] = useState([]);
-  const events = [
-    { id: 1, name: "Event 1", date: "2024-07-20" },
-    { id: 2, name: "Event 2", date: "2024-08-15" },
-    { id: 3, name: "Event 3", date: "2024-09-10" },
-    { id: 4, name: "Event 3", date: "2024-09-10" },
-    { id: 5, name: "Event 3", date: "2024-09-10" },
-    { id: 6, name: "Event 3", date: "2024-09-10" },
-    // Add more events as needed
-  ];
 
   const colors = ["#E8A696", "#92D4C9", "#C5B3E6", "#EBA0E3"];
 
@@ -61,13 +70,13 @@ const BootstrapLayout = () => {
             </div>
             <div className="card-body">
               <ol className="list-group list-group-numbered">
-                {todos.map((todo) => (
+                {todos.map((todo, idx) => (
                   <li
-                    key={todo.id}
+                    key={idx}
                     className={`list-group-item ${todo.done ? "done" : ""}`}
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <span className="text">{todo.text}</span>
+                    <span className="text">{todo.title}</span>
                     <div className="icon-container">
                       <Image
                         src={todo.done ? "/correct-filled.png" : "/correct.png"}

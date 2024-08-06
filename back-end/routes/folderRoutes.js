@@ -16,6 +16,6 @@ router.post('/folders/:mainFolderId/subfolder',authenticateToken, folderControll
 // Get subfolders of a specific folder
 router.get('/folders/:mainFolderId/subfolders', authenticateToken, folderController.getSubFolders);
 // To Do List Routes
-router.post('/getToDoList', authenticateToken, folderController.getToDoList);
-router.post('/addTask', authenticateToken, folderController.addTask);
+router.post('/get-to-do-list', authenticateToken, folderController.getToDoList);
+router.post('/add-task', authenticateToken, folderController.addTask);
 module.exports = router;
