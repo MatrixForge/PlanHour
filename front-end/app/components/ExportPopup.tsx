@@ -64,7 +64,6 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
   const handleDownload = () => {
     const element = contentRef.current;
     const options = {
-      margin: 0.5,
       filename: "budget-preview.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },

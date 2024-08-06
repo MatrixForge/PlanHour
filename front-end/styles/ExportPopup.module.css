@@ -54,7 +54,13 @@
 
 .popupBody {
   font-family: "Sharp Sans";
-  padding-left: 10mm; /* Add padding on the left */
+  padding-top: 10mm;
+  padding-left: 10mm;
+  background: linear-gradient(
+    135deg,
+    rgba(232, 166, 150, 0.7),
+    rgba(232, 166, 235, 1)
+  );
 }
 
 .vendorSection {
@@ -83,4 +89,9 @@
   display: flex;
   justify-content: end;
   align-items: end;
+  margin-right: 10mm;
+}
+
+.text {
+  font-weight: 700;
 }
