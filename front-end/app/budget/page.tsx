@@ -32,9 +32,7 @@ const BudgetPage = () => {
   const [showExportPopup, setShowExportPopup] = useState(false);
 
   useEffect(() => {
-    console.log('first')
     fetchPlans();
-    console.log('second')
   }, []);
 
   const fetchPlans = async () => {

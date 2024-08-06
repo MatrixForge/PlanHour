@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
-import html2pdf from "html2pdf.js";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import styles from "@/styles/ExportPopup.module.css";
 import styles_color from "../../styles/custom-colors.module.css";
 
 const ExportPopup = ({ onClose, budgetData, totalCost }) => {
-  // Overwriting budgetData and totalCost with dummy data
+  // Dummy data for testing
   budgetData = {
     venue: [
       {
@@ -61,16 +62,44 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
 
   const contentRef = useRef();
 
-  const handleDownload = () => {
+  const downloadPDF = async () => {
     const element = contentRef.current;
-    const options = {
-      filename: "budget-preview.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-    };
+    if (element) {
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const margins = 0; // Adjust margins as needed
+      const pageHeight = pdfHeight - 2 * margins;
 
-    html2pdf().from(element).set(options).save();
+      // Use html2canvas to create a canvas from the content
+      const canvas = await html2canvas(element, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      // Split the content into pages
+      let position = 0;
+      let remainingHeight = imgHeight;
+
+      while (remainingHeight > 0) {
+        // Adjust height if it's the last page
+        let height = Math.min(pageHeight, remainingHeight);
+
+        pdf.addImage(
+          imgData,
+          "PNG",
+          margins,
+          -position + margins,
+          pdfWidth - 2 * margins,
+          height
+        );
+
+        remainingHeight -= height;
+        position += height;
+      }
+
+      pdf.save("budget.pdf");
+    }
   };
 
   const handleOutsideClick = (e) => {
@@ -86,8 +115,8 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
           <h2 className={styles.fontCustom}>Budget Preview</h2>
           <div>
             <button
+              onClick={downloadPDF}
               className={`btn btn-light mx-2 rounded-pill px-4 ${styles.fontCustom} ${styles_color.customBrown}`}
-              onClick={handleDownload}
             >
               Download PDF
             </button>
@@ -97,8 +126,8 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
           </div>
         </div>
         <div className={styles.popupBody} ref={contentRef}>
-          <h3 className={styles.fontMontserrat6}>Ali Birthday</h3>
-          <h4 className={styles.fontMontserrat6}>By Fiza</h4>
+          <h4 className={styles.fontMontserrat6}>Ali Birthday</h4>
+          <h5 className={styles.fontMontserrat6}>By Fiza</h5>
           <hr className={styles.pageBreak} />
           <p>
             <b>Date of Event:</b> 2024-12-31
@@ -107,17 +136,14 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
             <b>Number of Guests:</b> 100
           </p>
           <p>
-            <b>Description:</b> Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. A, commodi dicta eligendi placeat rerum fugiat
-            veritatis quaerat eum non incidunt eaque molestias praesentium
-            maxime quod?
+            <b>Description:</b> Lorem
           </p>
           <hr className={styles.pageBreak} />
           {Object.keys(budgetData).map((key) => (
             <div key={key} className={styles.vendorSection}>
-              <h3 className={styles.fontMontserrat6}>
+              <h4 className={styles.fontMontserrat6}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
-              </h3>
+              </h4>
               <ul>
                 {budgetData[key].map((vendor) => (
                   <li key={vendor._id}>
@@ -135,9 +161,9 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
             </div>
           ))}
           <div className={styles.cost}>
-            <h3 className={`${styles.fontMontserrat6}`}>
+            <h4 className={styles.fontMontserrat6}>
               Total Cost: PKR {totalCost}
-            </h3>
+            </h4>
           </div>
         </div>
       </div>
