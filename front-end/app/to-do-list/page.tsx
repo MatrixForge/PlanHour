@@ -12,9 +12,14 @@ import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore";
 
 const BootstrapLayout = () => {
-  const { folderId, subFolderId } = useFolderStore();
+  const { folderId, subFolderId, folderTitle } = useFolderStore();
   const [todos, setTodos] = useState([]);
+   const [selectedDates, setSelectedDates] = useState([]);
+
   const [events, setEvents] = useState([]);
+  const [newTask, setNewTask] = useState(""); // New task input state
+  const [isInputActive, setIsInputActive] = useState(false); // Input activation state 
+
   const toggleDone = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -41,15 +46,35 @@ const BootstrapLayout = () => {
           const data = await response.data;
           setTodos(data.toDoLists);
           setEvents(data.subfolders);
-          console.log(data);
-          console.log(events)
+          setSelectedDates(
+            data.subfolders.map((event: any) => new Date(event.date))
+          );
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
   };
-  const [selectedDates, setSelectedDates] = useState([]);
+ 
+  const handleTaskSubmit = async () => {
+    if (newTask.trim() === "") return;
+
+    try {
+      const response = await axios.post("/events/add-task", {
+        subFolderId, // Pass the selected subFolderId
+        title: newTask,
+      });
+
+      if (response) {
+        const newTodo = await response.data;
+        setTodos((prevTodos) => [...prevTodos, newTodo]);
+        setNewTask(""); // Clear the input field
+        setIsInputActive(false); // Deactivate the input field
+      }
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
+  };
 
   const colors = ["#E8A696", "#92D4C9", "#C5B3E6", "#EBA0E3"];
 
@@ -122,7 +147,9 @@ const BootstrapLayout = () => {
               }}
             >
               <div className="event-card ">
-                <div className="event-card-header fontCustom">Weddings</div>
+                <div className="event-card-header fontCustom">
+                  {folderTitle}
+                </div>
                 {events.map((event, index) => (
                   <div
                     key={event.id}
@@ -134,8 +161,14 @@ const BootstrapLayout = () => {
                   >
                     <div className="left-bg"></div>
                     <div className="event-info">
-                      <span className="event-name">{event.name}</span>
-                      <span className="event-date">{event.date}</span>
+                      <span className="event-name">{event.title}</span>
+                      <span className="event-date">
+                        {new Date(event.date).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        })}
+                      </span>
                     </div>
                   </div>
                 ))}

@@ -1,7 +1,8 @@
+"use client"
 import React, { useRef } from "react";
-import html2pdf from "html2pdf.js";
+// import html2pdf from "html2pdf.js";
 import styles from "@/styles/ExportPopup.module.css";
-import styles_color from "../../styles/custom-colors.module.css";
+import styles_color from "@/styles/custom-colors.module.css";
 
 const ExportPopup = ({ onClose, budgetData, totalCost }) => {
   // Overwriting budgetData and totalCost with dummy data
@@ -61,17 +62,17 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
 
   const contentRef = useRef();
 
-  const handleDownload = () => {
-    const element = contentRef.current;
-    const options = {
-      filename: "budget-preview.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-    };
+  // const handleDownload = () => {
+  //   const element = contentRef.current;
+  //   const options = {
+  //     filename: "budget-preview.pdf",
+  //     image: { type: "jpeg", quality: 0.98 },
+  //     html2canvas: { scale: 2 },
+  //     jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+  //   };
 
-    html2pdf().from(element).set(options).save();
-  };
+  //   html2pdf().from(element).set(options).save();
+  // };
 
   const handleOutsideClick = (e) => {
     if (e.target.className.includes(styles.popupOverlay)) {
@@ -87,7 +88,7 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
           <div>
             <button
               className={`btn btn-light mx-2 rounded-pill px-4 ${styles.fontCustom} ${styles_color.customBrown}`}
-              onClick={handleDownload}
+              // onClick={handleDownload}
             >
               Download PDF
             </button>
@@ -97,7 +98,7 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
           </div>
         </div>
         <div className={styles.popupBody} ref={contentRef}>
-          <h3 className={styles.fontMontserrat6}>Ali's Birthday</h3>
+          <h3 className={styles.fontMontserrat6}>Ali&apos;s Birthday</h3>
           <h4 className={styles.fontMontserrat6}>By Fiza</h4>
           <hr className={styles.pageBreak} />
           <p>

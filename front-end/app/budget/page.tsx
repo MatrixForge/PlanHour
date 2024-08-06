@@ -231,7 +231,7 @@ const BudgetPage = () => {
           Total Cost: PKR {totalCost}
         </h2>
       </div>
-      {showExportPopup && (
+      {showExportPopup &&  (
         <ExportPopup
           onClose={() => setShowExportPopup(false)}
           budgetData={budgetData}
