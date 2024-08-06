@@ -9,9 +9,10 @@ import Link from "next/link";
 import useAuthStore from "@/store/authStore";
 import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore";
+import ExportPopup from "../components/ExportPopup";
 
 const BudgetPage = () => {
-  const{folderId, subFolderId} = useFolderStore();
+  const { folderId, subFolderId } = useFolderStore();
   const { user } = useAuthStore();
   const [budgetData, setBudgetData] = useState({
     venue: [],
@@ -28,6 +29,7 @@ const BudgetPage = () => {
     photographer: null,
     decor: null,
   });
+  const [showExportPopup, setShowExportPopup] = useState(false);
 
   useEffect(() => {
     console.log('first')
@@ -67,7 +69,6 @@ const BudgetPage = () => {
 
         setBudgetData(newBudgetData);
 
-        // Calculate total cost
         const totalCost = Object.values(newBudgetData).reduce(
           (total, vendors) => {
             return (
@@ -95,7 +96,6 @@ const BudgetPage = () => {
         ...prevSelected,
         [vendorType]: isSelected ? id : null,
       };
-      // Ensure only one vendor per type is selected
       return newSelection;
     });
   };
@@ -113,20 +113,17 @@ const BudgetPage = () => {
         },
         []
       );
-      console.log('first', folderId)
-      if (folderId!==null) {
+
+      if (folderId !== null) {
         const response = axios.post("/budget/save-selected-vendors", {
           folderId,
           selectedVendors,
         });
-        if(response){
-          console.log((await response).status)
+        if (response) {
+          console.log((await response).status);
         }
       }
-      // Save selected vendors to the server
-      // await axios.post("/budget/saveSelectedVendors", { vendors: selectedVendors });
 
-      // Update budgetData to only include selected vendors
       const updatedBudgetData = {
         venue: selectedVenues.venue
           ? budgetData.venue.filter(
@@ -199,12 +196,12 @@ const BudgetPage = () => {
               </button>
             </div>
             <div>
-              <Link
+              <button
                 className={`btn btn-light mx-2 rounded-pill ${styles.customBrown} ${styles1.fontCustom}`}
-                href="/"
+                onClick={() => setShowExportPopup(true)}
               >
                 Export
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -234,6 +231,13 @@ const BudgetPage = () => {
           Total Cost: PKR {totalCost}
         </h2>
       </div>
+      {showExportPopup && (
+        <ExportPopup
+          onClose={() => setShowExportPopup(false)}
+          budgetData={budgetData}
+          totalCost={totalCost}
+        />
+      )}
       <Footer />
     </div>
   );
