@@ -49,13 +49,12 @@
   align-items: center;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  padding-left: 10mm; /* Add padding on the left */
+  padding-left: 5mm; /* Add padding on the left */
 }
 
 .popupBody {
   font-family: "Sharp Sans";
-  padding-top: 10mm;
-  padding-left: 10mm;
+  padding: 5mm;
   background: linear-gradient(
     135deg,
     rgba(232, 166, 150, 0.7),
@@ -82,7 +81,7 @@
 }
 
 .pageBreak {
-  page-break-after: auto; /* Ensure this class does not cause a page break */
+  page-break-after: always; /* Ensure this class does cause a page break */
 }
 
 .cost {

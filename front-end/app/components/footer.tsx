@@ -20,7 +20,9 @@ const Footer = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center">
+    <div
+      className={`d-flex justify-content-center align-items-center ${styles.footerBackground}`}
+    >
       <div className="d-flex flex-column align-items-center">
         <div className="mb-3 text-center">
           <div className={styles.text1}>
