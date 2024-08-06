@@ -1,5 +1,6 @@
 // src/store/useFolderStore.ts
-import {create} from 'zustand';
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface FolderState {
   folderCreated: boolean;
@@ -10,16 +11,23 @@ interface FolderState {
   setFolderId: (id: string | null) => void;
   setSubFolderId: (id: string) => void;
   setFolderTitle: (id: string) => void;
-
 }
 
-export const useFolderStore = create<FolderState>((set) => ({
-  folderCreated: false,
-  folderId: null,
-  subFolderId: null,
-  setFolderId: (id) => set({ folderId: id }),
-  setSubFolderId: (id) => set({ subFolderId: id }),
-  setFolderCreated: (created) => set({ folderCreated: created }),
-  folderTitle:null,
-  setFolderTitle: (title) => set({ folderTitle: title }),
-}));
+export const useFolderStore = create<FolderState>()(
+  persist(
+    (set) => ({
+    folderCreated: false,
+    folderId: null,
+    subFolderId: null,
+    setFolderId: (id) => set({ folderId: id }),
+    setSubFolderId: (id) => set({ subFolderId: id }),
+    setFolderCreated: (created) => set({ folderCreated: created }),
+    folderTitle: null,
+    setFolderTitle: (title) => set({ folderTitle: title }),
+  }),
+  {
+    name: "folder-store",
+    storage: createJSONStorage (()=> localStorage)
+  }
+)
+);

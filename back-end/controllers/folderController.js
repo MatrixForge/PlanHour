@@ -96,17 +96,16 @@ exports.getToDoList = async (req, res) => {
 
     if (folderOrSubFolder === 'folder') {
       // Populate subfolders field
-      targetFolderOrSubFolder = await Folder.findById(id).populate('subfolders');
+      targetFolderOrSubFolder = await Folder.findById(id).populate("subfolders");
       if (!targetFolderOrSubFolder) {
-        return res.status(404).json({ message: 'Folder not found' });
+        return res.status(204).json({ message: 'Folder not found' });
       }
-      console.log('Folder:', targetFolderOrSubFolder);
     } else if (folderOrSubFolder === 'subFolder') {
       targetFolderOrSubFolder = await subFolder.findById(id);
       if (!targetFolderOrSubFolder) {
-        return res.status(404).json({ message: 'SubFolder not found' });
+        return res.status(204).json({ message: 'SubFolder not found' });
       }
-      console.log('SubFolder:', targetFolderOrSubFolder);
+
     }
 
     const toDoLists = targetFolderOrSubFolder.toDoList || [];
@@ -130,7 +129,7 @@ exports.addTask = async (req, res) => {
   try {
     let targetFolderOrSubFolder;
 
-    if (folderOrSubFolder === 'folder') {
+    if (folderOrSubFolder.toLowerCase() === 'folder') {
       targetFolderOrSubFolder = await Folder.findById(id);
     } else if (folderOrSubFolder === 'subFolder') {
       targetFolderOrSubFolder = await subFolder.findById(id);
@@ -143,7 +142,7 @@ exports.addTask = async (req, res) => {
     targetFolderOrSubFolder.toDoList.push(task);
     await targetFolderOrSubFolder.save();
 
-    res.status(200).json(targetFolderOrSubFolder.toDoList);
+    res.status(200).json(task);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
