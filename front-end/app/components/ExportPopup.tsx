@@ -97,7 +97,7 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
           </div>
         </div>
         <div className={styles.popupBody} ref={contentRef}>
-          <h3 className={styles.fontMontserrat6}>Ali's Birthday</h3>
+          <h3 className={styles.fontMontserrat6}>Ali Birthday</h3>
           <h4 className={styles.fontMontserrat6}>By Fiza</h4>
           <hr className={styles.pageBreak} />
           <p>
