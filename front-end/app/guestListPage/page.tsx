@@ -21,7 +21,7 @@ const GuestListPage = () => {
   }>({});
   const [headerChecked, setHeaderChecked] = useState(false);
   const [guests, setGuests] = useState<
-  Array<{ _id: string; name: string; email: string; number: string }>
+    Array<{ _id: string; name: string; email: string; number: string }>
   >([]);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [newGuest, setNewGuest] = useState({ name: "", email: "", number: "" });
@@ -59,7 +59,6 @@ const GuestListPage = () => {
     }
   };
 
-
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -73,13 +72,13 @@ const GuestListPage = () => {
             email: string;
             number: string;
           }>;
-  
+
           // Add a temporary unique ID to each guest object
           const guestsWithIds = guestsData.map((guest, index) => ({
             _id: `temp-id-${index}`, // Generate a temporary ID
             ...guest,
           }));
-  
+
           // Iterate over each guest and make a POST request to add them to the database
           for (const guest of guestsWithIds) {
             try {
@@ -93,7 +92,7 @@ const GuestListPage = () => {
                   body: JSON.stringify(guest),
                 }
               );
-  
+
               if (response.ok) {
                 console.log(`Guest ${guest.name} added successfully`);
               } else {
@@ -103,7 +102,7 @@ const GuestListPage = () => {
               console.error(`Error adding guest ${guest.name}:`, error);
             }
           }
-  
+
           setGuests(guestsWithIds);
           console.log("guests are", guestsWithIds);
           fetchGuests(); // Refetch the guests after importing the CSV
@@ -112,8 +111,6 @@ const GuestListPage = () => {
       });
     }
   };
-  
-
 
   const fetchGuests = async () => {
     try {
@@ -219,29 +216,32 @@ const GuestListPage = () => {
     const selectedGuestIds = Object.keys(checkedGuests).filter(
       (key) => checkedGuests[key]
     );
-  
+
     if (selectedGuestIds.length === 0) {
       alert("Please select guests to delete.");
       return;
     }
-  
+
     // Convert selectedGuestIds to an array of guest objects
     const selectedGuestsList = guests.filter((_, index) =>
       selectedGuestIds.includes(`checkbox-${index}`)
     );
-  
+
     // Extract the IDs of the selected guests
     const idsToDelete = selectedGuestsList.map((guest) => guest._id);
-  
+
     try {
-      const response = await fetch("http://localhost:5000/api/guests/delete-guests", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ids: idsToDelete }),
-      });
-  
+      const response = await fetch(
+        "http://localhost:5000/api/guests/delete-guests",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ids: idsToDelete }),
+        }
+      );
+
       if (response.ok) {
         // Refetch the guests after deletion
         fetchGuests();
@@ -256,7 +256,6 @@ const GuestListPage = () => {
       console.error("Error deleting guests:", error);
     }
   };
-  
 
   return (
     <div>
@@ -390,7 +389,11 @@ const GuestListPage = () => {
         />
       )}
       {showEventForm && (
-        <EventForm session={session} onClose={() => setShowEventForm(false)} />
+        <EventForm
+          show={true}
+          session={session}
+          onClose={() => setShowEventForm(false)}
+        />
       )}
     </div>
   );
