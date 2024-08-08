@@ -6,27 +6,24 @@ import {
   useSessionContext,
 } from "@supabase/auth-helpers-react";
 import { useGuestStore } from "../../store/guestStore"; // Adjust the import path
+import styles from "@styles/googleCalendarEventForm.module.css";
 
 interface EventFormProps {
+  show: boolean;
   session: any; // Adjust the type as needed based on your session object
 
   onClose: () => void; // Callback function to close the form
 }
 
-const EventForm: React.FC<EventFormProps> = ({
-  session,
-  onClose,
-}) => {
- 
+const EventForm: React.FC<EventFormProps> = ({ show, session, onClose }) => {
   const supabase = useSupabaseClient();
 
   const { attendees } = useGuestStore((state) => state); // Access attendees from Zustand
 
-   // Include attendees in the destructure
-   useEffect(() => {
+  // Include attendees in the destructure
+  useEffect(() => {
     console.log("Attendees in EventForm:", attendees);
   }, [attendees]);
-
 
   const [eventDetails, setEventDetails] = useState({
     summary: "",
@@ -89,7 +86,7 @@ const EventForm: React.FC<EventFormProps> = ({
       // Sign out after successful event creation
       await signOut();
 
-      onClose(); // Close the modal after creating the event
+      onClose(); //  Close the modal after creating the event
     } catch (error) {
       console.error("Error creating event:", error);
       alert("Failed to create event. Please try again.");
@@ -101,61 +98,96 @@ const EventForm: React.FC<EventFormProps> = ({
   };
 
   return (
-    <Modal show onHide={onClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Create Google Calendar Event</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Form.Group controlId="formSummary">
-            <Form.Label>Event Summary</Form.Label>
-            <Form.Control
-              type="text"
-              name="summary"
-              value={eventDetails.summary}
-              onChange={handleChange}
-              placeholder="Enter event summary"
-            />
-          </Form.Group>
-          <Form.Group controlId="formLocation">
-            <Form.Label>Event Location</Form.Label>
-            <Form.Control
-              type="text"
-              name="location"
-              value={eventDetails.location}
-              onChange={handleChange}
-              placeholder="Enter event location"
-            />
-          </Form.Group>
-          <Form.Group controlId="formStart">
-            <Form.Label>Start Date & Time</Form.Label>
-            <Form.Control
-              type="datetime-local"
-              name="start"
-              value={eventDetails.start}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          <Form.Group controlId="formEnd">
-            <Form.Label>End Date & Time</Form.Label>
-            <Form.Control
-              type="datetime-local"
-              name="end"
-              value={eventDetails.end}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          Create Event
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <div className={`${styles.popup} ${show ? styles.show : ""}`}>
+      <div
+        className={styles.coverImage}
+        style={{ backgroundImage: `url('/cover.png')` }}
+      >
+        <button className={styles.closeButton}>
+          <i className="bi bi-x-lg"></i>
+        </button>
+        <div className={styles.optionsBackground}>
+          <h2 className={`${styles.optionsHeader}`}>
+            Create Google Calendar Event
+          </h2>
+          <div className={styles.options}>
+            <div className={`mb-3 ${styles.formGroup}`}>
+              <Form.Group controlId="formSummary">
+                <Form.Label className={`${styles.formLabel}`}>
+                  Event Summary
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="summary"
+                  className={`${styles.formControl}`}
+                  value={eventDetails.summary}
+                  onChange={handleChange}
+                  placeholder="Enter event summary"
+                />
+              </Form.Group>
+            </div>
+            <div className={`mb-3 ${styles.formGroup}`}>
+              <Form.Group controlId="formLocation">
+                <Form.Label className={`${styles.formLabel}`}>
+                  Event Location
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="location"
+                  className={`${styles.formControl}`}
+                  value={eventDetails.location}
+                  onChange={handleChange}
+                  placeholder="Enter event location"
+                />
+              </Form.Group>
+            </div>
+            <div className={`mb-3 ${styles.formGroup}`}>
+              <Form.Group controlId="formStart">
+                <Form.Label className={`${styles.formLabel}`}>
+                  Start Date & Time
+                </Form.Label>
+                <Form.Control
+                  className={`${styles.formControl}`}
+                  type="datetime-local"
+                  name="start"
+                  value={eventDetails.start}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Form.Group controlId="formEnd">
+                <Form.Label className={`${styles.formLabel}`}>
+                  End Date & Time
+                </Form.Label>
+                <Form.Control
+                  className={`${styles.formControl}`}
+                  type="datetime-local"
+                  name="end"
+                  value={eventDetails.end}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </div>
+            <div className={`${styles.formActions}`}>
+              <Button
+                variant="secondary"
+                className={`${styles.cancelButton}`}
+                onClick={onClose}
+              >
+                Close
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                className={`${styles.saveButton}`}
+                onClick={handleSubmit}
+              >
+                Create Event
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 const Folder = require('../models/folderModel');
-const subFolder = require('../models/subFolderModel');
+const SubFolder = require('../models/subFolderModel');
 const Vendor = require('../models/vendorModel');
 
 //All Vendors

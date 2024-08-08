@@ -24,7 +24,7 @@
     1
   ) !important; /* Background color with 90% opacity */
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3); /* Example shadow */
-  height: 700px;
+  height: 696px;
   width: 100%;
   margin: 0 auto;
   max-width: 500px; /* Adjust width as needed */
@@ -33,16 +33,19 @@
 }
 
 .card-body {
-  overflow-y: auto; /* Enable vertical scrolling */
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.9
-  ) !important; /* Background color with 90% opacity */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background-color: rgba(255, 255, 255, 0.9) !important;
   border-bottom-left-radius: 50px !important;
   border-bottom-right-radius: 50px !important;
-  margin-bottom: 20px !important;
+}
+
+.task-list-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
 }
 
 .list-group-item {
@@ -237,7 +240,6 @@
 
 .event-card-header {
   padding: 20px;
-  margin-bottom: 240px;
   position: sticky;
   top: 0;
   background-color: #fff; /* or the background color you need */
@@ -332,4 +334,24 @@
   flex-direction: column;
   align-items: center; /* Center column items horizontally */
   padding: 0;
+}
+
+input {
+  border: none;
+}
+
+.input-task {
+  position: sticky;
+  bottom: 0;
+  color: rgba(0, 0, 0, 0.5) !important;
+  border-top: 1px solid lightgrey; /* Add border to separate from tasks */
+  padding-right: 23px;
+  padding-left: 16px;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.todo-footer {
+  margin-bottom: 10px;
+  padding: 0 16px;
 }

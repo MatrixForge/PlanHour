@@ -137,7 +137,7 @@ exports.addTask = async (req, res) => {
   try {
     let targetFolderOrSubFolder;
 
-    if (folderOrSubFolder === "folder") {
+    if (folderOrSubFolder.toLowerCase() === 'folder') {
       targetFolderOrSubFolder = await Folder.findById(id);
     } else if (folderOrSubFolder === "subFolder") {
       targetFolderOrSubFolder = await subFolder.findById(id);
@@ -150,7 +150,7 @@ exports.addTask = async (req, res) => {
     targetFolderOrSubFolder.toDoList.push(task);
     await targetFolderOrSubFolder.save();
 
-    res.status(200).json(targetFolderOrSubFolder.toDoList);
+    res.status(200).json(task);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
