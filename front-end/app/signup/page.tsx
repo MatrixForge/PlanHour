@@ -101,7 +101,7 @@ const Signup: React.FC = () => {
     <div className="outerdiv">
       <div className="flexContainer">
         <div className="leftBox">
-          <h1>Sign up</h1>
+          <h1 className="font-montserrat">Sign up</h1>
           {error && <div className="alert alert-danger">{error}</div>}
           {message && <div className="alert alert-success">{message}</div>}
           {loading && <div>Loading...</div>}
@@ -109,7 +109,7 @@ const Signup: React.FC = () => {
             <div className="form-group">
               <input
                 type="email"
-                className="form-control"
+                className="font-sharp-sans form-control"
                 id="email"
                 placeholder="Email"
                 value={email}
@@ -120,7 +120,7 @@ const Signup: React.FC = () => {
               <div className="icon-container">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="form-control"
+                  className="font-sharp-sans form-control"
                   id="password"
                   placeholder="Password"
                   value={password}
@@ -137,17 +137,20 @@ const Signup: React.FC = () => {
             <div className="form-group">
               <input
                 type="password"
-                className="form-control"
+                className="font-sharp-sans form-control"
                 id="confirmPassword"
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-            <button type="submit" className="btn btn-primary rounded-pill">
+            <button
+              type="submit"
+              className="font-sharp-sans btn btn-primary rounded-pill"
+            >
               Sign Up
             </button>
-            <p className="signin-link">
+            <p className="font-sharp-sans signin-link">
               Already have an account? <Link href="/login">Sign in</Link>
             </p>
           </form>

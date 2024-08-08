@@ -22,3 +22,11 @@ strong {
 .card-header {
   background-color: var(--bs-body-bg) !important;
 }
+
+.font-montserrat {
+  font-family: "Montserrat" !important;
+}
+
+.font-sharp-sans {
+  font-family: "Sharp Sans" !important;
+}

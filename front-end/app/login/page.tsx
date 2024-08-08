@@ -77,12 +77,12 @@ const Login: React.FC = () => {
     <div className="outerdiv">
       <div className="flexContainer">
         <div className="leftBox">
-          <h1>Log in</h1>
+          <h1 className="font-montserrat">Log in</h1>
           <form onSubmit={handleLogin}>
             <div className="form-group unique-form-group">
               <input
                 type="email"
-                className="form-control unique-input"
+                className="font-sharp-sans form-control unique-input"
                 id="email"
                 aria-describedby="emailHelp"
                 placeholder="Email"
@@ -95,7 +95,7 @@ const Login: React.FC = () => {
               <div className="icon-container">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="form-control unique-input"
+                  className="font-sharp-sans form-control unique-input"
                   id="password"
                   placeholder="Password"
                   value={password}
@@ -125,22 +125,28 @@ const Login: React.FC = () => {
                   checked={rememberMe}
                   onChange={toggleRememberMe}
                 />
-                <label className="form-check-label" htmlFor="rememberMe">
+                <label
+                  className="font-sharp-sans form-check-label"
+                  htmlFor="rememberMe"
+                >
                   Remember Me
                 </label>
               </div>
-              <p onClick={handleShow} className="forgot-password">
+              <p
+                onClick={handleShow}
+                className="font-sharp-sans forgot-password"
+              >
                 Forgot Password?
               </p>
             </div>
             <button
               type="submit"
-              className="btn btn-primary unique-btn-primary rounded-pill"
+              className="font-sharp-sans btn btn-primary unique-btn-primary rounded-pill"
             >
               Login
             </button>
           </form>
-          <p className="signin-link">
+          <p className="font-sharp-sans signin-link">
             Don&apos;t have an account? <Link href="/signup">Sign Up</Link>
           </p>
         </div>

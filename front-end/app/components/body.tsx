@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import styles from "@styles/custom-colors.module.css";
 import cardStyles from "@styles/card.module.css";
@@ -7,19 +7,20 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const Body = () => {
-  const[localFound, setlocalFound] = useState("");
+  const [localFound, setlocalFound] = useState("");
   const [sessionFound, setSessionFound] = useState("");
-  useEffect(()=>{
-    setlocalFound(localStorage.getItem("loggedIn")||"");
-    setSessionFound(sessionStorage.getItem("loggedIn")||"");
-  })
-  
+  useEffect(() => {
+    setlocalFound(localStorage.getItem("loggedIn") || "");
+    setSessionFound(sessionStorage.getItem("loggedIn") || "");
+  });
+
   const [email, setEmail] = useState("");
   const router = useRouter();
   const handleSignUpClick = () => {
     if (email) {
-      if (typeof window !== "undefined")
-{        sessionStorage.setItem("signupEmail", email);}
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("signupEmail", email);
+      }
       router.push("/signup");
     }
   };
@@ -38,7 +39,7 @@ const Body = () => {
         backgroundColor: "#fff",
       }}
     >
-      {(sessionFound !== "true") && (localFound !== "true")&&(
+      {sessionFound !== "true" && localFound !== "true" && (
         <div className={`d-flex flex-row mb-3 ${cardStyles.bottomBar}`}>
           <div className={`inputContainer position-relative`}>
             <Image
@@ -57,7 +58,7 @@ const Body = () => {
             />
             <input
               type="text"
-              className={`form-control rounded-pill ps-5 ${cardStyles.inputField} ${cardStyles.customFont} ${cardStyles.noBottomBorder}`}
+              className={`font-montserrat form-control rounded-pill ps-5 ${cardStyles.inputField} ${cardStyles.customFont} ${cardStyles.noBottomBorder}`}
               placeholder="Your Email"
               style={{ width: "300px" }} // Adjust this value as needed
               value={email}
@@ -66,9 +67,10 @@ const Body = () => {
           </div>
 
           <a
-            className={`btn mx-2 rounded-pill ${styles.customBrown} ${cardStyles.customFont} ${cardStyles.bottomShadow}`}
+            className={`font-sharp-sans btn mx-2 rounded-pill ${styles.customBrown} ${cardStyles.customFont} ${cardStyles.bottomShadow}`}
             style={{
               minWidth: "100px",
+              fontWeight: "600",
             }}
             onClick={handleSignUpClick}
           >

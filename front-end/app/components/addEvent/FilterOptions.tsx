@@ -18,15 +18,15 @@ const FilterOptions: React.FC = () => {
   return (
     <div className="col-md-3 p-3">
       <div>
-        <h4>Filters</h4>
-        <h6 className="mt-5 mb-3">City</h6>
+        <h4 className="font-montserrat">Filters</h4>
+        <h6 className="mt-5 mb-3 font-sharp-sans">City</h6>
         <ul className="">
           {filters.map((filter, index) => (
             <li key={index} className="list-group-item my-4">
               <input
                 type="checkbox"
                 id={`filter-${index}`}
-                className="me-2"
+                className="me-2 font-sharp-sans"
                 onChange={() => setCityFilter(filter)}
               />
               <label htmlFor={`filter-${index}`}>{filter}</label>
@@ -36,7 +36,7 @@ const FilterOptions: React.FC = () => {
       </div>
       <hr />
       <div>
-        <h6 className="mt-5 mb-3">Budget</h6>
+        <h6 className="mt-5 mb-3 font-sharp-sans">Budget</h6>
         <ul>
           {budgets.map((budget, index) => (
             <li key={index} className="list-group-item my-4">
@@ -55,7 +55,7 @@ const FilterOptions: React.FC = () => {
       </div>
       <hr />
       <div>
-        <h6 className="mt-5 mb-3">Staff</h6>
+        <h6 className="mt-5 mb-3 font-sharp-sans">Staff</h6>
         <ul className="">
           {staffs.map((staff, index) => (
             <li key={index} className="list-group-item my-4">

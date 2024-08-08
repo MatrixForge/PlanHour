@@ -13,7 +13,9 @@ const Popup: React.FC<{
           type === "error" ? styles.error : styles.success
         }`}
       >
-        <span className={styles.popupMessage}>{message}</span>
+        <span className={`font-sharp-sans ${styles.popupMessage}`}>
+          {message}
+        </span>
       </div>
     </div>
   );

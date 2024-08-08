@@ -9,9 +9,9 @@ import Image from "next/image";
 const Cards = forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <div ref={ref} className={`bg-brown p-4 ${styles.customBrown}`}>
-      <div className="d-flex justify-content-between px-5">
+      <div className="d-flex justify-content-between">
         {/* Card 1 */}
-        <Link href="/eventify">
+        <Link href="/eventify" className=" mx-3">
           <Image
             src="/1.png"
             alt="Card 1"
@@ -22,7 +22,7 @@ const Cards = forwardRef<HTMLDivElement>((_, ref) => {
           />
         </Link>
         {/* Card 2 */}
-        <Link href="/">
+        <Link href="/" className=" mx-3">
           <Image
             src="/2.png"
             alt="Card 1"
@@ -33,7 +33,7 @@ const Cards = forwardRef<HTMLDivElement>((_, ref) => {
           />{" "}
         </Link>
         {/* Card 3 */}
-        <Link href="/">
+        <Link href="/" className=" mx-3">
           <Image
             src="/3.png"
             alt="Card 1"
@@ -44,7 +44,7 @@ const Cards = forwardRef<HTMLDivElement>((_, ref) => {
           />
         </Link>
         {/* Card 4 */}
-        <Link href="/">
+        <Link href="/" className=" mx-3">
           <Image
             src="/4.png"
             alt="Card 1"
