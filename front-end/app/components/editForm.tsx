@@ -1,25 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore"; // Import the Zustand store
 import styles from "@styles/eventModal.module.css";
 
-interface EventModalProps {
+interface EditFormProps {
   onClose: () => void;
+  existingData: {
+    title: string;
+    eventType: string;
+    date: string;
+    noOfGuests: string;
+    description: string;
+  };
+  folderId: string;
+  isSubFolder?: boolean; // New prop to indicate if it's a subfolder
 }
 
-const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
+const EditForm: React.FC<EditFormProps> = ({ onClose, existingData, folderId, isSubFolder = false }) => {
   const backgroundImgSrc = "/Popup.png";
-  const { folderId, subFolderId } = useFolderStore();
-  const [formData, setFormData] = useState({
-    title: "",
-    eventType: "",
-    date: "",
-    noOfGuests: "",
-    description: "",
-  });
+  const [formData, setFormData] = useState(existingData);
 
   const { setFolderCreated } = useFolderStore(); // Use the Zustand store
+
+  useEffect(() => {
+    setFormData(existingData);
+  }, [existingData]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -31,35 +37,23 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+    console.log('sss',isSubFolder)
+    console.log('folder id',folderId)
+
+
     e.preventDefault();
-    const { title, eventType, date, noOfGuests, description } = formData;
-
-    // Determine the URL based on the presence of mainFolderId
-    const url = folderId
-      ? `/events/folders/${folderId}/subfolder`
-      : `/events/folders`;
-
     try {
-      const response = await axios.post(url, {
-        title,
-        eventType,
-        date,
-        noOfGuests,
-        description,
-      });
-      setFolderCreated(true); // Update Zustand store state
-      onClose(); // Close the modal
-    } catch (error: any) {
-      if (error.response) {
-        // Server responded with a status other than 200 range
-        console.error("Error creating folder:", error.response.data.message);
-      } else if (error.request) {
-        // Request was made but no response was received
-        console.error("Error creating folder:", error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error("Error creating folder:", error.message);
-      }
+      const endpoint = isSubFolder
+        ? `/events/subfolders/edit/${folderId}`
+        : `/events/folders/edit/${folderId}`;
+
+        console.log('endpoint is',endpoint)
+      await axios.put(endpoint, formData);
+      setFolderCreated(true);
+      onClose();
+    } catch (error) {
+      console.error("Error updating folder:", error);
     }
   };
 
@@ -93,7 +87,7 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
               height: "auto",
             }}
           >
-            <h2 className={styles["form-heading"]}>New Event</h2>
+            <h2 className={styles["form-heading"]}>Edit Event</h2>
             <div className={`mb-3 ${styles["form-group"]}`}>
               <label htmlFor="title" className={styles["form-label"]}>
                 Name
@@ -177,7 +171,7 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
                 type="submit"
                 className={styles["save-button"]}
               >
-                Create
+                Save
               </Button>
             </div>
           </form>
@@ -187,4 +181,4 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
   );
 };
 
-export default EventModal;
+export default EditForm;

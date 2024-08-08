@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "../components/NavBar";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import Footer from "../components/footer";
-import "./toDoList.css"; // Adjust the path as necessary
+import "./toDoList.css";
 import Image from "next/image";
 import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore";
@@ -83,36 +83,85 @@ const BootstrapLayout = () => {
           className="col-md-7"
           style={{
             backgroundImage: "linear-gradient(to right, #EBA0E3, #E8A696)",
-            height: "120%",
+            height: "100%",
           }}
         >
-          <div className="card">
+          <div className="card1">
             <div className="card-header" style={{ borderBottom: "none" }}>
               To-do <p> (03)</p>
             </div>
-            <div className="card-body">
-              <ol className="list-group list-group-numbered">
-                {todos.map((todo, idx) => (
-                  <li
-                    key={idx}
-                    className={`list-group-item ${todo.done ? "done" : ""}`}
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <span className="text">{todo.title}</span>
-                    <div className="icon-container">
-                      <Image
-                        src={todo.done ? "/correct-filled.png" : "/correct.png"}
-                        alt="tick icon"
-                        className="tick-icon"
-                        onClick={() => toggleDone(todo.id)}
-                        width={100}
-                        height={100}
-                      />
-                      <i className="bi bi-x-circle x-icon"></i>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+            <div className="card-body1">
+              <div className="task-list-container" ref={taskListRef}>
+                <ol className="list-group list-group-numbered">
+                  {todos.map((todo, idx) => (
+                    <li
+                      key={todo.id}
+                      className={`list-group-item ${todo.done ? "done" : ""}`}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {todo.isEditing ? (
+                        <input
+                          type="text"
+                          className="text"
+                          value={todo.title}
+                          maxLength={20}
+                          autoFocus
+                          onChange={(e) =>
+                            handleTitleChange(todo.id, e.target.value)
+                          }
+                          onBlur={() => toggleEditing(todo.id)}
+                        />
+                      ) : (
+                        <span
+                          className="text"
+                          onClick={() => toggleEditing(todo.id)}
+                        >
+                          {todo.title}
+                        </span>
+                      )}
+                      <div className="icon-container">
+                        <Image
+                          src={
+                            todo.done ? "/correct-filled.png" : "/correct.png"
+                          }
+                          alt="tick icon"
+                          className="tick-icon"
+                          onClick={() => toggleDone(todo.id)}
+                          width={100}
+                          height={100}
+                        />
+                        <i
+                          className="bi bi-x-circle x-icon"
+                          onClick={() => deleteTask(todo.id)}
+                        ></i>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+            <div className="todo-footer">
+              <li
+                className="list-group-item input-task"
+                style={{ display: "flex", justifyContent: "space-between" }}
+                onClick={addTask}
+              >
+                <span className="text">Add Task</span>
+
+                <div className="icon-container">
+                  <Image
+                    src={"/check-mark.png"}
+                    alt="tick icon"
+                    className="tick-icon"
+                    width={100}
+                    height={100}
+                  />
+                  <i className="bi bi-x-circle x-icon"></i>
+                </div>
+              </li>
             </div>
           </div>
         </div>
@@ -140,7 +189,7 @@ const BootstrapLayout = () => {
               style={{
                 backgroundImage: "linear-gradient(to right, #E8A696, #EEBCAE)",
                 width: "120%",
-                height: "106%",
+                height: "100%",
               }}
             >
               <div className="event-card ">
@@ -152,9 +201,13 @@ const BootstrapLayout = () => {
                     key={event.id}
                     className="event-item"
                     style={{
-                      backgroundColor: `${colors[index % colors.length]}33`,
+                      backgroundColor:
+                        selectedEventId === event.id
+                          ? `${colors[index % colors.length]}33`
+                          : "#fff",
                       borderLeft: `10px solid ${colors[index % colors.length]}`,
                     }}
+                    onClick={() => handleEventClick(event.id)}
                   >
                     <div className="left-bg"></div>
                     <div className="event-info">

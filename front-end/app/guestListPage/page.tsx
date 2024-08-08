@@ -10,6 +10,7 @@ import Papa from "papaparse";
 import { useSession } from "@supabase/auth-helpers-react";
 import EventForm from "../components/GoogleCalendarEventForm"; // Import EventForm
 import { useGuestStore } from "../../store/guestStore"; // Adjust the import path
+import { useFolderStore } from "@/store/folderStore";
 
 type Attendee = {
   email: string;
@@ -21,16 +22,24 @@ const GuestListPage = () => {
   }>({});
   const [headerChecked, setHeaderChecked] = useState(false);
   const [guests, setGuests] = useState<
-  Array<{ _id: string; name: string; email: string; number: string }>
+    Array<{ _id: string; name: string; email: string; number: string }>
   >([]);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [newGuest, setNewGuest] = useState({ name: "", email: "", number: "" });
   const [showEventForm, setShowEventForm] = useState(false); // State to control the event form display
 
   const { attendees, setAttendees } = useGuestStore(); // Access Zustand store
+  const {folderId,setFolderId,subFolderId,setSubFolderId} =useFolderStore();
 
   const session = useSession();
 
+  useEffect(() => {
+    if (folderId || subFolderId) {
+      console.log('mmmmm')
+      fetchGuests();
+    }
+  }, [folderId, subFolderId]);
+  
   useEffect(() => {
     // Check if user is logged in and show event form
     if (session != null) {
@@ -42,6 +51,10 @@ const GuestListPage = () => {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.target;
+
+    console.log ( 'woww', folderId)
+    console.log ( 'woww1', subFolderId)
+
     if (id === "header-checkbox") {
       setHeaderChecked(checked);
       setCheckedGuests((prev) => {
@@ -59,7 +72,6 @@ const GuestListPage = () => {
     }
   };
 
-
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -73,13 +85,16 @@ const GuestListPage = () => {
             email: string;
             number: string;
           }>;
-  
+
           // Add a temporary unique ID to each guest object
           const guestsWithIds = guestsData.map((guest, index) => ({
             _id: `temp-id-${index}`, // Generate a temporary ID
             ...guest,
+            folderId, // Use folderId from Zustand store
+            subFolderId, // Use subFolderId from Zustand store
+
           }));
-  
+
           // Iterate over each guest and make a POST request to add them to the database
           for (const guest of guestsWithIds) {
             try {
@@ -90,10 +105,14 @@ const GuestListPage = () => {
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify(guest),
+                  body: JSON.stringify({
+                    ...guest,
+                    folderId,
+                    subFolderId,
+                  }),
                 }
               );
-  
+
               if (response.ok) {
                 console.log(`Guest ${guest.name} added successfully`);
               } else {
@@ -103,7 +122,7 @@ const GuestListPage = () => {
               console.error(`Error adding guest ${guest.name}:`, error);
             }
           }
-  
+
           setGuests(guestsWithIds);
           console.log("guests are", guestsWithIds);
           fetchGuests(); // Refetch the guests after importing the CSV
@@ -112,14 +131,25 @@ const GuestListPage = () => {
       });
     }
   };
-  
-
 
   const fetchGuests = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/guests/get-guests"
-      );
+
+      console.log('llllllll')
+      let url = "http://localhost:5000/api/guests/get-guests";
+  
+      // Add query parameters based on folderId and subFolderId
+      if (subFolderId) {
+        url += `?subfolderId=${subFolderId}`;
+      } else if (folderId) {
+        url += `?folderId=${folderId}`;
+      }
+  
+      console.log('url is:',url)
+
+      const response = await fetch(url);
+
+      console.log('repsonse is',response)
       if (response.ok) {
         const data = await response.json();
         setGuests(data);
@@ -130,10 +160,7 @@ const GuestListPage = () => {
       console.error("Error fetching guests:", error);
     }
   };
-
-  useEffect(() => {
-    fetchGuests();
-  }, []);
+  
 
   const handleSendClick = () => {
     // Get selected guest emails or ids based on checkedGuests state
@@ -178,6 +205,8 @@ const GuestListPage = () => {
 
   const handleAddGuest = async () => {
     if (newGuest.name && newGuest.email && newGuest.number) {
+
+      console.log('fucking id',subFolderId)
       try {
         const response = await fetch(
           "http://localhost:5000/api/guests/create-guests",
@@ -186,7 +215,11 @@ const GuestListPage = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(newGuest),
+            body: JSON.stringify({
+              ...newGuest,
+              folderId,
+              subFolderId,
+            }),
           }
         );
         if (response.ok) {
@@ -219,29 +252,32 @@ const GuestListPage = () => {
     const selectedGuestIds = Object.keys(checkedGuests).filter(
       (key) => checkedGuests[key]
     );
-  
+
     if (selectedGuestIds.length === 0) {
       alert("Please select guests to delete.");
       return;
     }
-  
+
     // Convert selectedGuestIds to an array of guest objects
     const selectedGuestsList = guests.filter((_, index) =>
       selectedGuestIds.includes(`checkbox-${index}`)
     );
-  
+
     // Extract the IDs of the selected guests
     const idsToDelete = selectedGuestsList.map((guest) => guest._id);
-  
+
     try {
-      const response = await fetch("http://localhost:5000/api/guests/delete-guests", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ids: idsToDelete }),
-      });
-  
+      const response = await fetch(
+        "http://localhost:5000/api/guests/delete-guests",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ids: idsToDelete }),
+        }
+      );
+
       if (response.ok) {
         // Refetch the guests after deletion
         fetchGuests();
@@ -256,7 +292,6 @@ const GuestListPage = () => {
       console.error("Error deleting guests:", error);
     }
   };
-  
 
   return (
     <div>
@@ -390,7 +425,11 @@ const GuestListPage = () => {
         />
       )}
       {showEventForm && (
-        <EventForm session={session} onClose={() => setShowEventForm(false)} />
+        <EventForm
+          show={true}
+          session={session}
+          onClose={() => setShowEventForm(false)}
+        />
       )}
     </div>
   );

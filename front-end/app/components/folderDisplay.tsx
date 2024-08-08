@@ -7,7 +7,9 @@ import FolderOptionsModal from "../components/eventify/FolderOptionsModal";
 import { useFolderStore } from "../../store/folderStore";
 import Image from "next/image";
 import CustomIIcon from "./customiIcon";
-import useCurrentUrl from "@/hooks/current_url_returner"
+import EditForm from "./editForm";
+import { subscribe } from "diagnostics_channel";
+
 interface Folder {
   _id: string;
   title: string;
@@ -15,11 +17,31 @@ interface Folder {
 }
 
 const FolderDisplay: React.FC = () => {
-  const [folders, setFolders] = useState<Folder[]>([]);
   const [showEventModal, setShowEventModal] = useState(false);
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const { folderCreated, setFolderCreated } = useFolderStore();
-  const { setFolderId, setFolderTitle, setSubFolderId, subFolderId } = useFolderStore();
+  const {
+    setFolderId,
+    setFolderTitle,
+    hasSubfolder,
+    setHasSubfolder,
+    folderId,
+    folders,
+    setFolders,
+    searchMode,
+    setSearchMode,
+  } = useFolderStore();
+  const [selectedFolderId, setSelectedFolderId] = useState<
+    string | undefined
+  >();
+  const [showEditForm, setShowEditForm] = useState(false); // State for EditForm
+  const [existingFolderData, setExistingFolderData] = useState({
+    title: "",
+    eventType: "",
+    date: "",
+    noOfGuests: "",
+    description: "",
+  });
 
   const currentUrl = useCurrentUrl();
   if (currentUrl.pathname === "/eventify") {
@@ -28,10 +50,12 @@ const FolderDisplay: React.FC = () => {
     }
   }
   useEffect(() => {
-    fetchFolders();
+    if (!searchMode) {
+      fetchFolders(); // Fetch all folders only if not in search mode
+    }
     setFolderId(undefined);
     setFolderCreated(false);
-  }, [folderCreated]);
+  }, [folderCreated, searchMode]);
 
   const fetchFolders = async () => {
     try {
@@ -45,13 +69,54 @@ const FolderDisplay: React.FC = () => {
   const handleShowEventModal = () => setShowEventModal(true);
   const handleCloseEventModal = () => setShowEventModal(false);
 
-  const handleShowOptionsModal = (folderId: string, folderTitle: string) => {
-    setFolderId(folderId);
+  const handleShowOptionsModal = (folderId1: string, folderTitle: string) => {
+    setFolderId(folderId1);
     setFolderTitle(folderTitle);
-    console.log("folder id is", folderId);
+    setSelectedFolderId(folderId1);
     setShowOptionsModal(true);
   };
+
   const handleCloseOptionsModal = () => setShowOptionsModal(false);
+
+  const fetchFolderData = async (folderId: string) => {
+    try {
+      const response = await axios.get(`/events/folders/${folderId}`);
+      const folderData = response.data;
+      setExistingFolderData({
+        title: folderData.title,
+        eventType: folderData.eventType,
+        date: folderData.date,
+        noOfGuests: folderData.noOfGuests,
+        description: folderData.description,
+      });
+      console.log("woww", folderData);
+    } catch (error) {
+      console.error("Error fetching folder data:", error);
+    }
+  };
+
+  const handleOptionClick = (option: string, folderId: string) => {
+    if (option === "Delete") {
+      deleteFolder(folderId);
+      fetchFolders();
+    } else if (option === "Edit") {
+      fetchFolderData(folderId);
+      setFolderId(folderId);
+      setShowEditForm(true);
+      fetchFolders();
+    }
+  };
+
+  const deleteFolder = async (folderId) => {
+    try {
+      await axios.delete(`/events/folders/delete/${folderId}`);
+      fetchFolders();
+
+      // Update the UI accordingly after deletion
+    } catch (error) {
+      console.error("Error deleting folder:", error);
+    }
+  };
 
   return (
     <div className="eventify-background">
@@ -67,13 +132,22 @@ const FolderDisplay: React.FC = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onClick={() => handleShowOptionsModal(folder._id, folder.title)}
           >
             <div className="three-dots-container">
               <i className="bi bi-three-dots-vertical three-dots-icon"></i>
               <div className="popup">
-                <div className="popup-option">Edit</div>
-                <div className="popup-option">Delete</div>
+                <div
+                  className="popup-option"
+                  onClick={() => handleOptionClick("Edit", folder._id)}
+                >
+                  Edit
+                </div>
+                <div
+                  className="popup-option"
+                  onClick={() => handleOptionClick("Delete", folder._id)}
+                >
+                  Delete
+                </div>
               </div>
             </div>
             <Image
@@ -82,6 +156,7 @@ const FolderDisplay: React.FC = () => {
               alt="Card image cap"
               width={224}
               height={256}
+              onClick={() => handleShowOptionsModal(folder._id, folder.title)}
             />
             <div className="card-body">
               <p className="card-text">{folder.title}</p>
@@ -99,55 +174,67 @@ const FolderDisplay: React.FC = () => {
             </div>
           </div>
         ))}
-        <div
-          className="card"
-          style={{
-            width: "14rem",
-            height: "16rem",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div className="grey-overlay">
-            <a href="#" onClick={handleShowEventModal}>
-              <Image
-                src="/addbtn.png"
-                className="add-btn"
-                alt="Add button"
-                width={100}
-                height={100}
-              />
-            </a>
-          </div>
-          <i className="bi bi-three-dots-vertical three-dots-icon"></i>
-          <Image
-            src="/folder.png"
-            className="card-img-top cardImg"
-            alt="Card image cap"
-            width={224}
-            height={256}
-          />
-          <div className="card-body">
-            <p className="card-text" style={{ color: "#F6EDE4" }}>
-              Another Event
-            </p>
-            <div className="card-footer">
-              <Image
-                src="/clock.png"
-                className="icon-img"
-                alt="Timer icon"
-                width={10}
-                height={10}
-              />
-              <span style={{ color: "#F6EDE4" }}>02/01/2023</span>
+        {!searchMode && (
+          <div
+            className="card"
+            style={{
+              width: "14rem",
+              height: "16rem",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div className="grey-overlay">
+              <a href="#" onClick={handleShowEventModal}>
+                <Image
+                  src="/addbtn.png"
+                  className="add-btn"
+                  alt="Add button"
+                  width={100}
+                  height={100}
+                />
+              </a>
+            </div>
+            <div className="three-dots-container">
+              <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+            </div>
+            <Image
+              src="/folder.png"
+              className="card-img-top cardImg"
+              alt="Card image cap"
+              width={224}
+              height={256}
+            />
+            <div className="card-body">
+              <p className="card-text" style={{ color: "#F6EDE4" }}>
+                Another Event
+              </p>
+              <div className="card-footer">
+                <Image
+                  src="/clock.png"
+                  className="icon-img"
+                  alt="Timer icon"
+                  width={10}
+                  height={10}
+                />
+                <span style={{ color: "#F6EDE4" }}>02/01/2023</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
+      {showEditForm && (
+        <EditForm
+          onClose={() => setShowEditForm(false)}
+          existingData={existingFolderData}
+          folderId={folderId}
+        />
+      )}
       {showEventModal && <EventModal onClose={handleCloseEventModal} />}
       <FolderOptionsModal
         show={showOptionsModal}
         handleClose={handleCloseOptionsModal}
+        folderID={selectedFolderId}
       />
     </div>
   );

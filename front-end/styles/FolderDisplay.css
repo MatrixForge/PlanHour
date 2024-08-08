@@ -107,7 +107,7 @@ h1 {
   align-items: center; /* Center items vertically if needed */
   padding: 10px 5px;
   font-size: smaller;
-  background-color: #f6ede4;
+  background-color: #f6ede4 !important;
   font-family: "Sharp Sans";
   font-weight: 600;
   width: 12rem; /* Ensure it doesn’t exceed the card’s width */
