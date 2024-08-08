@@ -8,13 +8,17 @@ const folderSchema = new mongoose.Schema({
   description: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  parentFolder: { type: mongoose.Schema.Types.ObjectId, ref: 'Folder', required: true }, 
   toDoList: [{
     title: { type: String, required: true },
     completed: { type: Boolean, default: false }
   }],
   vendors:[
     {type:mongoose.Schema.Types.ObjectId, ref:"Vendor"}
-  ]
+  ],
+  guests: [{
+    type: mongoose.Schema.Types.ObjectId, ref: "Guest"
+  }],
 });
 
 const subFolder = mongoose.model('subFolder', folderSchema);

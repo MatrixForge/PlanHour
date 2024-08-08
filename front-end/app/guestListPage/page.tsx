@@ -10,6 +10,7 @@ import Papa from "papaparse";
 import { useSession } from "@supabase/auth-helpers-react";
 import EventForm from "../components/GoogleCalendarEventForm"; // Import EventForm
 import { useGuestStore } from "../../store/guestStore"; // Adjust the import path
+import { useFolderStore } from "@/store/folderStore";
 
 type Attendee = {
   email: string;
@@ -28,9 +29,17 @@ const GuestListPage = () => {
   const [showEventForm, setShowEventForm] = useState(false); // State to control the event form display
 
   const { attendees, setAttendees } = useGuestStore(); // Access Zustand store
+  const {folderId,setFolderId,subFolderId,setSubFolderId} =useFolderStore();
 
   const session = useSession();
 
+  useEffect(() => {
+    if (folderId || subFolderId) {
+      console.log('mmmmm')
+      fetchGuests();
+    }
+  }, [folderId, subFolderId]);
+  
   useEffect(() => {
     // Check if user is logged in and show event form
     if (session != null) {
@@ -42,6 +51,10 @@ const GuestListPage = () => {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.target;
+
+    console.log ( 'woww', folderId)
+    console.log ( 'woww1', subFolderId)
+
     if (id === "header-checkbox") {
       setHeaderChecked(checked);
       setCheckedGuests((prev) => {
@@ -77,6 +90,9 @@ const GuestListPage = () => {
           const guestsWithIds = guestsData.map((guest, index) => ({
             _id: `temp-id-${index}`, // Generate a temporary ID
             ...guest,
+            folderId, // Use folderId from Zustand store
+            subFolderId, // Use subFolderId from Zustand store
+
           }));
 
           // Iterate over each guest and make a POST request to add them to the database
@@ -89,7 +105,11 @@ const GuestListPage = () => {
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify(guest),
+                  body: JSON.stringify({
+                    ...guest,
+                    folderId,
+                    subFolderId,
+                  }),
                 }
               );
 
@@ -114,9 +134,22 @@ const GuestListPage = () => {
 
   const fetchGuests = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/guests/get-guests"
-      );
+
+      console.log('llllllll')
+      let url = "http://localhost:5000/api/guests/get-guests";
+  
+      // Add query parameters based on folderId and subFolderId
+      if (subFolderId) {
+        url += `?subfolderId=${subFolderId}`;
+      } else if (folderId) {
+        url += `?folderId=${folderId}`;
+      }
+  
+      console.log('url is:',url)
+
+      const response = await fetch(url);
+
+      console.log('repsonse is',response)
       if (response.ok) {
         const data = await response.json();
         setGuests(data);
@@ -127,10 +160,7 @@ const GuestListPage = () => {
       console.error("Error fetching guests:", error);
     }
   };
-
-  useEffect(() => {
-    fetchGuests();
-  }, []);
+  
 
   const handleSendClick = () => {
     // Get selected guest emails or ids based on checkedGuests state
@@ -175,6 +205,8 @@ const GuestListPage = () => {
 
   const handleAddGuest = async () => {
     if (newGuest.name && newGuest.email && newGuest.number) {
+
+      console.log('fucking id',subFolderId)
       try {
         const response = await fetch(
           "http://localhost:5000/api/guests/create-guests",
@@ -183,7 +215,11 @@ const GuestListPage = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(newGuest),
+            body: JSON.stringify({
+              ...newGuest,
+              folderId,
+              subFolderId,
+            }),
           }
         );
         if (response.ok) {
