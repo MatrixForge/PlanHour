@@ -1,9 +1,8 @@
-"use client"
 import React, { useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import styles from "@/styles/ExportPopup.module.css";
-import styles_color from "@/styles/custom-colors.module.css";
+import styles_color from "../../styles/custom-colors.module.css";
 
 const ExportPopup = ({ onClose, budgetData, totalCost }) => {
   // Dummy data for testing
@@ -118,7 +117,6 @@ const ExportPopup = ({ onClose, budgetData, totalCost }) => {
             <button
               onClick={downloadPDF}
               className={`btn btn-light mx-2 rounded-pill px-4 ${styles.fontCustom} ${styles_color.customBrown}`}
-              onClick={handleDownload}
             >
               Download PDF
             </button>
