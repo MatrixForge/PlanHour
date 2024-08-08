@@ -4,24 +4,36 @@ const Vendor = require('../models/vendorModel');
 
 //All Vendors
 exports.getAllPlansForSpecificUser = async (req, res) => {
-    const { folderId, subFolderId } = req.body;
+    const { id, folderOrSubFolder } = req.body;
     try {
-        const vendorIds = new Set();
-        if(folderId){
-            const folder = await Folder.findById(folderId).populate('vendors');
-            if (folder) {
-                folder.vendors.forEach(vendor => vendorIds.add(vendor._id));
+        let targetFolderOrSubFolder;
+        if (folderOrSubFolder === 'folder') {
+            targetFolderOrSubFolder = await Folder.findById(id).populate("vendors");
+            if (!targetFolderOrSubFolder) {
+                return res.status(204).json({ message: 'Folder not found' });
+            }
+        }else if(folderOrSubFolder === 'subfolder'){
+            targetFolderOrSubFolder = await SubFolder.findById(id).populate("vendors");
+            if (!targetFolderOrSubFolder) {
+                return res.status(204).json({ message: 'subFolder not found' });
             }
         }
-        if(subFolderId){
-            const subFolder = await SubFolder.findById(subFolderId).populate('vendors');
-            if (subFolder) {
-                subFolder.vendors.forEach(vendor => vendorIds.add(vendor._id));
-            }
-        }
+        // const vendorIds = new Set();
+        // if(folderId){
+        //     const folder = await Folder.findById(folderId).populate('vendors');
+        //     if (folder) {
+        //         folder.vendors.forEach(vendor => vendorIds.add(vendor._id));
+        //     }
+        // }
+        // if(subFolderId){
+        //     const subFolder = await SubFolder.findById(subFolderId).populate('vendors');
+        //     if (subFolder) {
+        //         subFolder.vendors.forEach(vendor => vendorIds.add(vendor._id));
+        //     }
+        // }
         // Retrieve vendor details using vendor IDs
-        const vendors = await Vendor.find({ _id: { $in: Array.from(vendorIds) } });
-
+        // const vendors = await Vendor.find({ _id: { $in: Array.from(vendorIds) } });
+        const vendors = targetFolderOrSubFolder.vendors || [];
         res.status(200).json(vendors);
     } catch (error) {
         res.status(400).json({ message: error.message });

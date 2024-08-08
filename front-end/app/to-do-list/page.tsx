@@ -33,13 +33,10 @@ const BootstrapLayout = () => {
 
   const fetchData = async () => {
     if (!subFolderId && folderId) {
-      const folderOrSubFolder = "folder";
-      const id = folderId;
-      console.log(id, folderOrSubFolder);
       try {
         const response = await axios.post("/events/get-to-do-list", {
-          folderOrSubFolder,
-          id,
+          folderOrSubFolder: "folder",
+          id: folderId,
         });
 
         if (response) {

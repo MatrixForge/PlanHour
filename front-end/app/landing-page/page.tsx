@@ -4,10 +4,18 @@ import CustomNavbar from "../components/NavBar"; // Make sure this path is corre
 import Body from "../components/body";
 import Cards from "../components/Cards";
 import Footer from "../components/footer";
-
+import useCurrentUrl from "@/hooks/current_url_returner";
+import { useFolderStore } from "@/store/folderStore";
 const LandingPage = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
-
+  const currentUrl = useCurrentUrl();
+  const {folderId, subFolderId, setFolderId, setSubFolderId} = useFolderStore();
+  if (currentUrl.pathname === '/') {
+    if(folderId || subFolderId){
+      setFolderId(null);
+      setSubFolderId(null);
+    }
+  }
   return (
     <div>
       <CustomNavbar cardsRef={cardsRef} />

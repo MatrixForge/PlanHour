@@ -7,7 +7,7 @@ import FolderOptionsModal from "../components/eventify/FolderOptionsModal";
 import { useFolderStore } from "../../store/folderStore";
 import Image from "next/image";
 import CustomIIcon from "./customiIcon";
-
+import useCurrentUrl from "@/hooks/current_url_returner"
 interface Folder {
   _id: string;
   title: string;
@@ -19,8 +19,14 @@ const FolderDisplay: React.FC = () => {
   const [showEventModal, setShowEventModal] = useState(false);
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const { folderCreated, setFolderCreated } = useFolderStore();
-  const { setFolderId, setFolderTitle } = useFolderStore();
+  const { setFolderId, setFolderTitle, setSubFolderId, subFolderId } = useFolderStore();
 
+  const currentUrl = useCurrentUrl();
+  if (currentUrl.pathname === "/eventify") {
+    if (subFolderId) {
+      setSubFolderId(null);
+    }
+  }
   useEffect(() => {
     fetchFolders();
     setFolderId(undefined);

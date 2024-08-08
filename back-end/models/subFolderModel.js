@@ -12,9 +12,10 @@ const folderSchema = new mongoose.Schema({
     title: { type: String, required: true },
     completed: { type: Boolean, default: false }
   }],
-  vendors:[
-    {type:mongoose.Schema.Types.ObjectId, ref:"Vendor"}
-  ]
+  vendors: [{
+    vendorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
+    saved: { type: Boolean, default: false },
+  }]
 });
 
 const subFolder = mongoose.model('subFolder', folderSchema);

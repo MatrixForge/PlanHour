@@ -5,15 +5,12 @@ import Footer from "../components/footer";
 import VenueBoard from "../components/venueBoard";
 import styles from "@/styles/custom-colors.module.css";
 import styles1 from "@/styles/budgePage.module.css";
-import Link from "next/link";
-import useAuthStore from "@/store/authStore";
 import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore";
 import ExportPopup from "../components/ExportPopup";
 
 const BudgetPage = () => {
   const { folderId, subFolderId } = useFolderStore();
-  const { user } = useAuthStore();
   const [budgetData, setBudgetData] = useState({
     venue: [],
     restaurants: [],
@@ -21,6 +18,7 @@ const BudgetPage = () => {
     photographer: [],
     decor: [],
   });
+  const [selectedVendors, setSelectedVendors] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
   const [selectedVenues, setSelectedVenues] = useState({
     venue: null,
@@ -33,17 +31,23 @@ const BudgetPage = () => {
 
   useEffect(() => {
     fetchPlans();
-  }, []);
+  }, [folderId, subFolderId]);
 
   const fetchPlans = async () => {
     try {
-      const response = await axios.post(
-        "/budget/get-all-plans-for-specific-user",
-        {
-          folderId,
-          subFolderId,
-        }
-      );
+      let response;
+      if (folderId && !subFolderId) {
+        response = await axios.post("/budget/get-all-plans-for-specific-user", {
+          folderOrSubFolder: "folder",
+          id: folderId,
+        });
+      }else if(subFolderId){
+        response = await axios.post("/budget/get-all-plans-for-specific-user", {
+          folderOrSubFolder: "subfolder",
+          id: subFolderId,
+        });
+      }
+      
       if (response) {
         const fetchedVendors = response.data;
 
@@ -89,13 +93,34 @@ const BudgetPage = () => {
     isSelected: boolean,
     vendorType: string
   ) => {
-    setSelectedVenues((prevSelected) => {
-      const newSelection = {
-        ...prevSelected,
-        [vendorType]: isSelected ? id : null,
-      };
-      return newSelection;
-    });
+     setSelectedVenues((prevSelected) => {
+    const newSelection = {
+      ...prevSelected,
+      [vendorType]: isSelected ? id : null,
+    };
+
+    // Calculate selectedVendors and totalCost
+    const selectedVendorsList = Object.keys(newSelection).reduce((result, key) => {
+      const vendorId = newSelection[key];
+      if (vendorId) {
+        const vendor = budgetData[key].find((v) => v._id === vendorId);
+        if (vendor) result.push(vendor);
+      }
+      return result;
+    }, []);
+
+    setSelectedVendors(selectedVendorsList);
+
+    const newTotalCost = selectedVendorsList.reduce(
+      (sum, vendor) => sum + vendor.min,
+      0
+    );
+
+    setTotalCost(newTotalCost);
+
+    return newSelection;
+  });
+
   };
 
   const handleSave = async () => {
@@ -229,10 +254,26 @@ const BudgetPage = () => {
           Total Cost: PKR {totalCost}
         </h2>
       </div>
-      {showExportPopup &&  (
+      {showExportPopup && (
         <ExportPopup
           onClose={() => setShowExportPopup(false)}
-          budgetData={budgetData}
+          budgetData={{
+            venue: budgetData.venue.filter(
+              (v) => selectedVenues.venue === v._id
+            ),
+            restaurants: budgetData.restaurants.filter(
+              (v) => selectedVenues.restaurants === v._id
+            ),
+            caterer: budgetData.caterer.filter(
+              (v) => selectedVenues.caterer === v._id
+            ),
+            photographer: budgetData.photographer.filter(
+              (v) => selectedVenues.photographer === v._id
+            ),
+            decor: budgetData.decor.filter(
+              (v) => selectedVenues.decor === v._id
+            ),
+          }}
           totalCost={totalCost}
         />
       )}
