@@ -71,7 +71,7 @@ const EventForm: React.FC<EventFormProps> = ({
 
     try {
       const response = await fetch(
-        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all",
         {
           method: "POST",
           headers: {
