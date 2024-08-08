@@ -20,8 +20,20 @@ const FolderDisplay: React.FC = () => {
   const [showEventModal, setShowEventModal] = useState(false);
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const { folderCreated, setFolderCreated } = useFolderStore();
-  const { setFolderId, setFolderTitle, hasSubfolder, setHasSubfolder, folderId, folders, setFolders, searchMode, setSearchMode } = useFolderStore();
-  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>();
+  const {
+    setFolderId,
+    setFolderTitle,
+    hasSubfolder,
+    setHasSubfolder,
+    folderId,
+    folders,
+    setFolders,
+    searchMode,
+    setSearchMode,
+  } = useFolderStore();
+  const [selectedFolderId, setSelectedFolderId] = useState<
+    string | undefined
+  >();
   const [showEditForm, setShowEditForm] = useState(false); // State for EditForm
   const [existingFolderData, setExistingFolderData] = useState({
     title: "",
@@ -71,7 +83,7 @@ const FolderDisplay: React.FC = () => {
         noOfGuests: folderData.noOfGuests,
         description: folderData.description,
       });
-      console.log("woww",folderData)
+      console.log("woww", folderData);
     } catch (error) {
       console.error("Error fetching folder data:", error);
     }
@@ -81,11 +93,9 @@ const FolderDisplay: React.FC = () => {
     if (option === "Delete") {
       deleteFolder(folderId);
       fetchFolders();
-
     } else if (option === "Edit") {
-
       fetchFolderData(folderId);
-      setFolderId(folderId)
+      setFolderId(folderId);
       setShowEditForm(true);
       fetchFolders();
     }
@@ -94,11 +104,11 @@ const FolderDisplay: React.FC = () => {
   const deleteFolder = async (folderId) => {
     try {
       await axios.delete(`/events/folders/delete/${folderId}`);
-      fetchFolders(); 
+      fetchFolders();
 
       // Update the UI accordingly after deletion
     } catch (error) {
-      console.error('Error deleting folder:', error);
+      console.error("Error deleting folder:", error);
     }
   };
 
@@ -120,8 +130,18 @@ const FolderDisplay: React.FC = () => {
             <div className="three-dots-container">
               <i className="bi bi-three-dots-vertical three-dots-icon"></i>
               <div className="popup">
-              <div className="popup-option" onClick={() => handleOptionClick("Edit", folder._id)}>Edit</div>
-                <div className="popup-option" onClick={() => handleOptionClick("Delete", folder._id)}>Delete</div>
+                <div
+                  className="popup-option"
+                  onClick={() => handleOptionClick("Edit", folder._id)}
+                >
+                  Edit
+                </div>
+                <div
+                  className="popup-option"
+                  onClick={() => handleOptionClick("Delete", folder._id)}
+                >
+                  Delete
+                </div>
               </div>
             </div>
             <Image
@@ -131,7 +151,6 @@ const FolderDisplay: React.FC = () => {
               width={224}
               height={256}
               onClick={() => handleShowOptionsModal(folder._id, folder.title)}
-
             />
             <div className="card-body">
               <p className="card-text">{folder.title}</p>
@@ -170,7 +189,9 @@ const FolderDisplay: React.FC = () => {
                 />
               </a>
             </div>
-            <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+            <div className="three-dots-container">
+              <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+            </div>
             <Image
               src="/folder.png"
               className="card-img-top cardImg"
@@ -201,7 +222,6 @@ const FolderDisplay: React.FC = () => {
           onClose={() => setShowEditForm(false)}
           existingData={existingFolderData}
           folderId={folderId}
-
         />
       )}
       {showEventModal && <EventModal onClose={handleCloseEventModal} />}
