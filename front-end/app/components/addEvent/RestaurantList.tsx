@@ -70,7 +70,7 @@ const RestaurantList: React.FC = () => {
 
     setTimeout(() => {
       setPopupVisible(false);
-    }, 2000);
+    }, 1000);
   };
 
   const closePopup = () => {

@@ -5,8 +5,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 20px;
-  background-color: rgba(255, 255, 255, 0.9) !important;
+  padding: 20px 20px 20px 30px !important;
+  background-color: rgba(255, 255, 255, 1) !important;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 .card-header p {
   margin: 0; /* Remove default margin */
@@ -15,7 +18,7 @@
   margin-top: 5px;
 }
 
-.card {
+.card1 {
   max-width: 600px;
   background-color: rgba(
     255,
@@ -30,12 +33,17 @@
   max-width: 500px; /* Adjust width as needed */
   margin-top: 60px;
   margin-bottom: 60px !important;
+  border-radius: 20px !important;
+  border-style: none;
+  position: relative;
+  overflow-y: auto !important;
 }
 
-.card-body {
+.card-body1 {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  justify-content: start;
+  align-items: center;
   background-color: rgba(255, 255, 255, 0.9) !important;
   border-bottom-left-radius: 50px !important;
   border-bottom-right-radius: 50px !important;
@@ -53,8 +61,8 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  margin-left: 10px;
   height: 70px;
+  width: 450px;
   font-family: "Sharp Sans";
   font-weight: 500;
   border: none; /* Remove the border */
@@ -85,17 +93,18 @@
 }
 
 /* Custom scrollbar styles */
-.card-body::-webkit-scrollbar {
+.card1::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
 }
 
-.card-body::-webkit-scrollbar-thumb {
+.card1::-webkit-scrollbar-thumb {
   background-color: lightgrey; /* Color of the scrollbar thumb */
   border-radius: 10px; /* Rounded edges for the scrollbar thumb */
 }
 
-.card-body::-webkit-scrollbar-track {
+.card1::-webkit-scrollbar-track {
   background: transparent; /* Make the track transparent */
+  margin: 84px 0px 15px 0px;
 }
 
 /* Custom scrollbar styles for event card */
@@ -345,13 +354,21 @@ input {
   bottom: 0;
   color: rgba(0, 0, 0, 0.5) !important;
   border-top: 1px solid lightgrey; /* Add border to separate from tasks */
-  padding-right: 23px;
+  padding-right: 16px;
   padding-left: 16px;
   font-weight: 600;
-  margin-left: 10px;
 }
 
 .todo-footer {
   margin-bottom: 10px;
-  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: sticky;
+  bottom: 0; /* Stick to the bottom of the container */
+  z-index: 10; /* Ensure it stays above other content */
+  background-color: white; /* Add a background color to make sure it's visible */
+  padding: 0px 10px 10px 10px; /* Optional: Add padding for better appearance */
 }
