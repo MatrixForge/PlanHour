@@ -9,7 +9,7 @@ import Image from "next/image";
 import CustomIIcon from "./customiIcon";
 import EditForm from "./editForm";
 import { subscribe } from "diagnostics_channel";
-
+import useCurrentUrl from "@/hooks/current_url_returner"
 interface Folder {
   _id: string;
   title: string;
@@ -23,6 +23,8 @@ const FolderDisplay: React.FC = () => {
   const {
     setFolderId,
     setFolderTitle,
+    subFolderId,
+    setSubFolderId,
     hasSubfolder,
     setHasSubfolder,
     folderId,
@@ -43,6 +45,12 @@ const FolderDisplay: React.FC = () => {
     description: "",
   });
 
+  const currentUrl = useCurrentUrl();
+  if (currentUrl.pathname === "/eventify") {
+    if (subFolderId) {
+      setSubFolderId(null);
+    }
+  }
   useEffect(() => {
     if (!searchMode) {
       fetchFolders(); // Fetch all folders only if not in search mode
