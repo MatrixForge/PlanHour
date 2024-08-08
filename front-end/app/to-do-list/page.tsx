@@ -12,13 +12,31 @@ import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore";
 
 const BootstrapLayout = () => {
-  const { folderId, subFolderId, folderTitle } = useFolderStore();
-  const [todos, setTodos] = useState([]);
-   const [selectedDates, setSelectedDates] = useState([]);
+  const { folderId, subFolderId } = useFolderStore();
 
-  const [events, setEvents] = useState([]);
-  const [newTask, setNewTask] = useState(""); // New task input state
-  const [isInputActive, setIsInputActive] = useState(false); // Input activation state 
+  const sampleTodos = [
+    { id: 1, title: "Venue A", done: false, isEditing: false },
+    { id: 2, title: "Venue B", done: true, isEditing: false },
+  ];
+
+  const sampleEvents = [
+    { id: 1, name: "Wedding A", date: "2024-08-15" },
+    { id: 2, name: "Wedding B", date: "2024-09-10" },
+    { id: 3, name: "Wedding C", date: "2024-10-20" },
+    { id: 4, name: "Wedding B", date: "2024-09-10" },
+    { id: 5, name: "Wedding C", date: "2024-10-20" },
+    { id: 6, name: "Wedding B", date: "2024-09-10" },
+    { id: 7, name: "Wedding C", date: "2024-10-20" },
+  ];
+
+  const colors = ["#E8A696", "#EEBCAE", "#EBA0E3"];
+
+  const [todos, setTodos] = useState(sampleTodos);
+  const [events, setEvents] = useState(sampleEvents);
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [selectedEventId, setSelectedEventId] = useState(1);
+
+  const taskListRef = useRef(null); // Reference to the task list container
 
   const toggleDone = (id) => {
     setTodos(
@@ -27,53 +45,41 @@ const BootstrapLayout = () => {
       )
     );
   };
-  useEffect(() => {
-    fetchData();
-  }, [folderId, subFolderId]);
 
-  const fetchData = async () => {
-    if (!subFolderId && folderId) {
-      try {
-        const response = await axios.post("/events/get-to-do-list", {
-          folderOrSubFolder: "folder",
-          id: folderId,
-        });
-
-        if (response) {
-          const data = await response.data;
-          setTodos(data.toDoLists);
-          setEvents(data.subfolders);
-          setSelectedDates(
-            data.subfolders.map((event: any) => new Date(event.date))
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-  };
- 
-  const handleTaskSubmit = async () => {
-    if (newTask.trim() === "") return;
-
-    try {
-      const response = await axios.post("/events/add-task", {
-        subFolderId, // Pass the selected subFolderId
-        title: newTask,
-      });
-
-      if (response) {
-        const newTodo = await response.data;
-        setTodos((prevTodos) => [...prevTodos, newTodo]);
-        setNewTask(""); // Clear the input field
-        setIsInputActive(false); // Deactivate the input field
-      }
-    } catch (error) {
-      console.error("Error adding task:", error);
-    }
+  const toggleEditing = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, isEditing: !todo.isEditing } : todo
+      )
+    );
   };
 
-  const colors = ["#E8A696", "#92D4C9", "#C5B3E6", "#EBA0E3"];
+  const handleTitleChange = (id, newTitle) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, title: newTitle } : todo
+      )
+    );
+  };
+
+  const handleEventClick = (id) => {
+    setSelectedEventId(id);
+  };
+
+  const addTask = () => {
+    const newTask = {
+      id: todos.length + 1,
+      title: "",
+      done: false,
+      isEditing: true,
+    };
+
+    setTodos([...todos, newTask]);
+  };
+
+  const deleteTask = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
 
   return (
     <>
@@ -193,9 +199,7 @@ const BootstrapLayout = () => {
               }}
             >
               <div className="event-card ">
-                <div className="event-card-header fontCustom">
-                  {folderTitle}
-                </div>
+                <div className="event-card-header fontCustom">Weddings</div>
                 {events.map((event, index) => (
                   <div
                     key={event.id}
@@ -211,14 +215,8 @@ const BootstrapLayout = () => {
                   >
                     <div className="left-bg"></div>
                     <div className="event-info">
-                      <span className="event-name">{event.title}</span>
-                      <span className="event-date">
-                        {new Date(event.date).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        })}
-                      </span>
+                      <span className="event-name">{event.name}</span>
+                      <span className="event-date">{event.date}</span>
                     </div>
                   </div>
                 ))}

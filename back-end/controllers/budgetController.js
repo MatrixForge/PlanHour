@@ -8,37 +8,29 @@ exports.getAllPlansForSpecificUser = async (req, res) => {
     try {
         let targetFolderOrSubFolder;
         if (folderOrSubFolder === 'folder') {
-            targetFolderOrSubFolder = await Folder.findById(id).populate("vendors");
+            targetFolderOrSubFolder = await Folder.findById(id).populate({
+                path: 'vendors.vendorId',
+                model: 'Vendor'
+            });
             if (!targetFolderOrSubFolder) {
                 return res.status(204).json({ message: 'Folder not found' });
             }
-        }else if(folderOrSubFolder === 'subfolder'){
-            targetFolderOrSubFolder = await SubFolder.findById(id).populate("vendors");
+        } else if (folderOrSubFolder === 'subfolder') {
+            targetFolderOrSubFolder = await SubFolder.findById(id).populate({
+                path: 'vendors.vendorId',
+                model: 'Vendor'
+            });
             if (!targetFolderOrSubFolder) {
-                return res.status(204).json({ message: 'subFolder not found' });
+                return res.status(204).json({ message: 'SubFolder not found' });
             }
         }
-        // const vendorIds = new Set();
-        // if(folderId){
-        //     const folder = await Folder.findById(folderId).populate('vendors');
-        //     if (folder) {
-        //         folder.vendors.forEach(vendor => vendorIds.add(vendor._id));
-        //     }
-        // }
-        // if(subFolderId){
-        //     const subFolder = await SubFolder.findById(subFolderId).populate('vendors');
-        //     if (subFolder) {
-        //         subFolder.vendors.forEach(vendor => vendorIds.add(vendor._id));
-        //     }
-        // }
-        // Retrieve vendor details using vendor IDs
-        // const vendors = await Vendor.find({ _id: { $in: Array.from(vendorIds) } });
-        const vendors = targetFolderOrSubFolder.vendors || [];
+        const vendors = targetFolderOrSubFolder.vendors.map(vendor => vendor.vendorId);
         res.status(200).json(vendors);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 // Controller to save selected vendors
 exports.saveSelectedVendors = async (req, res) => {
