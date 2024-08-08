@@ -8,6 +8,7 @@ import "@/styles/FolderDisplay.css";
 import EventModal from "../components/EventModal";
 import Image from "next/image";
 import CustomIIcon from "./customiIcon";
+import EditForm from "./editForm";
 
 interface Folder {
   _id: string;
@@ -20,13 +21,59 @@ const SubFolderDisplay = () => {
   const [subfolders, setSubfolders] = useState<Folder[]>([]);
   const [selectedFolder, setSelectedFolder] = useState(null); // State to store selected folder
   const [showEventModal, setShowEventModal] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false); // State for EditForm
+  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>();
+
 
   const handleShowEventModal = () => setShowEventModal(true);
   const handleCloseEventModal = () => setShowEventModal(false);
+  const [existingFolderData, setExistingFolderData] = useState({
+    title: "",
+    eventType: "",
+    date: "",
+    noOfGuests: "",
+    description: "",
+  });
+
 
   const { folderCreated, setFolderCreated } = useFolderStore();
-  const { folderId, folderTitle, setFolderId, setSubFolderId } =
+  const { folderId, folderTitle, setFolderId, setSubFolderId ,hasSubfolder,setHasSubfolder,subFolderId} =
     useFolderStore();
+
+
+  useEffect(() => {
+    if (folderId) {
+      fetchSubfolders(folderId);
+    }
+    console.log('maaa',folderId)
+
+    console.log('wooww',folderCreated)
+  }, [folderId, folderCreated,setFolderCreated]);
+
+    useEffect(() => {
+
+      //setFolderCreated(false);
+      if (!folderId) return;
+      console.log('idd',folderId)
+
+    const checkSubfolders = async () => {
+      try {
+        const response = await axios.get(`/events/check-subfolders/${folderId}`);
+        const data = response.data;
+
+        setHasSubfolder(data.hasSubfolders);
+
+        console.log('kill',data.hasSubfolders)
+
+        console.log('sub folder2 is',hasSubfolder)
+
+      } catch (error) {
+        console.error("Error checking subfolders:", error);
+      }
+    };
+
+    checkSubfolders();
+  }, [setSubFolderId]);
 
   const handleShowModal = (folder) => {
     setSelectedFolder(folder);
@@ -35,11 +82,23 @@ const SubFolderDisplay = () => {
   };
   const handleCloseModal = () => setShowModal(false);
 
-  useEffect(() => {
-    if (folderId) {
-      fetchSubfolders(folderId);
+
+  const fetchFolderData = async (folderId: string) => {
+    try {
+      const response = await axios.get(`/events/subfolders/${folderId}`);
+      const folderData = response.data;
+      setExistingFolderData({
+        title: folderData.title,
+        eventType: folderData.eventType,
+        date: folderData.date,
+        noOfGuests: folderData.noOfGuests,
+        description: folderData.description,
+      });
+      console.log("woww",folderData)
+    } catch (error) {
+      console.error("Error fetching folder data:", error);
     }
-  }, [folderId, folderCreated]);
+  };
 
   const fetchSubfolders = async (id: any) => {
     try {
@@ -48,6 +107,34 @@ const SubFolderDisplay = () => {
       console.log("folder id is", folderId);
     } catch (error) {
       console.error("Error fetching subfolders:", error);
+    }
+  };
+
+  const handleOptionClick = (option: string, folderId: string) => {
+    if (option === "Delete") {
+      deleteFolder(folderId);
+      setSubFolderId(folderId);
+
+    } else if (option === "Edit") {
+      console.log('omggg',folderId)
+
+      setSubFolderId(folderId);
+      console.log('bithh',subFolderId)
+      fetchFolderData(folderId);
+      setShowEditForm(true);
+     
+
+    }
+  };
+
+  const deleteFolder = async (subFolderId) => {
+    try {
+      await axios.delete(`/events/subfolders/delete/${subFolderId}`);
+      fetchSubfolders(folderId);
+
+      // Update the UI accordingly after deletion
+    } catch (error) {
+      console.error('Error deleting folder:', error);
     }
   };
 
@@ -65,15 +152,22 @@ const SubFolderDisplay = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onClick={() => handleShowModal(folder)}
           >
-            <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+             <div className="three-dots-container">
+              <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+              <div className="popup">
+              <div className="popup-option" onClick={() => handleOptionClick("Edit", folder._id)}>Edit</div>
+                <div className="popup-option" onClick={() => handleOptionClick("Delete", folder._id)}>Delete</div>
+              </div>
+            </div>
             <Image
               src="/folder.png"
               className="card-img-top cardImg"
               alt="Card image cap"
               width={224}
               height={256}
+              onClick={() => handleShowModal(folder)}
+
             />
             <div className="card-body">
               <p className="card-text">{folder.title}</p>
@@ -112,6 +206,7 @@ const SubFolderDisplay = () => {
               />
             </a>
           </div>
+          
           <i className="bi bi-three-dots-vertical three-dots-icon"></i>
           <Image
             src="/folder.png"
@@ -138,6 +233,15 @@ const SubFolderDisplay = () => {
           </div>
         </div>
       </div>
+      {showEditForm && (
+        <EditForm
+          onClose={() => setShowEditForm(false)}
+          existingData={existingFolderData}
+          folderId={subFolderId}
+          isSubFolder={true}
+
+        />
+      )}
       {showEventModal && <EventModal onClose={handleCloseEventModal} />}
       {showModal && (
         <FolderOptionsModal show={showModal} handleClose={handleCloseModal} />

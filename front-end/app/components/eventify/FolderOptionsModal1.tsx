@@ -1,10 +1,15 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@styles/folderOptions.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import { useFolderStore } from "@/store/folderStore";
+import axios from "@/lib/axios";
 
 const FolderOptionsModal = ({ show, handleClose }) => {
+
+
+  
   return (
     <div className={`${styles.popup1} ${show ? styles.show : ""}`}>
       <div
