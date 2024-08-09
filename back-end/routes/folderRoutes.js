@@ -26,7 +26,6 @@ router.get('/check-subfolders/:folderId',folderController.hasSubfolders);
 router.get('/folders/search', authenticateToken, folderController.searchFolders);
 //sort for main
 router.get('/folders/sort', authenticateToken, folderController.sortFolders);
-router.get('/search-subfolders',authenticateToken, folderController.searchSubFolders);
 router.get('/sort-subfolders',authenticateToken, folderController.sortSubFolders);
 
 

@@ -206,7 +206,9 @@ const GuestListPage = () => {
   const handleAddGuest = async () => {
     if (newGuest.name && newGuest.email && newGuest.number) {
 
-      console.log('fucking id',subFolderId)
+      console.log('fucking  sub id',subFolderId)
+      console.log('fucking main id',folderId)
+
       try {
         const response = await fetch(
           "http://localhost:5000/api/guests/create-guests",
@@ -293,6 +295,32 @@ const GuestListPage = () => {
     }
   };
 
+  const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+  
+    try {
+      let url = `http://localhost:5000/api/guests/search-guests?query=${query}`;
+  
+      // Add folderId or subFolderId as query parameters if they exist
+      if (subFolderId) {
+        url += `&subFolderId=${subFolderId}`;
+      } else if (folderId) {
+        url += `&folderId=${folderId}`;
+      }
+  
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setGuests(data);
+      } else {
+        console.error("Failed to search guests");
+      }
+    } catch (error) {
+      console.error("Error searching guests:", error);
+    }
+  };
+  
+
   return (
     <div>
       <CustomNavbar />
@@ -312,6 +340,7 @@ const GuestListPage = () => {
                 type="text"
                 className={`form-control ${styles1.searchBar}`}
                 placeholder="Search..."
+                onChange={handleSearch}
               />
               <div className={styles1.buttons}>
                 <button

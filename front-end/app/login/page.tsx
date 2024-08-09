@@ -69,7 +69,6 @@ const Login: React.FC = () => {
       }
     } catch (error: any) {
       console.error("Login failed:", error.message);
-      setErrorMessage("Invalid email or password"); // Set the error message to be displayed
     }
   };
 

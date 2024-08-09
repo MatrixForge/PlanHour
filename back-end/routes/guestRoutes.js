@@ -8,10 +8,9 @@ router.post('/create-guests', guestController.createGuest);
 // Route to get all guests
 router.get('/get-guests', guestController.getGuests);
 
-// Route to delete a guest by ID
-router.delete('/guests/:id', guestController.deleteGuest);
-
 // Delete multiple guests by IDs
 router.delete('/delete-guests', guestController.deleteMultipleGuests);
+
+router.get('/search-guests' , guestController.searchGuests);
 
 module.exports = router;

@@ -20,7 +20,7 @@ const FolderDisplay: React.FC = () => {
   const [showEventModal, setShowEventModal] = useState(false);
   const [showOptionsModal, setShowOptionsModal] = useState(false);
   const { folderCreated, setFolderCreated } = useFolderStore();
-  const { setFolderId, setFolderTitle, hasSubfolder, setHasSubfolder, folderId, folders, setFolders, searchMode, setSearchMode } = useFolderStore();
+  const { setFolderId, setFolderTitle, hasSubfolder, setHasSubfolder, folderId, folders, setFolders, searchMode, setSearchMode ,setSubFolderId} = useFolderStore();
   const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>();
   const [showEditForm, setShowEditForm] = useState(false); // State for EditForm
   const [existingFolderData, setExistingFolderData] = useState({
@@ -36,6 +36,8 @@ const FolderDisplay: React.FC = () => {
       fetchFolders(); // Fetch all folders only if not in search mode
     }
     setFolderId(undefined);
+    setSubFolderId(undefined);
+
     setFolderCreated(false);
   }, [folderCreated, searchMode]);
 
@@ -149,7 +151,6 @@ const FolderDisplay: React.FC = () => {
             </div>
           </div>
         ))}
-        {!searchMode && (
           <div
             className="card"
             style={{
@@ -194,7 +195,7 @@ const FolderDisplay: React.FC = () => {
               </div>
             </div>
           </div>
-        )}
+        
       </div>
       {showEditForm && (
         <EditForm

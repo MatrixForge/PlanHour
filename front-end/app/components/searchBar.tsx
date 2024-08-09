@@ -8,7 +8,7 @@ import { useFolderStore } from "@/store/folderStore";
 const SearchBar: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const { setFolderId, setFolderTitle,hasSubfolder,setHasSubfolder,folderId,folders,setFolders,searchMode,setSearchMode } = useFolderStore();
+  const { setFolderId, setFolderTitle,hasSubfolder,setHasSubfolder,folderId,folders,setFolders,searchMode,setSearchMode,subFolderId } = useFolderStore();
 
 
   const handleMouseEnter = () => {
@@ -21,9 +21,22 @@ const SearchBar: React.FC = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`/events/folders/search?keyword=${keyword}`);
+      let queryString = `keyword=${keyword}`;
+      if (subFolderId) {
+        console.log('sub folder is ',subFolderId)
+        queryString += `&folderId=${subFolderId}`; //  `mainFolderId` depending on context
+      }
+      else{
+
+        console.log('main folder is ',folderId)
+
+        queryString += `&folderId=${folderId}`; // Or `mainFolderId` depending on context
+      }
+      const response = await axios.get(`/events/folders/search?${queryString}`);
+      
       setFolders(response.data); // Set the folders state with the search result
       setSearchMode(true)
+      
     } catch (error) {
       console.error('Error fetching search results:', error);
     }

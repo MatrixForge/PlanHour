@@ -179,34 +179,43 @@ exports.hasSubfolders = async (req, res) => {
 
 // Search folders by title
 exports.searchFolders = async (req, res) => {
-  const { keyword } = req.query; // Get the search keyword from the query parameters
+  const { keyword, folderId, mainFolderId } = req.query; // Get the search keyword and IDs from the query parameters
   const userId = req.user.id; // Assuming you are filtering by the logged-in user
 
   try {
-    const folders = await Folder.find({
-      createdBy: userId,
-      title: { $regex: keyword, $options: "i" }, // Case-insensitive search
-    });
-    res.status(200).json(folders);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-// Search subfolders by title
-exports.searchSubFolders = async (req, res) => {
-  const { keyword } = req.query; // Get the search keyword from the query parameters
-  const userId = req.user.id; // Assuming you are filtering by the logged-in user
+    let results = [];
 
-  try {
-    const subFolders = await SubFolder.find({
-      createdBy: userId,
-      title: { $regex: keyword, $options: "i" }, // Case-insensitive search
-    });
-    res.status(200).json(subFolders);
+    if (mainFolderId) {
+      console.log('here1')
+      // Search in folders if mainFolderId is provided
+      results = await Folder.find({
+        createdBy: userId,
+        title: { $regex: keyword, $options: "i" }, // Case-insensitive search
+        _id: mainFolderId // Filter by the provided main folder ID
+      });
+    } else if (folderId) {
+      console.log('here2')
+
+      // Search in subfolders if folderId is provided
+      results = await subFolder.find({
+        createdBy: userId,
+        title: { $regex: keyword, $options: "i" }, // Case-insensitive search
+        folderId: folderId // Filter by the provided folder ID
+      });
+
+
+    } else {
+      return res.status(400).json({ message: "Either 'folderId' or 'mainFolderId' must be provided." });
+    }
+
+    console.log('results:',results)
+    res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+
 };
+
 
 exports.sortFolders = async (req, res) => {
   const { sortBy } = req.query; // Get the sort option from the query parameters
