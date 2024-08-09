@@ -14,11 +14,9 @@ const folderSchema = new mongoose.Schema({
     completed: { type: Boolean, default: false }
   }],
   vendors: [{
-    type: mongoose.Schema.Types.ObjectId, ref: "Vendor"
-  }],
-  guests: [{
-    type: mongoose.Schema.Types.ObjectId, ref: "Guest"
-  }],
+    vendorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
+    saved: { type: Boolean, default: false },
+  }]
 });
 
 const Folder = mongoose.model('Folder', folderSchema);

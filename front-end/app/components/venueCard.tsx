@@ -1,5 +1,6 @@
 import React from "react";
 import styles1 from "@styles/venueCard.module.css";
+import Svg from "./addEvent/Svg";
 
 const VenueCard = ({ venue, onSelect, isSelected, vendorType }) => {
   const handleCheckboxChange = () => {
@@ -11,7 +12,7 @@ const VenueCard = ({ venue, onSelect, isSelected, vendorType }) => {
       <div
         className={`container-fluid d-flex justify-content-between align-items-center ${styles1.topText}`}
       >
-        <div>{venue.name}</div>
+        <span>{venue.name}</span>
         <div className={styles1.checkboxContainer}>
           <input
             type="checkbox"
@@ -19,6 +20,7 @@ const VenueCard = ({ venue, onSelect, isSelected, vendorType }) => {
             className={styles1.checkbox}
             onChange={handleCheckboxChange}
           />
+          <Svg name="delete" />
         </div>
       </div>
       <hr />

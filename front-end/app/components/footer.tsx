@@ -25,17 +25,19 @@ const Footer = () => {
     >
       <div className="d-flex flex-column align-items-center">
         <div className="mb-3 text-center">
-          <div className={styles.text1}>
+          <div className={`font-montserrat ${styles.text1}`}>
             Simplify your scheduling, maximize your time.
           </div>
-          <div className={styles.text2}>Request More Information</div>
-          <div className={styles.text3}>
+          <div className={`font-montserrat ${styles.text2}`}>
+            Request More Information
+          </div>
+          <div className={`font-montserrat ${styles.text3}`}>
             Plan Hour: The perfect solution for streamlined scheduling and
             effective time management
           </div>
           <div className="d-flex align-items-center justify-content-center">
             <button
-              className={`shadow-lg d-flex align-items-center justify-content-center ${styles.button1}`}
+              className={`font-montserrat shadow-lg d-flex align-items-center justify-content-center ${styles.button1}`}
               onClick={() =>
                 handleOpenPopup(<ContactUs onClose={handleClosePopup} />)
               }
@@ -50,7 +52,7 @@ const Footer = () => {
           <div className="d-flex align-items-center">
             <div className="d-flex bottomtext1 me-5">
               <div
-                className="mx-2"
+                className="mx-2 font-montserrat"
                 onClick={() =>
                   handleOpenPopup(<TermsOfService onClose={handleClosePopup} />)
                 }
@@ -58,7 +60,7 @@ const Footer = () => {
                 Terms of Service
               </div>
               <div
-                className="mx-2"
+                className="mx-2 font-montserrat"
                 onClick={() =>
                   handleOpenPopup(<PrivacyPolicy onClose={handleClosePopup} />)
                 }
@@ -67,7 +69,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="ms-5 me-5">
+          <div className="ms-5 me-5 font-montserrat">
             © Plan Hour 2024. ALL RIGHTS RESERVED.
           </div>
           <div className="bottomtext3 d-flex justify-content-center align-items-center ms-5">

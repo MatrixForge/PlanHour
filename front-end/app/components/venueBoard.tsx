@@ -7,7 +7,7 @@ const VenueBoard = ({ title, venues, className, onSelect, selectedVenues }) => {
 
   return (
     <div
-      className={`container-fluid d-flex flex-column justify-content-start align-items-center ${styles1.container} ${className}`}
+      className={`d-flex flex-column justify-content-start align-items-center ${styles1.container} ${className}`}
     >
       <div className={`${styles1.cardHeader} ${styles1.fontCustom}`}>
         {title}

@@ -25,7 +25,7 @@ const ButtonList: React.FC = () => {
             return (
               <button
                 key={index}
-                className={`btn rounded-3 px-lg-4 py-2 ms-lg-5 ${
+                className={`font-sharp-sans btn rounded-3 px-lg-4 py-2 ms-lg-5 ${
                   activeButton === button.name
                     ? "transparent-bg"
                     : styles[button.color]

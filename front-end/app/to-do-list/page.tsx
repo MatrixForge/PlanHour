@@ -92,11 +92,11 @@ const BootstrapLayout = () => {
             height: "100%",
           }}
         >
-          <div className="card">
+          <div className="card1">
             <div className="card-header" style={{ borderBottom: "none" }}>
               To-do <p> (03)</p>
             </div>
-            <div className="card-body">
+            <div className="card-body1">
               <div className="task-list-container" ref={taskListRef}>
                 <ol className="list-group list-group-numbered">
                   {todos.map((todo, idx) => (

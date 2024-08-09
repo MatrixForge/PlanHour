@@ -70,7 +70,7 @@ const RestaurantList: React.FC = () => {
 
     setTimeout(() => {
       setPopupVisible(false);
-    }, 2000);
+    }, 1000);
   };
 
   const closePopup = () => {
@@ -93,7 +93,7 @@ const RestaurantList: React.FC = () => {
         </div>
         <div className="sort-by">
           <select
-            className="form-select rounded-5 border-light border-3"
+            className="font-sharp-sans form-select rounded-5 border-light border-3"
             onChange={(e) => setSortOption(e.target.value)}
           >
             <option value="Relevance">Sort By: Relevance</option>
@@ -112,7 +112,7 @@ const RestaurantList: React.FC = () => {
           />
         ))}
       </div>
-      <div className="d-flex justify-content-center">
+      <div className="font-sharp-sans d-flex justify-content-center">
         <ResponsivePagination
           total={totalPages}
           current={currentPage}

@@ -15,7 +15,6 @@ interface RestaurantCardProps {
     contact: string;
     min: number;
     _id: string;
-    
   };
   addPlanToFolder: (vendorId: string) => void;
 }
@@ -36,7 +35,9 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         </div>
         <div className={styles.contentContainer}>
           <div className={styles.cardHeader}>
-            <div className={`${styles.cardTitle} ${styles.fontCustom}`}>
+            <div
+              className={`font-montserrat ${styles.cardTitle} ${styles.fontCustom}`}
+            >
               {restaurant.name}
             </div>
             <span
@@ -46,7 +47,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
               {<Svg name="plus" />}
             </span>
           </div>
-          <div className={`${styles.text1}`}>
+          <div className={`font-montserrat ${styles.text1}`}>
             <span>
               {<Svg name="star" />}
               {restaurant.rating}
@@ -56,16 +57,18 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
             </span>
           </div>
           <div className={`${styles.text1}`}>
-            <p className="card-text">
+            <p className="card-text font-montserrat">
               {<Svg name="location" />}
               {restaurant.location}
             </p>
           </div>
           <div className={`${styles.text1}`}>
-            <p className="card-text mt-4">{restaurant.description}</p>
+            <p className="card-text mt-4 font-sharp-sans">
+              {restaurant.description}
+            </p>
           </div>
           <hr />
-          <div className={styles.infoContainer}>
+          <div className={`font-montserrat ${styles.infoContainer}`}>
             <span className={styles.contactInfo}>
               {restaurant.email && (
                 <div>

@@ -23,15 +23,14 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
 
   useEffect(() => {
     const updateAuthStatus = async () => {
+      try {
+        const response = await axios.get("/users/me");
 
-        try {
-          const response = await axios.get("/users/me");
-
-          setUser(response.data);
-        } catch (error) {
-          console.error("Failed to fetch user:", error);
-          setUser(null); // Clear user if the token is invalid or request fails
-        }
+        setUser(response.data);
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+        setUser(null); // Clear user if the token is invalid or request fails
+      }
     };
 
     updateAuthStatus();
@@ -72,7 +71,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
       >
         <Link href="/" className="navbar-brand">
           <Image src="/logo.png" alt="Plan Hour" width={100} height={100} />
-          <span className={`ms-2 ${styles_nav.fontCustom}`}>
+          <span className={`ms-2 ${styles_nav.fontCustom} font-montserrat`}>
             <b>Plan Hour</b>{" "}
           </span>
         </Link>
@@ -93,7 +92,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
               <li className="nav-item">
                 <Link
                   href="/login"
-                  className={`btn btn-outline-dark ms-2 rounded-pill px-4 py-2 ${styles_nav.fontCustom}`}
+                  className={`btn btn-outline-dark ms-2 rounded-pill px-4 py-2 ${styles_nav.fontCustom} font-montserrat`}
                 >
                   Login
                 </Link>
@@ -108,7 +107,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
                 {user?.name || "User"}
                 {showLogout && (
                   <div
-                    className={`${styles_nav.logoutDropdown}`}
+                    className={`${styles_nav.logoutDropdown} font-montserrat`}
                     onClick={handleLogout}
                   >
                     Logout
@@ -128,7 +127,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
               <li className="nav-item">
                 <button
                   onClick={handleGetStartedClick}
-                  className={`btn btn-light mx-2 rounded-pill px-4 ${styles_nav.fontCustom} ${styles_color.customBrown}`}
+                  className={`font-montserrat btn btn-light mx-2 rounded-pill px-4 ${styles_nav.fontCustom} ${styles_color.customBrown}`}
                 >
                   Get Started
                 </button>

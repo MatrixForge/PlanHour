@@ -10,7 +10,7 @@ interface EventModalProps {
 
 const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
   const backgroundImgSrc = "/Popup.png";
-  const { folderId,subFolderId } = useFolderStore();
+  const { folderId, subFolderId } = useFolderStore();
   const [formData, setFormData] = useState({
     title: "",
     eventType: "",
@@ -33,23 +33,20 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { title, eventType, date, noOfGuests, description } = formData;
-    
+
     // Determine the URL based on the presence of mainFolderId
     const url = folderId
       ? `/events/folders/${folderId}/subfolder`
       : `/events/folders`;
 
     try {
-      const response = await axios.post(
-        url,
-        {
-          title,
-          eventType,
-          date,
-          noOfGuests,
-          description,
-        },
-      );
+      const response = await axios.post(url, {
+        title,
+        eventType,
+        date,
+        noOfGuests,
+        description,
+      });
       setFolderCreated(true); // Update Zustand store state
       onClose(); // Close the modal
     } catch (error: any) {
@@ -140,7 +137,6 @@ const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
                 onChange={handleChange}
                 required
               />
-\
             </div>
             <div className="mb-3 form-group">
               <label htmlFor="noOfGuests" className="form-label">

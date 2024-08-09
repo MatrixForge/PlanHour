@@ -6,7 +6,7 @@
 .card {
   margin-top: 5px;
   margin-bottom: 5px;
-  width: 200px;
+  width: 15rem;
   height: fit-content;
   background-color: white;
   border-radius: 10px;
@@ -26,12 +26,12 @@
 
 .checkbox {
   -webkit-appearance: none; /* Remove default appearance */
-  width: 20px; /* Adjust width as needed */
-  height: 20px; /* Adjust height as needed */
+  width: 1rem; /* Adjust width as needed */
+  height: 1rem; /* Adjust height as needed */
   border: 2px solid #ccc; /* Gray border */
   border-radius: 4px; /* Rounded corners */
   cursor: pointer;
-  margin-right: 8px; /* Adjust spacing */
+  margin-right: 0.3rem; /* Adjust spacing */
   position: relative; /* Ensure relative positioning */
 }
 
@@ -44,7 +44,7 @@
   content: ""; /* Empty content for pseudo-element */
   position: absolute; /* Position relative to checkbox */
   top: 40%; /* Center vertically */
-  left: 50%; /* Center horizontally */
+ /* Center horizontally */
   transform: translate(-50%, -50%) rotate(45deg); /* Center and rotate the checkmark */
   width: 6px; /* Adjust size of the checkmark */
   height: 15px; /* Adjust size of the checkmark */
