@@ -179,46 +179,40 @@ exports.hasSubfolders = async (req, res) => {
 
 // Search folders by title
 exports.searchFolders = async (req, res) => {
-  const { keyword, folderId, mainFolderId } = req.query; // Get the search keyword and IDs from the query parameters
+  const { keyword, mainFolderPage, subFolderPage } = req.query; // Get the search keyword and page booleans from the query parameters
   const userId = req.user.id; // Assuming you are filtering by the logged-in user
 
   try {
     let results = [];
 
-    if (mainFolderId) {
-      console.log('here1')
-      // Search in folders if mainFolderId is provided
+    if (mainFolderPage === 'true') {
+      console.log('Searching in main folders');
+      // Search in folders when mainFolderPage is true
       results = await Folder.find({
         createdBy: userId,
-        title: { $regex: keyword, $options: "i" }, // Case-insensitive search
-        _id: mainFolderId // Filter by the provided main folder ID
+        title: { $regex: keyword, $options: "i" } // Case-insensitive search
       });
-    } else if (folderId) {
-      console.log('here2')
-
-      // Search in subfolders if folderId is provided
+    } else if (subFolderPage === 'true') {
+      console.log('Searching in subfolders');
+      // Search in subfolders when subFolderPage is true
       results = await subFolder.find({
         createdBy: userId,
-        title: { $regex: keyword, $options: "i" }, // Case-insensitive search
-        folderId: folderId // Filter by the provided folder ID
+        title: { $regex: keyword, $options: "i" } // Case-insensitive search
       });
-
-
     } else {
-      return res.status(400).json({ message: "Either 'folderId' or 'mainFolderId' must be provided." });
+      return res.status(400).json({ message: "Either 'mainFolderPage' or 'subFolderPage' must be true." });
     }
 
-    console.log('results:',results)
+    console.log('results:', results);
     res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-
 };
 
 
 exports.sortFolders = async (req, res) => {
-  const { sortBy } = req.query; // Get the sort option from the query parameters
+  const { sortBy, mainFolderPage, subFolderPage, mainFolderId } = req.query; // Get the sort option, page booleans, and mainFolderId from the query parameters
   const userId = req.user.id;
 
   try {
@@ -234,39 +228,34 @@ exports.sortFolders = async (req, res) => {
       sortCriteria = { title: -1 };
     }
 
-    const folders = await Folder.find({ createdBy: userId }).sort(sortCriteria);
-    res.status(200).json(folders);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+    let results = [];
 
-// Sort subfolders
-exports.sortSubFolders = async (req, res) => {
-  const { sortBy } = req.query; // Get the sort option from the query parameters
-  const userId = req.user.id;
-
-  try {
-    // Determine the sorting criteria based on the sortBy value
-    let sortCriteria = {};
-    if (sortBy === "newest") {
-      sortCriteria = { createdAt: -1 };
-    } else if (sortBy === "oldest") {
-      sortCriteria = { createdAt: 1 };
-    } else if (sortBy === "a-z") {
-      sortCriteria = { title: 1 };
-    } else if (sortBy === "z-a") {
-      sortCriteria = { title: -1 };
+    if (mainFolderPage === 'true') {
+      console.log('Sorting main folders');
+      // Sort folders when mainFolderPage is true
+      results = await Folder.find({ createdBy: userId }).sort(sortCriteria);
+    } else if (subFolderPage === 'true') {
+      console.log('Sorting subfolders');
+      if (!mainFolderId) {
+        return res.status(400).json({ message: "mainFolderId is required for sorting subfolders." });
+      }
+      // Sort subfolders of a specific main folder when subFolderPage is true
+      const mainFolder = await Folder.findById(mainFolderId).populate({
+        path: 'subfolders',
+        options: { sort: sortCriteria }
+      });
+      results = mainFolder.subfolders;
+    } else {
+      return res.status(400).json({ message: "Either 'mainFolderPage' or 'subFolderPage' must be true." });
     }
 
-    const subFolders = await SubFolder.find({ createdBy: userId }).sort(
-      sortCriteria
-    );
-    res.status(200).json(subFolders);
+    console.log('Sorted results:', results);
+    res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Edit Folder
 exports.editFolder = async (req, res) => {

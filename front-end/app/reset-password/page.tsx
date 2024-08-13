@@ -7,22 +7,25 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import Link from 'next/link';
 
 const ResetPassword: React.FC = () => {
-    const [token, setToken] = useState<string | null>(null);
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [message, setMessage] = useState('');
+  const [token, setToken] = useState<string | null>(null);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [isClient, setIsClient] = useState(false);
+  const router=useRouter();
 
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const tokenFromUrl = params.get('token');
-        setToken(tokenFromUrl);
-    }, []);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tokenFromUrl = params.get('token');
+    setToken(tokenFromUrl);
+    setIsClient(true);
+  }, []);
 
-    const handleResetPassword = async () => {
-        if (password !== confirmPassword) {
-            setMessage('Passwords do not match');
-            return;
-        }
+  const handleResetPassword = async () => {
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match');
+      return;
+    }
 
     try {
       const response = await axios.post(`users/reset-password`, {
@@ -30,6 +33,11 @@ const ResetPassword: React.FC = () => {
         newPassword: password,
       });
       setMessage(response.data.message);
+         // Redirect to home after successful reset
+         if (response.data.success) {
+          router.push('/');
+        }
+
     } catch (error: any) {
       console.error(
         "Reset password error:",
@@ -39,9 +47,12 @@ const ResetPassword: React.FC = () => {
     }
   };
 
+  // Render only when on client side
+  if (!isClient) return null;
+
   return (
-<Modal show={true} onHide={() => {}}>
-<Modal.Header closeButton>
+    <Modal show={true} onHide={() => {}}>
+      <Modal.Header >
         <Modal.Title>Reset Password</Modal.Title>
       </Modal.Header>
       <Modal.Body>

@@ -8,7 +8,7 @@ import { useFolderStore } from "@/store/folderStore";
 const SearchBar: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const { setFolderId, setFolderTitle,hasSubfolder,setHasSubfolder,folderId,folders,setFolders,searchMode,setSearchMode,subFolderId } = useFolderStore();
+  const { setFolderId, setFolderTitle,hasSubfolder,setHasSubfolder,folderId,folders,setFolders,searchMode,setSearchMode,subFolderId ,subFolderPage,mainFolderPage,setSubFolders} = useFolderStore();
 
 
   const handleMouseEnter = () => {
@@ -22,25 +22,31 @@ const SearchBar: React.FC = () => {
   const handleSearch = async () => {
     try {
       let queryString = `keyword=${keyword}`;
-      if (subFolderId) {
-        console.log('sub folder is ',subFolderId)
-        queryString += `&folderId=${subFolderId}`; //  `mainFolderId` depending on context
-      }
-      else{
+  
+      if (subFolderPage) {
+        console.log('Searching in subfolders');
+        queryString += `&subFolderPage=true`; // Indicate that we're searching in subfolders
+        console.log('query string is:',queryString)
+        const response = await axios.get(`/events/folders/search?${queryString}`);
+        setSubFolders(response.data); 
 
-        console.log('main folder is ',folderId)
 
-        queryString += `&folderId=${folderId}`; // Or `mainFolderId` depending on context
-      }
+      } else if (mainFolderPage) {
+        console.log('Searching in main folders');
+        queryString += `&mainFolderPage=true`; // Indicate that we're searching in main folders
+        console.log('query string is:',queryString)
       const response = await axios.get(`/events/folders/search?${queryString}`);
-      
-      setFolders(response.data); // Set the folders state with the search result
-      setSearchMode(true)
-      
+    
+      setFolders(response.data); 
+
+      }
+  
+      setSearchMode(true);
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
   };
+  
   return (
     <div className="d-flex justify-content-center h-100">
       <div className="search-container">

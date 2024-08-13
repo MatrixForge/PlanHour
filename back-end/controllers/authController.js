@@ -88,7 +88,7 @@ const forgotPassword = async (req, res) => {
 
         // Send email with password reset link
         const mailOptions = {
-            from: 'haniyatariq65@gmail.com',
+            from: 'haniyatariq064@gmail.com',
             to: email,
             subject: 'Password Reset Request',
             html: `
@@ -113,7 +113,6 @@ const forgotPassword = async (req, res) => {
     }
 };
 
-// Route to handle password reset form submission
 const resetPassword = async (req, res) => {
     try {
         const { token, newPassword } = req.body;
@@ -128,11 +127,8 @@ const resetPassword = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Hash the new password
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-        // Update user's password
-        user.password = hashedPassword;
+        // Update user's password (the hashing will be handled by the User model)
+        user.password = newPassword;
         await user.save();
 
         res.status(200).json({ message: 'Password updated successfully' });
