@@ -1,26 +1,20 @@
+"use client";
 import React from "react";
 import VenueCard from "./venueCard";
-import styles1 from "@styles/venueBoard.module.css";
+import styles1 from "@/styles/venueBoard.module.css";
 
-const VenueBoard = ({ title, venues, className, onSelect, selectedVenues }) => {
+const VenueBoard = ({ title, venues, className }) => {
   if (venues.length === 0) return null; // Don't render if there are no venues
-
   return (
     <div
-      className={`d-flex flex-column justify-content-start align-items-center ${styles1.container} ${className}`}
+      className={`container-fluid d-flex flex-column justify-content-start align-items-center ${styles1.container} ${className}`}
     >
       <div className={`${styles1.cardHeader} ${styles1.fontCustom}`}>
         {title}
       </div>
       <div className={`${styles1.cardContainer} ${styles1.fontCustom}`}>
-        {venues.map((venue) => (
-          <VenueCard
-            key={venue._id}
-            venue={venue}
-            onSelect={onSelect}
-            isSelected={selectedVenues.includes(venue._id)}
-            vendorType={title.toLowerCase()}
-          />
+        {venues.map((venue, index) => (
+          <VenueCard key={index} venue={venue.vendorId} saved={venue.saved} />
         ))}
       </div>
     </div>

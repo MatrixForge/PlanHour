@@ -1,32 +1,20 @@
-import React from "react";
-import styles1 from "@styles/venueCard.module.css";
-import Svg from "./addEvent/Svg";
-
-const VenueCard = ({ venue, onSelect, isSelected, vendorType }) => {
-  const handleCheckboxChange = () => {
-    onSelect(venue._id, !isSelected, vendorType);
-  };
-
+"use client";
+import React from 'react';
+import styles1 from '../../styles/venueCard.module.css';;
+const VenueCard = ({ venue, saved }) => {
   return (
     <div className={`${styles1.card} ${styles1.fontCustom}`}>
       <div
         className={`container-fluid d-flex justify-content-between align-items-center ${styles1.topText}`}
       >
-        <span>{venue.name}</span>
+        <div>{venue.name}</div>
         <div className={styles1.checkboxContainer}>
-          <input
-            type="checkbox"
-            checked={isSelected}
-            className={styles1.checkbox}
-            onChange={handleCheckboxChange}
-          />
-          <Svg name="delete" />
+          <input type="checkbox" className={styles1.checkbox}
+          checked={saved?saved:false} />
         </div>
       </div>
       <hr />
-      <div className={`${styles1.priceText}`}>
-        Starting Price PKR {venue.min}
-      </div>
+      <div className={`${styles1.priceText}`}>Starting Price ${venue.min}</div>
     </div>
   );
 };

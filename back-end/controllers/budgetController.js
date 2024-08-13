@@ -24,8 +24,7 @@ exports.getAllPlansForSpecificUser = async (req, res) => {
                 return res.status(204).json({ message: 'SubFolder not found' });
             }
         }
-        const vendors = targetFolderOrSubFolder.vendors.map(vendor => vendor.vendorId);
-        res.status(200).json(vendors);
+        res.status(200).json(targetFolderOrSubFolder.vendors);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
