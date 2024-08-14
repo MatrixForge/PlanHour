@@ -15,9 +15,7 @@ router.post('/folders/:mainFolderId/subfolder',authenticateToken, folderControll
 
 // Get subfolders of a specific folder
 router.get('/folders/:mainFolderId/subfolders', authenticateToken, folderController.getSubFolders);
-// To Do List Routes
-router.post('/getToDoList', authenticateToken, folderController.getToDoList);
-router.post('/addTask', authenticateToken, folderController.addTask);
+
 
 //to check if main has sub foldrs(returns bool)
 router.get('/check-subfolders/:folderId',folderController.hasSubfolders);
@@ -44,5 +42,11 @@ router.get('/folders/:folderId', folderController.getFolderById);
 //fetch a specific clicked subfolder
 router.get('/subfolders/:subfolderId', folderController.getsubFolderById);
 
+
+// To Do List Routes
+router.post('/get-to-do-list', authenticateToken, folderController.getToDoList);
+router.post('/add-task', authenticateToken, folderController.addTask);
+router.post('/delete-task', authenticateToken, folderController.deleteTask);
+router.post('/complete-task', authenticateToken, folderController.completeTask);
 
 module.exports = router;

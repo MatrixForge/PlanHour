@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import styles1 from '../../styles/venueCard.module.css';;
+import styles1 from '@/styles/venueCard.module.css';;
 const VenueCard = ({ venue, saved }) => {
   return (
     <div className={`${styles1.card} ${styles1.fontCustom}`}>

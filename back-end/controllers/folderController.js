@@ -107,13 +107,11 @@ exports.getToDoList = async (req, res) => {
       if (!targetFolderOrSubFolder) {
         return res.status(404).json({ message: "Folder not found" });
       }
-      console.log("Folder:", targetFolderOrSubFolder);
     } else if (folderOrSubFolder === "subFolder") {
       targetFolderOrSubFolder = await subFolder.findById(id);
       if (!targetFolderOrSubFolder) {
         return res.status(404).json({ message: "SubFolder not found" });
       }
-      console.log("SubFolder:", targetFolderOrSubFolder);
     }
 
     const toDoLists = targetFolderOrSubFolder.toDoList || [];
@@ -123,7 +121,9 @@ exports.getToDoList = async (req, res) => {
       const subfolders = targetFolderOrSubFolder.subfolders || [];
       res.status(200).json({ toDoLists, subfolders });
     } else {
-      res.status(200).json({ toDoLists });
+      const parentFolder = targetFolderOrSubFolder.parentFolder;
+      const siblingSubfolders = await subFolder.find({ parentFolder: parentFolder._id });
+      res.status(200).json({ toDoLists, parentFolder, siblingSubfolders });
     }
   } catch (error) {
     console.error("Error:", error); // Log error for debugging
@@ -133,7 +133,7 @@ exports.getToDoList = async (req, res) => {
 
 // Add Task to To-Do List
 exports.addTask = async (req, res) => {
-  const { folderOrSubFolder, id, task } = req.body; // Expecting an ID of folder or subFolder and a task object
+  const { id, folderOrSubFolder, task } = req.body; // Expecting an ID of folder or subFolder and a task object
   try {
     let targetFolderOrSubFolder;
 
@@ -151,6 +151,74 @@ exports.addTask = async (req, res) => {
     await targetFolderOrSubFolder.save();
 
     res.status(200).json(task);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Delete Task from To-Do List
+exports.deleteTask = async (req, res) => {
+  const { id, folderOrSubFolder, taskId } = req.body;  
+  try {
+    let targetFolderOrSubFolder;
+
+    if (folderOrSubFolder.toLowerCase() === 'folder') {
+      targetFolderOrSubFolder = await Folder.findById(id);
+    } else if (folderOrSubFolder === 'subFolder') {
+      targetFolderOrSubFolder = await subFolder.findById(id);
+    }
+
+    if (!targetFolderOrSubFolder) {
+      return res.status(404).json({ message: "Folder or SubFolder not found" });
+    }
+
+    // Find the index of the task in the toDoList array
+    const taskIndex = targetFolderOrSubFolder.toDoList.findIndex(task => task._id.toString() === taskId);
+
+    if (taskIndex === -1) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // Remove the task from the toDoList array
+    targetFolderOrSubFolder.toDoList.splice(taskIndex, 1);
+
+    // Save the updated folder or subFolder
+    await targetFolderOrSubFolder.save();
+
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+// Mark Task as Completed
+exports.completeTask = async (req, res) => {
+  const { id, folderOrSubFolder, taskId } = req.body;
+  try {
+    let targetFolderOrSubFolder;
+    if (folderOrSubFolder.toLowerCase() === 'folder') {
+      targetFolderOrSubFolder = await Folder.findById(id);
+    } else if (folderOrSubFolder === 'subFolder') {
+      targetFolderOrSubFolder = await subFolder.findById(id);
+    }
+    if (!targetFolderOrSubFolder) {
+      return res.status(404).json({ message: "Folder or SubFolder not found" });
+    }
+
+    // Find the task in the toDoList array
+    const task = targetFolderOrSubFolder.toDoList.find(task => task._id.toString() === taskId);
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    // Mark the task as completed
+    if (task.completed){
+      task.completed = false;
+    }else{
+      task.completed = true;
+    }
+    // Save the updated folder or subFolder
+    await targetFolderOrSubFolder.save();
+    res.status(200).json({ message: "Task marked as completed successfully" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
