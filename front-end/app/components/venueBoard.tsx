@@ -1,9 +1,22 @@
-"use client";
 import React from "react";
 import VenueCard from "./venueCard";
 import styles1 from "@/styles/venueBoard.module.css";
 
-const VenueBoard = ({ title, venues, className, onCheckboxChange }) => {
+interface VenueBoardProps {
+  title: string;
+  venues: any[]; // You might want to replace 'any' with a specific type
+  className: string;
+  onSelect: (id: string, isSelected: boolean, vendorType: string) => void;
+  selectedVenues: any[]; // Adjust the type accordingly
+}
+
+const VenueBoard: React.FC<VenueBoardProps> = ({
+  title,
+  venues,
+  className,
+  onSelect,
+  selectedVenues,
+}) => {
   if (venues.length === 0) return null; // Don't render if there are no venues
   return (
     <div
@@ -18,9 +31,8 @@ const VenueBoard = ({ title, venues, className, onCheckboxChange }) => {
             key={index}
             venue={venue.vendorId}
             saved={venue.saved}
-            onCheckboxChange={(isChecked) =>
-              onCheckboxChange(venue.vendorId._id, isChecked)
-            }
+            onSelect={onSelect}
+            isSelected={selectedVenues.includes(venue.vendorId._id)}
           />
         ))}
       </div>

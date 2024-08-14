@@ -1,7 +1,19 @@
-"use client";
-import React from 'react';
-import styles1 from '@/styles/venueCard.module.css';;
-const VenueCard = ({ venue, saved }) => {
+import React from "react";
+import styles1 from "../../styles/venueCard.module.css";
+
+interface VenueCardProps {
+  venue: any; // Replace 'any' with the specific type for venue
+  saved: boolean;
+  onSelect: (id: string, isSelected: boolean, vendorType: string) => void;
+  isSelected: boolean;
+}
+
+const VenueCard: React.FC<VenueCardProps> = ({
+  venue,
+  saved,
+  onSelect,
+  isSelected,
+}) => {
   return (
     <div className={`${styles1.card} ${styles1.fontCustom}`}>
       <div
@@ -12,8 +24,10 @@ const VenueCard = ({ venue, saved }) => {
           <input
             type="checkbox"
             className={styles1.checkbox}
-            checked={saved || false}
-            onChange={(e) => onCheckboxChange(e.target.checked)}
+            checked={isSelected}
+            onChange={(e) =>
+              onSelect(venue._id, e.target.checked, venue.vendorType)
+            }
           />
         </div>
       </div>
