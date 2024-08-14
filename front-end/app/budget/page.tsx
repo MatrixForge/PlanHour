@@ -6,10 +6,14 @@ import VenueBoard from "../components/venueBoard";
 import styles from "@/styles/custom-colors.module.css";
 import styles1 from "@/styles/budgePage.module.css";
 import Link from "next/link";
-import { useFolderStore } from "@/store/folderStore";
+import useAuthStore from "@/store/authStore";
 import axios from "@/lib/axios";
+import { useFolderStore } from "@/store/folderStore";
+import ExportPopup from "../components/ExportPopup";
 
 const BudgetPage = () => {
+  const { folderId, subFolderId } = useFolderStore();
+  const { user } = useAuthStore();
   const [budgetData, setBudgetData] = useState({
     venue: [],
     restaurants: [],
@@ -17,56 +21,142 @@ const BudgetPage = () => {
     photographer: [],
     decor: [],
   });
-  const { folderId, subFolderId } = useFolderStore();
+  const [totalCost, setTotalCost] = useState(0);
+  const [selectedVenues, setSelectedVenues] = useState({
+    venue: null,
+    restaurants: null,
+    caterer: null,
+    photographer: null,
+    decor: null,
+  });
+  const [showExportPopup, setShowExportPopup] = useState(false);
 
   useEffect(() => {
-    fetchData();
-  }, [folderId, subFolderId]);
+    fetchPlans();
+  }, [user]);
 
-  const fetchData = async () => {
+  const fetchPlans = async () => {
     try {
-      let response;
-      if (folderId && !subFolderId) {
-        response = await axios.post("/budget/get-all-plans-for-specific-user", {
-          folderOrSubFolder: "folder",
-          id: folderId,
-        });
-      } else if (subFolderId) {
-        response = await axios.post("/budget/get-all-plans-for-specific-user", {
-          folderOrSubFolder: "subfolder",
-          id: subFolderId,
-        });
-      }
-
+      const response = await axios.post("/budget/getAllPlansForSpecificUser", {
+        folderId,
+        subFolderId,
+      });
       if (response) {
-        const vendors = response.data.filter((ven) => ven.vendorId);
+        const fetchedVendors = response.data;
 
-        // Categorize vendors based on vendorType
-        const categorizedData = {
-          venue: vendors.filter(
-            (vendor) => vendor.vendorId.vendorType === "venue"
+        const newBudgetData = {
+          venue: fetchedVendors.filter(
+            (vendor: any) => vendor.vendorType === "venue"
           ),
-          restaurants: vendors.filter(
-            (vendor) => vendor.vendorId.vendorType === "restaurant"
+          restaurants: fetchedVendors.filter(
+            (vendor: any) => vendor.vendorType === "restaurant"
           ),
-          caterer: vendors.filter(
-            (vendor) => vendor.vendorId.vendorType === "catering"
+          caterer: fetchedVendors.filter(
+            (vendor: any) => vendor.vendorType === "caterer"
           ),
-          photographer: vendors.filter(
-            (vendor) => vendor.vendorId.vendorType === "photographer"
+          photographer: fetchedVendors.filter(
+            (vendor: any) => vendor.vendorType === "photographer"
           ),
-          decor: vendors.filter(
-            (vendor) => vendor.vendorId.vendorType === "decor"
+          decor: fetchedVendors.filter(
+            (vendor: any) => vendor.vendorType === "decor"
           ),
         };
-        setBudgetData(categorizedData);
+
+        setBudgetData(newBudgetData);
+
+        const totalCost = Object.values(newBudgetData).reduce(
+          (total, vendors) => {
+            return (
+              total +
+              vendors.reduce((sum: any, vendor: any) => sum + vendor.min, 0)
+            );
+          },
+          0
+        );
+
+        setTotalCost(totalCost);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    } catch (error: any) {
+      console.error("Error fetching plans:", error.response?.data);
     }
   };
 
-  const getClassName = (key) => {
+  const handleSelect = (
+    id: string,
+    isSelected: boolean,
+    vendorType: string
+  ) => {
+    setSelectedVenues((prevSelected) => {
+      const newSelection = {
+        ...prevSelected,
+        [vendorType]: isSelected ? id : null,
+      };
+      return newSelection;
+    });
+  };
+
+  const handleSave = async () => {
+    try {
+      const selectedVendors = Object.keys(selectedVenues).reduce(
+        (result, key) => {
+          const vendorId = selectedVenues[key];
+          if (vendorId) {
+            const vendor = budgetData[key].find((v) => v._id === vendorId);
+            if (vendor) result.push(vendor);
+          }
+          return result;
+        },
+        []
+      );
+
+      if (folderId !== null) {
+        const response = axios.post("/budget/save-selected-vendors", {
+          folderId,
+          selectedVendors,
+        });
+        if (response) {
+          console.log((await response).status);
+        }
+      }
+
+      const updatedBudgetData = {
+        venue: selectedVenues.venue
+          ? budgetData.venue.filter(
+              (vendor) => vendor._id === selectedVenues.venue
+            )
+          : [],
+        restaurants: selectedVenues.restaurants
+          ? budgetData.restaurants.filter(
+              (vendor) => vendor._id === selectedVenues.restaurants
+            )
+          : [],
+        caterer: selectedVenues.caterer
+          ? budgetData.caterer.filter(
+              (vendor) => vendor._id === selectedVenues.caterer
+            )
+          : [],
+        photographer: selectedVenues.photographer
+          ? budgetData.photographer.filter(
+              (vendor) => vendor._id === selectedVenues.photographer
+            )
+          : [],
+        decor: selectedVenues.decor
+          ? budgetData.decor.filter(
+              (vendor) => vendor._id === selectedVenues.decor
+            )
+          : [],
+      };
+
+      setBudgetData(updatedBudgetData);
+      setTotalCost(
+        selectedVendors.reduce((sum, vendor) => sum + vendor.min, 0)
+      );
+    } catch (error) {
+      console.error("Error saving selected vendors:", error);
+    }
+  };
+
+  const getClassName = (key: any) => {
     switch (key) {
       case "venue":
         return styles.customOrange;
@@ -93,24 +183,23 @@ const BudgetPage = () => {
           </div>
           <div className={styles1.budgetButtons}>
             <div>
-              <Link
+              <button
                 className={`btn btn-light mx-2 rounded-pill ${styles.customBrown} ${styles1.fontCustom}`}
-                href="/"
+                onClick={handleSave}
               >
                 Save
-              </Link>
+              </button>
             </div>
             <div>
-              <Link
+              <button
                 className={`btn btn-light mx-2 rounded-pill ${styles.customBrown} ${styles1.fontCustom}`}
-                href="/"
+                onClick={() => setShowExportPopup(true)}
               >
                 Export
-              </Link>
+              </button>
             </div>
           </div>
         </div>
-
         <div className={`d-flex justify-content-center`}>
           <div
             className={`d-flex flex-row justify-content-center ${styles1.boardsContainer}`}
@@ -121,12 +210,29 @@ const BudgetPage = () => {
                 title={key.charAt(0).toUpperCase() + key.slice(1)}
                 venues={budgetData[key]}
                 className={getClassName(key)}
+                onSelect={handleSelect}
+                selectedVenues={Object.keys(selectedVenues).reduce(
+                  (acc, type) => {
+                    if (selectedVenues[type]) acc.push(selectedVenues[type]);
+                    return acc;
+                  },
+                  []
+                )}
               />
             ))}
           </div>
         </div>
+        <h2 className={`${styles1.total} ${styles1.fontCustom}`}>
+          Total Cost: PKR {totalCost}
+        </h2>
       </div>
-
+      {showExportPopup && (
+        <ExportPopup
+          onClose={() => setShowExportPopup(false)}
+          budgetData={budgetData}
+          totalCost={totalCost}
+        />
+      )}
       <Footer />
     </div>
   );
