@@ -18,7 +18,6 @@ interface Folder {
 
 const SubFolderDisplay = () => {
   const [showModal, setShowModal] = useState(false);
-  const [subfolders, setSubfolders] = useState<Folder[]>([]);
   const [selectedFolder, setSelectedFolder] = useState(null); // State to store selected folder
   const [showEventModal, setShowEventModal] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false); // State for EditForm
@@ -44,7 +43,9 @@ const SubFolderDisplay = () => {
     setSubFolderId,
     hasSubfolder,
     setHasSubfolder,
-    subFolderId,
+    subFolderId,mainFolderPage,setMainFolderPage,subFolderPage,setSubFolderPage,searchMode,setSearchMode,
+    setSubFolders,
+    subFolders
   } = useFolderStore();
 
   useEffect(() => {
@@ -53,8 +54,14 @@ const SubFolderDisplay = () => {
     }
     console.log("maaa", folderId);
 
+    //setMainFolderPage(false);
+    setSubFolderPage(true);
+    console.log("im on sub folder",subFolderPage);
+    //setSearchMode(false);
+
+
     console.log("wooww", folderCreated);
-  }, [folderId, folderCreated, setFolderCreated]);
+  }, [folderId, folderCreated, setFolderCreated,searchMode]);
 
   useEffect(() => {
     //setFolderCreated(false);
@@ -108,7 +115,7 @@ const SubFolderDisplay = () => {
   const fetchSubfolders = async (id: any) => {
     try {
       const response = await axios.get(`/events/folders/${id}/subfolders`);
-      setSubfolders(response.data);
+      setSubFolders(response.data);
       console.log("folder id is", folderId);
     } catch (error) {
       console.error("Error fetching subfolders:", error);
@@ -140,11 +147,12 @@ const SubFolderDisplay = () => {
     }
   };
 
+
   return (
     <div className="eventify-background">
       <h1>Events{folderTitle ? ` / ${folderTitle}` : ""}</h1>
       <div className="folder">
-        {subfolders.map((folder) => (
+        {subFolders.map((folder) => (
           <div
             key={folder._id}
             className="card"

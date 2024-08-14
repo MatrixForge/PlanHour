@@ -17,8 +17,17 @@ interface FolderState {
   folders: Folder[];
   setFolders: (folders: Folder[]) => void;
 
+  subFolders: Folder[]; // State for subfolders
+  setSubFolders: (subFolders: Folder[]) => void; // Setter for subfolders
+
   searchMode: boolean; // State for search mode
   setSearchMode: (searchMode: boolean) => void; // Setter for search mode
+
+  mainFolderPage: boolean; // State for main folder page
+  setMainFolderPage: (mainFolderPage: boolean) => void; // Setter for main folder page
+
+  subFolderPage: boolean; // State for sub folder page
+  setSubFolderPage: (subFolderPage: boolean) => void; // Setter for sub folder page
 
   setFolderId: (id: string | null) => void;
   setSubFolderId: (id: string) => void;
@@ -34,8 +43,17 @@ export const useFolderStore = create<FolderState>()(
       subFolderId: null,
       hasSubfolder: false,
       folders: [],
+      subFolders: [], // Initialize subFolders as an empty array
+
       searchMode: false, // Initialize searchMode as false
       setSearchMode: (searchMode) => set({ searchMode }), // Setter for searchMode
+
+      mainFolderPage: false, // Initialize mainFolderPage as false
+      setMainFolderPage: (mainFolderPage) => set({ mainFolderPage }), // Setter for mainFolderPage
+
+      subFolderPage: false, // Initialize subFolderPage as false
+      setSubFolderPage: (subFolderPage) => set({ subFolderPage }), // Setter for subFolderPage
+
       setFolderId: (id) => set({ folderId: id }),
       setSubFolderId: (id) => set({ subFolderId: id }),
       setFolderCreated: (created) => set({ folderCreated: created }),
@@ -43,6 +61,7 @@ export const useFolderStore = create<FolderState>()(
       setFolderTitle: (title) => set({ folderTitle: title }),
       setHasSubfolder: (hasSubfolder) => set({ hasSubfolder }),
       setFolders: (folders) => set({ folders }),
+      setSubFolders: (subFolders) => set({ subFolders }), // Setter for subFolders
     }),
     {
       name: 'folder-store',

@@ -7,6 +7,8 @@ import styles_nav from "../../styles/navbar.module.css";
 import styles_color from "../../styles/custom-colors.module.css";
 import axios from "@/lib/axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 interface NavBarProps {
   cardsRef?: React.RefObject<HTMLDivElement>;
 }
@@ -16,7 +18,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
   const [showLogout, setShowLogout] = useState(false);
   const [pathname, setPathname] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     setPathname(window.location.pathname); // Get the current pathname
   }, []);
@@ -40,8 +42,8 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
 
   const handleLogout = () => {
     useAuthStore.getState().logout();
-    window.location.reload(); // Fetch the page again
-  };
+    router.push("/");
+    };
 
   const handleGetStartedClick = () => {
     if (cardsRef?.current) {

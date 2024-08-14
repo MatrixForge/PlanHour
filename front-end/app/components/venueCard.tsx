@@ -9,8 +9,12 @@ const VenueCard = ({ venue, saved }) => {
       >
         <div>{venue.name}</div>
         <div className={styles1.checkboxContainer}>
-          <input type="checkbox" className={styles1.checkbox}
-          checked={saved?saved:false} />
+          <input
+            type="checkbox"
+            className={styles1.checkbox}
+            checked={saved || false}
+            onChange={(e) => onCheckboxChange(e.target.checked)}
+          />
         </div>
       </div>
       <hr />
