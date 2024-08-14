@@ -1,5 +1,5 @@
 // components/ResetPasswordPopup.tsx
-
+"use client"
 import React, { useState } from "react";
 import axios from "@/lib/axios";
 import { Modal, Button, Form } from "react-bootstrap";

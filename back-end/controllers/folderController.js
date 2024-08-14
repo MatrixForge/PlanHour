@@ -190,6 +190,7 @@ exports.deleteTask = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 // Mark Task as Completed
 exports.completeTask = async (req, res) => {
   const { id, folderOrSubFolder, taskId } = req.body;

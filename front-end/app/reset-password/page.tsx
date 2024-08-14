@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import axios from '@/lib/axios';
 import { Modal, Button, Form } from 'react-bootstrap';
@@ -15,11 +15,13 @@ const ResetPassword: React.FC = () => {
   const router=useRouter();
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
     const params = new URLSearchParams(window.location.search);
     const tokenFromUrl = params.get('token');
     setToken(tokenFromUrl);
     setIsClient(true);
-  }, []);
+    }
+  });
 
   const handleResetPassword = async () => {
     if (password !== confirmPassword) {

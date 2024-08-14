@@ -7,7 +7,7 @@ interface VenueBoardProps {
   venues: any[]; // You might want to replace 'any' with a specific type
   className: string;
   onSelect: (id: string, isSelected: boolean, vendorType: string) => void;
-  selectedVenues: any[]; // Adjust the type accordingly
+  selectedVenues: string[]; // Adjust the type accordingly
 }
 
 const VenueBoard: React.FC<VenueBoardProps> = ({
@@ -32,7 +32,9 @@ const VenueBoard: React.FC<VenueBoardProps> = ({
             venue={venue.vendorId}
             saved={venue.saved}
             onSelect={onSelect}
-            isSelected={selectedVenues.includes(venue.vendorId._id)}
+            isSelected={
+              venue.saved || selectedVenues.includes(venue.vendorId._id)
+            } // Auto-select if saved or already selected
           />
         ))}
       </div>
