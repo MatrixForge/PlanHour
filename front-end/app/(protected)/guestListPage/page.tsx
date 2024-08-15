@@ -17,7 +17,6 @@ type Attendee = {
   email: string;
 };
 
-
 const GuestListPage : React.FC  = () => {
   const [popup, setPopup] = useState<{ message: string; type: "success" | "error" } | null>(null);
 

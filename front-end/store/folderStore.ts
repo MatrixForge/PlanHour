@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface Folder {
+  date: ReactNode;
   _id: string;
   title: string;
   createdAt: string;

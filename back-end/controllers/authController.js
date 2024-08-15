@@ -34,7 +34,6 @@ const registerUser = asyncHandler(async (req, res) => {
             
         });
     } else {
-        res.status(400);
         throw new Error('Invalid user data');
     }
 });
@@ -56,8 +55,8 @@ const loginUser = asyncHandler(async (req, res) => {
             token: generateToken(user._id, tokenExpiry),
         });
     } else {
-        res.status(401);
-        throw new Error('Invalid email or password');
+        res.status(500).json({ message: 'Invalid email or password' });
+
     }
 });
 
