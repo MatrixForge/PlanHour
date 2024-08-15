@@ -45,8 +45,8 @@
   justify-content: start;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.9) !important;
-  border-bottom-left-radius: 50px !important;
-  border-bottom-right-radius: 50px !important;
+  /* border-bottom-left-radius: 50px !important;
+  border-bottom-right-radius: 50px !important; */
 }
 
 .task-list-container {
@@ -78,6 +78,12 @@
 .icon-container {
   display: flex;
   align-items: center;
+}
+
+.icon-container1 {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
 }
 
 .tick-icon,
@@ -263,7 +269,6 @@
 .event-card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   width: 400px; /* Adjust width as needed */
   height: 300px; /* Adjust height as needed */
   background-color: #fff; /* Background color for card */
@@ -353,10 +358,17 @@ input {
   position: sticky;
   bottom: 0;
   color: rgba(0, 0, 0, 0.5) !important;
-  border-top: 1px solid lightgrey; /* Add border to separate from tasks */
+  /* border-top: 1px solid lightgrey;  */
   padding-right: 16px;
   padding-left: 16px;
   font-weight: 600;
+}
+
+input {
+  all: unset; /* Removes all styles including margins, padding, border, etc. */
+  color: rgb(33, 37, 41);
+  font-weight: 500;
+  /* Add any custom styles you want here */
 }
 
 .todo-footer {
