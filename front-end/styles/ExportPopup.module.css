@@ -70,7 +70,7 @@
 }
 
 .vendorSection ul {
-  padding-left: 20px;
+  padding-left: 0 !important;
   list-style-type: none;
   margin: 0;
   page-break-inside: avoid; /* Prevents the list from being split across pages */
@@ -87,7 +87,7 @@
 }
 
 .cost {
-  text-align: center;
+  text-align: end;
   margin-top: 20px;
   font-weight: bold;
   page-break-inside: avoid; /* Prevents the total cost from being split across pages */
