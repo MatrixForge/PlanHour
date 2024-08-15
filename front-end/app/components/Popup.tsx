@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "../../styles/TermsOfServicePrivacyPolicy.module.css";
-import styles1 from "../../styles/custom-colors.module.css";
+import styles from "@/styles/TermsOfServicePrivacyPolicy.module.css";
+import styles1 from "@/styles/custom-colors.module.css";
 
 const Popup = ({ children, onClose }) => {
   return (

@@ -444,7 +444,6 @@ exports.getsubFolderById = async (req, res) => {
   const { subfolderId } = req.params; // Get the ID from the route parameters
 
   try {
-    console.log("idd", subfolderId);
 
     const folder = await subFolder.findById(subfolderId); // Find the folder by its ID
 

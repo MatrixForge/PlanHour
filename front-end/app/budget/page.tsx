@@ -8,6 +8,7 @@ import styles from "@/styles/custom-colors.module.css";
 import styles1 from "@/styles/budgePage.module.css";
 import { useFolderStore } from "@/store/folderStore";
 import axios from "@/lib/axios";
+import Popup from "../components/addEvent/Popup";
 
 // Dynamically import ExportPopup
 const ExportPopup = dynamic(() => import("../components/ExportPopup"), {
@@ -22,13 +23,18 @@ const BudgetPage = () => {
     photographer: [],
     decor: [],
   });
-
+  const [totalCost, setTotalCost] = useState(0);
   const [selectedVenues, setSelectedVenues] = useState<{
     [key: string]: string;
   }>({});
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { folderId, subFolderId } = useFolderStore();
+  const [popupType, setPopupType] = useState<"success" | "error">("success");
+  const [popupVisible, setPopupVisible] = useState(false);
 
+  const closePopup = () => {
+    setPopupVisible(false);
+  };
   useEffect(() => {
     fetchData();
   }, [folderId, subFolderId]);
@@ -70,6 +76,16 @@ const BudgetPage = () => {
         };
 
         setBudgetData(categorizedData);
+
+        // Initialize selectedVenues based on saved vendors
+        const initialSelectedVenues: { [key: string]: string } = {};
+        vendors.forEach((vendor) => {
+          if (vendor.saved) {
+            initialSelectedVenues[vendor.vendorId.vendorType] =
+              vendor.vendorId._id;
+          }
+        });
+        setSelectedVenues(initialSelectedVenues); // Preselect saved vendors
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -83,24 +99,26 @@ const BudgetPage = () => {
   ) => {
     setSelectedVenues((prevSelected) => ({
       ...prevSelected,
-      [vendorType]: isSelected ? id : "",
+      [vendorType]: isSelected ? id : "", // Update the specific vendorType
     }));
   };
 
-  // Calculate total cost of selected venues
-  const totalCost = Object.keys(selectedVenues).reduce((acc, vendorType) => {
-    const selectedId = selectedVenues[vendorType];
-    const vendorsList = budgetData[vendorType] || [];
-    console.log(`Vendor Type: ${vendorType}, Vendors List:`, vendorsList); // Debugging
-    const selectedVendor = vendorsList.find(
-      (vendor) => vendor.vendorId._id === selectedId
+  // Update total cost based on selected venues
+  useEffect(() => {
+    const updatedTotalCost = Object.keys(selectedVenues).reduce(
+      (acc, vendorType) => {
+        const selectedId = selectedVenues[vendorType];
+        const vendorsList = budgetData[vendorType] || [];
+        const selectedVendor = vendorsList.find(
+          (vendor) => vendor.vendorId._id === selectedId
+        );
+        return selectedVendor ? acc + selectedVendor.vendorId.min : acc;
+      },
+      0
     );
-    console.log(
-      `Vendor Type: ${vendorType}, Selected ID: ${selectedId}, Vendor:`,
-      selectedVendor
-    ); // Debugging
-    return selectedVendor ? acc + selectedVendor.vendorId.min : acc;
-  }, 0);
+
+    setTotalCost(updatedTotalCost);
+  }, [selectedVenues, budgetData]);
 
   const getClassName = (key: string) => {
     switch (key) {
@@ -136,11 +154,16 @@ const BudgetPage = () => {
         });
       }
 
-      if (response.ok) {
-        console.log("Vendors saved successfully:", response.data);
+      if (response.status === 200) {
+        setPopupType("success");
+        setPopupVisible(true); // Trigger Popup display
       } else {
-        console.error("Failed to save vendors:", response.data.message);
+        setPopupType("error");
+        setPopupVisible(true); // Trigger Popup display
       }
+      setTimeout(() => {
+        setPopupVisible(false);
+      }, 700);
     } catch (error) {
       console.error("Error saving vendors:", error);
     }
@@ -202,6 +225,18 @@ const BudgetPage = () => {
           onClose={() => setIsPopupOpen(false)}
           budgetData={budgetData}
           totalCost={totalCost}
+          selectedVenues={selectedVenues}
+        />
+      )}
+      {popupVisible && (
+        <Popup
+          message={
+            popupType === "success"
+              ? "Budget updated!"
+              : "Failed to update budget."
+          }
+          type={popupType}
+          onClose={closePopup}
         />
       )}
     </div>

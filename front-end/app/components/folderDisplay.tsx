@@ -63,9 +63,7 @@ const FolderDisplay: React.FC = () => {
     console.log("poo", searchMode);
     setFolderId(undefined);
     setSubFolderId(undefined);
-    setMainFolderPage(true);
-    console.log("im on main page", mainFolderPage);
-    console.log("im on sub page", subFolderPage);
+     setMainFolderPage(true);
 
     setSubFolderPage(false);
 
@@ -183,7 +181,7 @@ const FolderDisplay: React.FC = () => {
                   width={10}
                   height={10}
                 />
-                <span>{new Date(folder.date).toLocaleDateString()}</span>
+                <span>{new Date(existingFolderData.date).toLocaleDateString()}</span>
                 <CustomIIcon message="Click the folder to create your event" />
               </div>
             </div>
