@@ -9,7 +9,7 @@ import Image from "next/image";
 import CustomIIcon from "./customiIcon";
 import EditForm from "./editForm";
 import { subscribe } from "diagnostics_channel";
-import useCurrentUrl from "@/hooks/current_url_returner"
+import useCurrentUrl from "@/hooks/current_url_returner";
 interface Folder {
   _id: string;
   title: string;
@@ -35,8 +35,7 @@ const FolderDisplay: React.FC = () => {
     mainFolderPage,
     setMainFolderPage,
     setSubFolderPage,
-    subFolderPage
-   
+    subFolderPage,
   } = useFolderStore();
   const [selectedFolderId, setSelectedFolderId] = useState<
     string | undefined
@@ -57,22 +56,20 @@ const FolderDisplay: React.FC = () => {
     }
   }
   useEffect(() => {
-    
     if (!searchMode) {
       fetchFolders(); // Fetch all folders only if not in search mode
     }
 
-    console.log('poo',searchMode)
+    console.log("poo", searchMode);
     setFolderId(undefined);
     setSubFolderId(undefined);
-     setMainFolderPage(true);
-     console.log('im on main page',mainFolderPage)
-     console.log('im on sub page',subFolderPage)
+    setMainFolderPage(true);
+    console.log("im on main page", mainFolderPage);
+    console.log("im on sub page", subFolderPage);
 
-     setSubFolderPage(false);
+    setSubFolderPage(false);
 
     setFolderCreated(false);
-
   }, [folderCreated, searchMode]);
 
   const fetchFolders = async () => {
@@ -186,59 +183,58 @@ const FolderDisplay: React.FC = () => {
                   width={10}
                   height={10}
                 />
-                <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
+                <span>{new Date(folder.date).toLocaleDateString()}</span>
                 <CustomIIcon message="Click the folder to create your event" />
               </div>
             </div>
           </div>
         ))}
-          <div
-            className="card"
-            style={{
-              width: "14rem",
-              height: "16rem",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div className="grey-overlay">
-              <a href="#" onClick={handleShowEventModal}>
-                <Image
-                  src="/addbtn.png"
-                  className="add-btn"
-                  alt="Add button"
-                  width={100}
-                  height={100}
-                />
-              </a>
-            </div>
-            <div className="three-dots-container">
-              <i className="bi bi-three-dots-vertical three-dots-icon"></i>
-            </div>
-            <Image
-              src="/folder.png"
-              className="card-img-top cardImg"
-              alt="Card image cap"
-              width={224}
-              height={256}
-            />
-            <div className="card-body">
-              <p className="card-text" style={{ color: "#F6EDE4" }}>
-                Another Event
-              </p>
-              <div className="card-footer">
-                <Image
-                  src="/clock.png"
-                  className="icon-img"
-                  alt="Timer icon"
-                  width={10}
-                  height={10}
-                />
-                <span style={{ color: "#F6EDE4" }}>02/01/2023</span>
-              </div>
+        <div
+          className="card"
+          style={{
+            width: "14rem",
+            height: "16rem",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div className="grey-overlay">
+            <a href="#" onClick={handleShowEventModal}>
+              <Image
+                src="/addbtn.png"
+                className="add-btn"
+                alt="Add button"
+                width={100}
+                height={100}
+              />
+            </a>
+          </div>
+          <div className="three-dots-container">
+            <i className="bi bi-three-dots-vertical three-dots-icon"></i>
+          </div>
+          <Image
+            src="/folder.png"
+            className="card-img-top cardImg"
+            alt="Card image cap"
+            width={224}
+            height={256}
+          />
+          <div className="card-body">
+            <p className="card-text" style={{ color: "#F6EDE4" }}>
+              Another Event
+            </p>
+            <div className="card-footer">
+              <Image
+                src="/clock.png"
+                className="icon-img"
+                alt="Timer icon"
+                width={10}
+                height={10}
+              />
+              <span style={{ color: "#F6EDE4" }}>02/01/2023</span>
             </div>
           </div>
-        
+        </div>
       </div>
       {showEditForm && (
         <EditForm
