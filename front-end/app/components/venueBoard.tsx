@@ -4,10 +4,10 @@ import styles1 from "@/styles/venueBoard.module.css";
 
 interface VenueBoardProps {
   title: string;
-  venues: any[]; // You might want to replace 'any' with a specific type
+  venues: any[];
   className: string;
   onSelect: (id: string, isSelected: boolean, vendorType: string) => void;
-  selectedVenues: string[]; // Adjust the type accordingly
+  selectedVenues: { [key: string]: string };
 }
 
 const VenueBoard: React.FC<VenueBoardProps> = ({
@@ -17,10 +17,11 @@ const VenueBoard: React.FC<VenueBoardProps> = ({
   onSelect,
   selectedVenues,
 }) => {
-  if (venues.length === 0) return null; // Don't render if there are no venues
+  if (venues.length === 0) return null;
+
   return (
     <div
-      className={`container-fluid d-flex flex-column justify-content-start align-items-center ${styles1.container} ${className}`}
+      className={`d-flex flex-column justify-content-start align-items-center ${styles1.container} ${className}`}
     >
       <div className={`${styles1.cardHeader} ${styles1.fontCustom}`}>
         {title}
@@ -33,8 +34,8 @@ const VenueBoard: React.FC<VenueBoardProps> = ({
             saved={venue.saved}
             onSelect={onSelect}
             isSelected={
-              venue.saved || selectedVenues.includes(venue.vendorId._id)
-            } // Auto-select if saved or already selected
+              selectedVenues[venue.vendorId.vendorType] === venue.vendorId._id
+            }
           />
         ))}
       </div>

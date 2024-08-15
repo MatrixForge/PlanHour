@@ -2,11 +2,10 @@ import React from "react";
 import styles1 from "@/styles/venueCard.module.css";
 
 interface VenueCardProps {
-  venue: any; // Replace 'any' with the specific type for venue
+  venue: any;
   saved: boolean;
   onSelect: (id: string, isSelected: boolean, vendorType: string) => void;
   isSelected: boolean;
-  
 }
 
 const VenueCard: React.FC<VenueCardProps> = ({
@@ -25,7 +24,7 @@ const VenueCard: React.FC<VenueCardProps> = ({
           <input
             type="checkbox"
             className={styles1.checkbox}
-            checked={isSelected} // Check if the card is selected
+            checked={isSelected}
             onChange={(e) =>
               onSelect(venue._id, e.target.checked, venue.vendorType)
             }
