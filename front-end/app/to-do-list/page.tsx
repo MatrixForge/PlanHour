@@ -68,43 +68,42 @@ const BootstrapLayout = () => {
     }
   };
 
-const toggleDone = async (id) => {
-  try {
-    // Optimistically update the local state
-    setTodos(
-      todos.map((todo) =>
-        todo._id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-
-    // Call the API to update the task's completion status
-    const response = await axios.post("/events/complete-task", {
-      id: selectedEventId,
-      folderOrSubFolder: folderState,
-      taskId: id,
-    });
-
-    // If the API call fails, revert the local state
-    if (response.status !== 200) {
-      // Rollback the state if necessary
+  const toggleDone = async (id) => {
+    try {
+      // Optimistically update the local state
       setTodos(
         todos.map((todo) =>
           todo._id === id ? { ...todo, completed: !todo.completed } : todo
         )
       );
-      console.error("Error updating task:", response.data.message);
-    }
-  } catch (error) {
-    // Rollback the state if there's an error
-    setTodos(
-      todos.map((todo) =>
-        todo._id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-    console.error("Error updating task:", error.message);
-  }
-};
 
+      // Call the API to update the task's completion status
+      const response = await axios.post("/events/complete-task", {
+        id: selectedEventId,
+        folderOrSubFolder: folderState,
+        taskId: id,
+      });
+
+      // If the API call fails, revert the local state
+      if (response.status !== 200) {
+        // Rollback the state if necessary
+        setTodos(
+          todos.map((todo) =>
+            todo._id === id ? { ...todo, completed: !todo.completed } : todo
+          )
+        );
+        console.error("Error updating task:", response.data.message);
+      }
+    } catch (error) {
+      // Rollback the state if there's an error
+      setTodos(
+        todos.map((todo) =>
+          todo._id === id ? { ...todo, completed: !todo.completed } : todo
+        )
+      );
+      console.error("Error updating task:", error.message);
+    }
+  };
 
   const toggleEditing = (id) => {
     setEditingTaskId(id === editingTaskId ? null : id); // Toggle editing state
@@ -258,15 +257,31 @@ const toggleDone = async (id) => {
                 </ol>
               </div>
               {showAddTaskInput && (
-                <div className="input-task-container">
-                  <input
-                    type="text"
-                    className="new-task-input"
-                    value={newTaskTitle}
-                    onChange={handleInputChange}
-                    onBlur={handleAddTaskSubmit}
-                    autoFocus
-                  />
+                <div className="list-group-item">
+                  <div className="input-task">
+                    <input
+                      type="text"
+                      className="new-task-input"
+                      value={newTaskTitle}
+                      onChange={handleInputChange}
+                      onBlur={handleAddTaskSubmit}
+                      autoFocus
+                    />
+                  </div>
+                  <div
+                    className="icon-container1"
+                    onClick={handleAddTaskSubmit}
+                    style={{ cursor: "pointer" }} // Optional: adds a pointer cursor to indicate it's clickable
+                  >
+                    <Image
+                      src={"/check-mark.png"}
+                      alt="tick icon"
+                      className="tick-icon"
+                      width={100}
+                      height={100}
+                    />
+                    <i className="bi bi-x-circle x-icon"></i>
+                  </div>
                 </div>
               )}
             </div>
@@ -290,16 +305,37 @@ const toggleDone = async (id) => {
                   </div>
                 </li>
               ) : (
-                <div className="add-task-footer">
-                  <button
-                    onClick={handleAddTaskSubmit}
-                    className="btn btn-primary"
-                  >
-                    Save Task
-                  </button>
-                </div>
+                <div></div>
+                // <div className="icon-container">
+                //   <button
+                //     onClick={handleAddTaskSubmit}
+                //     className="btn btn-primary"
+                //   >
+                //     Save Task
+                //   </button>
+                // </div>
               )}
             </div>
+            {/* <div className="todo-footer">
+              <li
+                className="list-group-item input-task"
+                style={{ display: "flex", justifyContent: "space-between" }}
+                onClick={addTask}
+              >
+                <span className="text">Add Task</span>
+
+                <div className="icon-container">
+                  <Image
+                    src={"/check-mark.png"}
+                    alt="tick icon"
+                    className="tick-icon"
+                    width={100}
+                    height={100}
+                  />
+                  <i className="bi bi-x-circle x-icon"></i>
+                </div>
+              </li>
+            </div> */}
           </div>
         </div>
 
