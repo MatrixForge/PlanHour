@@ -35,6 +35,7 @@ const FolderDisplay: React.FC = () => {
     mainFolderPage,
     setMainFolderPage,
     setSubFolderPage,
+    subFolderPage
    
   } = useFolderStore();
   const [selectedFolderId, setSelectedFolderId] = useState<
@@ -56,6 +57,7 @@ const FolderDisplay: React.FC = () => {
     }
   }
   useEffect(() => {
+    
     if (!searchMode) {
       fetchFolders(); // Fetch all folders only if not in search mode
     }
@@ -65,8 +67,9 @@ const FolderDisplay: React.FC = () => {
     setSubFolderId(undefined);
      setMainFolderPage(true);
      console.log('im on main page',mainFolderPage)
-    // setSubFolderPage(false);
-    // setSearchMode(false);
+     console.log('im on sub page',subFolderPage)
+
+     setSubFolderPage(false);
 
     setFolderCreated(false);
 

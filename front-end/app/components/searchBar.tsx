@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/searchbar.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DropdownModal from "../components/DropdownModal";
@@ -19,9 +19,23 @@ const SearchBar: React.FC = () => {
     setShowModal(false);
   };
 
+
+  useEffect(() => {
+    handleSearch();
+  }, [keyword]);
+  
   const handleSearch = async () => {
+
+
     try {
       let queryString = `keyword=${keyword}`;
+
+
+      if (keyword.trim() === '') {
+      
+        setSearchMode(false); // Set search mode to false
+        return;
+      }
   
       if (subFolderPage) {
         console.log('Searching in subfolders');

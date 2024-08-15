@@ -9,6 +9,7 @@ const folderSchema = new mongoose.Schema({
   subfolders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'subFolder' }],
   createdAt: { type: Date, default: Date.now },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  parentFolder: { type: mongoose.Schema.Types.ObjectId, ref: 'Folder', required: true }, 
   toDoList: [{
     title: { type: String, required: true },
     completed: { type: Boolean, default: false }
@@ -16,7 +17,10 @@ const folderSchema = new mongoose.Schema({
   vendors: [{
     vendorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
     saved: { type: Boolean, default: false },
-  }]
+  }],
+  guests: [{
+    type: mongoose.Schema.Types.ObjectId, ref: "Guest"
+  }],
 });
 
 const Folder = mongoose.model('Folder', folderSchema);
