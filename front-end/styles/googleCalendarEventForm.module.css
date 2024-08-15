@@ -16,6 +16,10 @@
   display: block; /* Show the popup when 'show' class is added */
 }
 
+.optionsBackground1 {
+  height: 50% !important;
+}
+
 .coverImage {
   width: 100%;
   height: 100%;

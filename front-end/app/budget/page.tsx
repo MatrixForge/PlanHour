@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic"; 
+import dynamic from "next/dynamic";
 import CustomNavbar from "../components/NavBar";
 import Footer from "../components/footer";
 import VenueBoard from "../components/venueBoard";
@@ -8,22 +8,33 @@ import styles from "@/styles/custom-colors.module.css";
 import styles1 from "@/styles/budgePage.module.css";
 import { useFolderStore } from "@/store/folderStore";
 import axios from "@/lib/axios";
+import Popup from "../components/addEvent/Popup";
+
 // Dynamically import ExportPopup
 const ExportPopup = dynamic(() => import("../components/ExportPopup"), {
-  ssr: false, // Disable server-side rendering if the component relies on the browser environment
+  ssr: false,
 });
+
 const BudgetPage = () => {
   const [budgetData, setBudgetData] = useState({
     venue: [],
-    restaurants: [],
-    caterer: [],
+    restaurant: [],
+    catering: [],
     photographer: [],
     decor: [],
   });
-  const [selectedVenues, setSelectedVenues] = useState<string[]>([]); // State to manage selected venues
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to control the popup visibility
+  const [totalCost, setTotalCost] = useState(0);
+  const [selectedVenues, setSelectedVenues] = useState<{
+    [key: string]: string;
+  }>({});
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { folderId, subFolderId } = useFolderStore();
+  const [popupType, setPopupType] = useState<"success" | "error">("success");
+  const [popupVisible, setPopupVisible] = useState(false);
 
+  const closePopup = () => {
+    setPopupVisible(false);
+  };
   useEffect(() => {
     fetchData();
   }, [folderId, subFolderId]);
@@ -46,60 +57,38 @@ const BudgetPage = () => {
       if (response) {
         const vendors = response.data.filter((ven) => ven.vendorId);
 
-        // Categorize vendors based on vendorType and include the saved state
         const categorizedData = {
-          venue: vendors
-            .filter((vendor) => vendor.vendorId.vendorType === "venue")
-            .map((vendor) => ({
-              ...vendor,
-              saved: vendor.saved || false,
-            })),
-          restaurants: vendors
-            .filter((vendor) => vendor.vendorId.vendorType === "restaurant")
-            .map((vendor) => ({
-              ...vendor,
-              saved: vendor.saved || false,
-            })),
-          caterer: vendors
-            .filter((vendor) => vendor.vendorId.vendorType === "catering")
-            .map((vendor) => ({
-              ...vendor,
-              saved: vendor.saved || false,
-            })),
-          photographer: vendors
-            .filter((vendor) => vendor.vendorId.vendorType === "photographer")
-            .map((vendor) => ({
-              ...vendor,
-              saved: vendor.saved || false,
-            })),
-          decor: vendors
-            .filter((vendor) => vendor.vendorId.vendorType === "decor")
-            .map((vendor) => ({
-              ...vendor,
-              saved: vendor.saved || false,
-            })),
+          venue: vendors.filter(
+            (vendor) => vendor.vendorId.vendorType === "venue"
+          ),
+          restaurant: vendors.filter(
+            (vendor) => vendor.vendorId.vendorType === "restaurant"
+          ),
+          catering: vendors.filter(
+            (vendor) => vendor.vendorId.vendorType === "catering"
+          ),
+          photographer: vendors.filter(
+            (vendor) => vendor.vendorId.vendorType === "photographer"
+          ),
+          decor: vendors.filter(
+            (vendor) => vendor.vendorId.vendorType === "decor"
+          ),
         };
+
         setBudgetData(categorizedData);
+
+        // Initialize selectedVenues based on saved vendors
+        const initialSelectedVenues: { [key: string]: string } = {};
+        vendors.forEach((vendor) => {
+          if (vendor.saved) {
+            initialSelectedVenues[vendor.vendorId.vendorType] =
+              vendor.vendorId._id;
+          }
+        });
+        setSelectedVenues(initialSelectedVenues); // Preselect saved vendors
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-    }
-  };
-
-  const getClassName = (key) => {
-    switch (key) {
-      case "venue":
-        return styles.customOrange;
-      case "restaurants":
-        return styles.customPurple;
-      case "decor":
-        return styles.customPink;
-      case "caterer":
-        return styles.customPink;
-      case "photographer":
-        return styles.customGreen;
-      default:
-        return "";
     }
   };
 
@@ -108,16 +97,45 @@ const BudgetPage = () => {
     isSelected: boolean,
     vendorType: string
   ) => {
-    setSelectedVenues((prevSelected) => {
-      if (isSelected) {
-        return [...prevSelected, id];
-      } else {
-        return prevSelected.filter((venueId) => venueId !== id);
-      }
-    });
+    setSelectedVenues((prevSelected) => ({
+      ...prevSelected,
+      [vendorType]: isSelected ? id : "", // Update the specific vendorType
+    }));
   };
 
+  // Update total cost based on selected venues
+  useEffect(() => {
+    const updatedTotalCost = Object.keys(selectedVenues).reduce(
+      (acc, vendorType) => {
+        const selectedId = selectedVenues[vendorType];
+        const vendorsList = budgetData[vendorType] || [];
+        const selectedVendor = vendorsList.find(
+          (vendor) => vendor.vendorId._id === selectedId
+        );
+        return selectedVendor ? acc + selectedVendor.vendorId.min : acc;
+      },
+      0
+    );
 
+    setTotalCost(updatedTotalCost);
+  }, [selectedVenues, budgetData]);
+
+  const getClassName = (key: string) => {
+    switch (key) {
+      case "venue":
+        return styles.customOrange;
+      case "restaurant":
+        return styles.customPurple;
+      case "decor":
+        return styles.customPink;
+      case "catering":
+        return styles.customPink;
+      case "photographer":
+        return styles.customGreen;
+      default:
+        return "";
+    }
+  };
 
   const saveSelectedVendors = async () => {
     try {
@@ -136,19 +154,20 @@ const BudgetPage = () => {
         });
       }
 
-      if (response.ok) {
-        console.log("Vendors saved successfully:", response.data);
+      if (response.status === 200) {
+        setPopupType("success");
+        setPopupVisible(true); // Trigger Popup display
       } else {
-        console.error("Failed to save vendors:", response.data.message);
+        setPopupType("error");
+        setPopupVisible(true); // Trigger Popup display
       }
+      setTimeout(() => {
+        setPopupVisible(false);
+      }, 700);
     } catch (error) {
       console.error("Error saving vendors:", error);
     }
   };
-
-  const totalCost = Object.values(budgetData)
-    .flat()
-    .reduce((acc, item) => acc + item.min, 0);
 
   return (
     <div>
@@ -170,7 +189,7 @@ const BudgetPage = () => {
             <div>
               <button
                 className={`btn btn-light mx-2 rounded-pill ${styles.customBrown} ${styles1.fontCustom}`}
-                onClick={() => setIsPopupOpen(true)} // Open the popup
+                onClick={() => setIsPopupOpen(true)}
               >
                 Export
               </button>
@@ -188,11 +207,14 @@ const BudgetPage = () => {
                 title={key.charAt(0).toUpperCase() + key.slice(1)}
                 venues={budgetData[key]}
                 className={getClassName(key)}
-                onSelect={handleSelect} // Pass the handleSelect function
-                selectedVenues={selectedVenues} // Pass the selectedVenues state
+                onSelect={handleSelect}
+                selectedVenues={selectedVenues}
               />
             ))}
           </div>
+        </div>
+        <div className={styles1.totalCostContainer}>
+          <h3>Total Cost: ${totalCost}</h3>
         </div>
       </div>
 
@@ -200,9 +222,21 @@ const BudgetPage = () => {
 
       {isPopupOpen && (
         <ExportPopup
-          onClose={() => setIsPopupOpen(false)} // Close the popup
+          onClose={() => setIsPopupOpen(false)}
           budgetData={budgetData}
           totalCost={totalCost}
+          selectedVenues={selectedVenues}
+        />
+      )}
+      {popupVisible && (
+        <Popup
+          message={
+            popupType === "success"
+              ? "Budget updated!"
+              : "Failed to update budget."
+          }
+          type={popupType}
+          onClose={closePopup}
         />
       )}
     </div>

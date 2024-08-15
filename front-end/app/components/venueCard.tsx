@@ -2,19 +2,21 @@ import React from "react";
 import styles1 from "@/styles/venueCard.module.css";
 
 interface VenueCardProps {
-  venue: any; // Replace 'any' with the specific type for venue
+  venue: any;
   saved: boolean;
   onSelect: (id: string, isSelected: boolean, vendorType: string) => void;
   isSelected: boolean;
-  
 }
 
 const VenueCard: React.FC<VenueCardProps> = ({
   venue,
-  saved,
   onSelect,
   isSelected,
 }) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSelect(venue._id, e.target.checked, venue.vendorType);
+  };
+
   return (
     <div className={`${styles1.card} ${styles1.fontCustom}`}>
       <div
@@ -25,10 +27,8 @@ const VenueCard: React.FC<VenueCardProps> = ({
           <input
             type="checkbox"
             className={styles1.checkbox}
-            checked={isSelected} // Check if the card is selected
-            onChange={(e) =>
-              onSelect(venue._id, e.target.checked, venue.vendorType)
-            }
+            checked={isSelected}
+            onChange={handleCheckboxChange}
           />
         </div>
       </div>

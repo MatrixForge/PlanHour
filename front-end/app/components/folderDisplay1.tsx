@@ -43,9 +43,15 @@ const SubFolderDisplay = () => {
     setSubFolderId,
     hasSubfolder,
     setHasSubfolder,
-    subFolderId,mainFolderPage,setMainFolderPage,subFolderPage,setSubFolderPage,searchMode,setSearchMode,
+    subFolderId,
+    mainFolderPage,
+    setMainFolderPage,
+    subFolderPage,
+    setSubFolderPage,
+    searchMode,
+    setSearchMode,
     setSubFolders,
-    subFolders
+    subFolders,
   } = useFolderStore();
 
   useEffect(() => {
@@ -55,15 +61,20 @@ const SubFolderDisplay = () => {
       fetchSubfolders(folderId);
     }
 
-  
     //setMainFolderPage(false);
     setSubFolderPage(true);
-    console.log("im on sub folder",subFolderPage);
+    console.log("im on sub folder", subFolderPage);
     //setSearchMode(false);
 
-
     console.log("wooww", folderCreated);
-  }, [folderId, folderCreated, setFolderCreated,searchMode,setSubFolders,subFolderPage]);
+  }, [
+    folderId,
+    folderCreated,
+    setFolderCreated,
+    searchMode,
+    setSubFolders,
+    subFolderPage,
+  ]);
 
   useEffect(() => {
     //setFolderCreated(false);
@@ -118,7 +129,7 @@ const SubFolderDisplay = () => {
     try {
       const response = await axios.get(`/events/folders/${id}/subfolders`);
       setSubFolders(response.data);
-      console.log('data is',response.data)
+      console.log("data is", response.data);
       console.log("folder id is", folderId);
     } catch (error) {
       console.error("Error fetching subfolders:", error);
@@ -149,7 +160,6 @@ const SubFolderDisplay = () => {
       console.error("Error deleting folder:", error);
     }
   };
-
 
   return (
     <div className="eventify-background">
@@ -202,7 +212,7 @@ const SubFolderDisplay = () => {
                   width={10}
                   height={10}
                 />
-                <span>{new Date(folder.createdAt).toLocaleDateString()}</span>
+                <span>{new Date(folder.date).toLocaleDateString()}</span>
                 <CustomIIcon message="Click the folder to create your event" />
               </div>
             </div>
