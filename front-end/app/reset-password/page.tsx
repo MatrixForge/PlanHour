@@ -37,7 +37,7 @@ const ResetPassword: React.FC = () => {
       setMessage(response.data.message);
          // Redirect to home after successful reset
          if (response.data.success) {
-          router.push('/');
+          router.push(`${process.env.NEXT_PUBLIC_API_HOME_URL}`);
         }
 
     } catch (error: any) {
