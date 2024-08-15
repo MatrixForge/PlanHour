@@ -36,13 +36,11 @@ const ResetPassword: React.FC = () => {
         newPassword: password,
       });
       setMessage(response.data.message);
-      // Redirect to home after successful reset
-      console.log("hello1");
-      if (response) {
-        router.push(`${process.env.NEXT_PUBLIC_API_HOME_URL}`);
-        console.log("hello3");
-      }
-      console.log("hello2");
+         // Redirect to home after successful reset
+         if (response.data.success) {
+          router.push(`${process.env.NEXT_PUBLIC_API_HOME_URL}`);
+        }
+
     } catch (error: any) {
       console.error(
         "Reset password error:",
