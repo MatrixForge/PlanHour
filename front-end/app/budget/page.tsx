@@ -22,7 +22,7 @@ const BudgetPage = () => {
     photographer: [],
     decor: [],
   });
-
+  const [totalCost, setTotalCost] = useState(0);
   const [selectedVenues, setSelectedVenues] = useState<{
     [key: string]: string;
   }>({});
@@ -70,6 +70,16 @@ const BudgetPage = () => {
         };
 
         setBudgetData(categorizedData);
+
+        // Initialize selectedVenues based on saved vendors
+        const initialSelectedVenues: { [key: string]: string } = {};
+        vendors.forEach((vendor) => {
+          if (vendor.saved) {
+            initialSelectedVenues[vendor.vendorId.vendorType] =
+              vendor.vendorId._id;
+          }
+        });
+        setSelectedVenues(initialSelectedVenues); // Preselect saved vendors
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -83,24 +93,26 @@ const BudgetPage = () => {
   ) => {
     setSelectedVenues((prevSelected) => ({
       ...prevSelected,
-      [vendorType]: isSelected ? id : "",
+      [vendorType]: isSelected ? id : "", // Update the specific vendorType
     }));
   };
 
-  // Calculate total cost of selected venues
-  const totalCost = Object.keys(selectedVenues).reduce((acc, vendorType) => {
-    const selectedId = selectedVenues[vendorType];
-    const vendorsList = budgetData[vendorType] || [];
-    console.log(`Vendor Type: ${vendorType}, Vendors List:`, vendorsList); // Debugging
-    const selectedVendor = vendorsList.find(
-      (vendor) => vendor.vendorId._id === selectedId
+  // Update total cost based on selected venues
+  useEffect(() => {
+    const updatedTotalCost = Object.keys(selectedVenues).reduce(
+      (acc, vendorType) => {
+        const selectedId = selectedVenues[vendorType];
+        const vendorsList = budgetData[vendorType] || [];
+        const selectedVendor = vendorsList.find(
+          (vendor) => vendor.vendorId._id === selectedId
+        );
+        return selectedVendor ? acc + selectedVendor.vendorId.min : acc;
+      },
+      0
     );
-    console.log(
-      `Vendor Type: ${vendorType}, Selected ID: ${selectedId}, Vendor:`,
-      selectedVendor
-    ); // Debugging
-    return selectedVendor ? acc + selectedVendor.vendorId.min : acc;
-  }, 0);
+
+    setTotalCost(updatedTotalCost);
+  }, [selectedVenues, budgetData]);
 
   const getClassName = (key: string) => {
     switch (key) {
@@ -136,7 +148,7 @@ const BudgetPage = () => {
         });
       }
 
-      if (response.ok) {
+      if (response.status === 200) {
         console.log("Vendors saved successfully:", response.data);
       } else {
         console.error("Failed to save vendors:", response.data.message);
@@ -202,6 +214,7 @@ const BudgetPage = () => {
           onClose={() => setIsPopupOpen(false)}
           budgetData={budgetData}
           totalCost={totalCost}
+          selectedVenues= {selectedVenues}
         />
       )}
     </div>

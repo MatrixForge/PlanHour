@@ -30,50 +30,19 @@ exports.getAllPlansForSpecificUser = async (req, res) => {
     }
 };
 
-
-// // Controller to save selected vendors
-// exports.saveSelectedVendors = async (req, res) => {
-//     const { id, selectedVenues } = req.body;
-
-//     if (!id || !Array.isArray(selectedVenues)) {
-//         return res.status(400).json({ message: 'Invalid data' });
-//     }
-//     console.log('selectedVenues', selectedVenues)
-//     try {
-//         // Find the folder by ID
-//         const folder = await SubFolder.findById(id);
-//         if (!folder) {
-//             return res.status(404).json({ message: 'Folder not found' });
-//         }
-
-//         // Update the saved status of vendors
-//         folder.vendors.forEach(vendor => {
-//             if (selectedVenues.includes(vendor.vendorId.toString())) {
-//                 vendor.saved = true;
-//             } else {
-//                 vendor.saved = false; // Optional: Reset others to false
-//             }
-//         });
-
-//         await folder.save();
-
-//         res.status(200).json({ message: 'Vendors updated successfully', folder });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// };
 // Controller to save selected vendors for both folder and subfolder
 exports.saveSelectedVendors = async (req, res) => {
     const { id, selectedVenues, folderOrSubFolder } = req.body;
 
-    if (!id || !Array.isArray(selectedVenues) || !folderOrSubFolder) {
+    // Check if the required fields are present
+    if (!id || !selectedVenues || !folderOrSubFolder) {
         return res.status(400).json({ message: 'Invalid data' });
     }
 
     try {
         let targetFolderOrSubFolder;
 
+        // Determine if the target is a folder or subfolder
         if (folderOrSubFolder === 'folder') {
             targetFolderOrSubFolder = await Folder.findById(id);
             if (!targetFolderOrSubFolder) {
@@ -86,15 +55,18 @@ exports.saveSelectedVendors = async (req, res) => {
             }
         }
 
-        // Update the saved status of vendors
+        // Update the saved status of vendors in the folder or subfolder
         targetFolderOrSubFolder.vendors.forEach(vendor => {
-            if (selectedVenues.includes(vendor.vendorId.toString())) {
+            const vendorIdStr = vendor.vendorId.toString();
+
+            if (Object.values(selectedVenues).includes(vendorIdStr)) {
                 vendor.saved = true;
             } else {
                 vendor.saved = false; // Reset others to false
             }
         });
 
+        // Save the updated folder or subfolder
         await targetFolderOrSubFolder.save();
 
         res.status(200).json({ message: 'Vendors updated successfully', targetFolderOrSubFolder });

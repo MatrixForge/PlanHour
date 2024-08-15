@@ -66,8 +66,6 @@ const FolderDisplay: React.FC = () => {
     setFolderId(undefined);
     setSubFolderId(undefined);
      setMainFolderPage(true);
-     console.log('im on main page',mainFolderPage)
-     console.log('im on sub page',subFolderPage)
 
      setSubFolderPage(false);
 

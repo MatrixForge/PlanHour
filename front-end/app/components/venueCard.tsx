@@ -10,10 +10,13 @@ interface VenueCardProps {
 
 const VenueCard: React.FC<VenueCardProps> = ({
   venue,
-  saved,
   onSelect,
   isSelected,
 }) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSelect(venue._id, e.target.checked, venue.vendorType);
+  };
+
   return (
     <div className={`${styles1.card} ${styles1.fontCustom}`}>
       <div
@@ -25,9 +28,7 @@ const VenueCard: React.FC<VenueCardProps> = ({
             type="checkbox"
             className={styles1.checkbox}
             checked={isSelected}
-            onChange={(e) =>
-              onSelect(venue._id, e.target.checked, venue.vendorType)
-            }
+            onChange={handleCheckboxChange}
           />
         </div>
       </div>

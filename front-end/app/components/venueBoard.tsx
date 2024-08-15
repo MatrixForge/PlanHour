@@ -9,7 +9,7 @@ interface VenueBoardProps {
   onSelect: (id: string, isSelected: boolean, vendorType: string) => void;
   selectedVenues: { [key: string]: string };
 }
-
+// VenueBoard Component
 const VenueBoard: React.FC<VenueBoardProps> = ({
   title,
   venues,
@@ -27,17 +27,21 @@ const VenueBoard: React.FC<VenueBoardProps> = ({
         {title}
       </div>
       <div className={`${styles1.cardContainer} ${styles1.fontCustom}`}>
-        {venues.map((venue, index) => (
-          <VenueCard
-            key={index}
-            venue={venue.vendorId}
-            saved={venue.saved}
-            onSelect={onSelect}
-            isSelected={
-              selectedVenues[venue.vendorId.vendorType] === venue.vendorId._id
-            }
-          />
-        ))}
+        {venues.map((venue, index) => {
+          // Check if the current venue is selected
+          const isSelected =
+            selectedVenues[venue.vendorId.vendorType] === venue.vendorId._id  // Ensure pre-check for saved vendors
+
+          return (
+            <VenueCard
+              key={index}
+              venue={venue.vendorId}
+              saved={venue.saved}
+              onSelect={onSelect}
+              isSelected={isSelected} // Pass the correct selection state
+            />
+          );
+        })}
       </div>
     </div>
   );
