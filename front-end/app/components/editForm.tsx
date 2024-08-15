@@ -19,6 +19,7 @@ interface EditFormProps {
 
 const EditForm: React.FC<EditFormProps> = ({ onClose, existingData, folderId, isSubFolder = false }) => {
   const backgroundImgSrc = "/Popup.png";
+
   const [formData, setFormData] = useState(existingData);
 
   const { setFolderCreated } = useFolderStore(); // Use the Zustand store
@@ -26,6 +27,21 @@ const EditForm: React.FC<EditFormProps> = ({ onClose, existingData, folderId, is
   useEffect(() => {
     setFormData(existingData);
   }, [existingData]);
+
+  // Function to format the date for display
+  const formatDateForDisplay = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
+  };
+
+  // Function to format the date for input field
+  const formatDateForInput = (dateString: string) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -37,18 +53,12 @@ const EditForm: React.FC<EditFormProps> = ({ onClose, existingData, folderId, is
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
-    console.log('sss',isSubFolder)
-    console.log('folder id',folderId)
-
-
     e.preventDefault();
     try {
       const endpoint = isSubFolder
         ? `/events/subfolders/edit/${folderId}`
         : `/events/folders/edit/${folderId}`;
 
-        console.log('endpoint is',endpoint)
       await axios.put(endpoint, formData);
       setFolderCreated(true);
       onClose();
@@ -127,7 +137,7 @@ const EditForm: React.FC<EditFormProps> = ({ onClose, existingData, folderId, is
                 type="date"
                 className="form-control"
                 id="date"
-                value={formData.date}
+                value={formatDateForInput(formData.date)}
                 onChange={handleChange}
                 required
               />

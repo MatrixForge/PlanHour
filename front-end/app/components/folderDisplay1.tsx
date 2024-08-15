@@ -50,10 +50,12 @@ const SubFolderDisplay = () => {
 
   useEffect(() => {
     if (folderId) {
+      console.log("maaa", folderId);
+
       fetchSubfolders(folderId);
     }
-    console.log("maaa", folderId);
 
+  
     //setMainFolderPage(false);
     setSubFolderPage(true);
     console.log("im on sub folder",subFolderPage);
@@ -61,7 +63,7 @@ const SubFolderDisplay = () => {
 
 
     console.log("wooww", folderCreated);
-  }, [folderId, folderCreated, setFolderCreated,searchMode]);
+  }, [folderId, folderCreated, setFolderCreated,searchMode,setSubFolders,subFolderPage]);
 
   useEffect(() => {
     //setFolderCreated(false);
@@ -116,6 +118,7 @@ const SubFolderDisplay = () => {
     try {
       const response = await axios.get(`/events/folders/${id}/subfolders`);
       setSubFolders(response.data);
+      console.log('data is',response.data)
       console.log("folder id is", folderId);
     } catch (error) {
       console.error("Error fetching subfolders:", error);

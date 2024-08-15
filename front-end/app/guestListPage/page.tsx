@@ -11,12 +11,16 @@ import { useSession } from "@supabase/auth-helpers-react";
 import EventForm from "../components/GoogleCalendarEventForm"; // Import EventForm
 import { useGuestStore } from "../../store/guestStore"; // Adjust the import path
 import { useFolderStore } from "@/store/folderStore";
-
+import axios from "@/lib/axios";
+import Popup from "../components/addEvent/Popup"
 type Attendee = {
   email: string;
 };
 
-const GuestListPage = () => {
+
+const GuestListPage : React.FC  = () => {
+  const [popup, setPopup] = useState<{ message: string; type: "success" | "error" } | null>(null);
+
   const [checkedGuests, setCheckedGuests] = useState<{
     [key: string]: boolean;
   }>({});
@@ -48,6 +52,13 @@ const GuestListPage = () => {
       console.log(session);
     }
   }, [session]);
+
+  const showPopup = (message: string, type: "success" | "error") => {
+    setPopup({ message, type });
+    setTimeout(() => {
+      setPopup(null); // Automatically close after a few seconds
+    }, 3000); // Adjust the time as needed
+  };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.target;
@@ -98,22 +109,13 @@ const GuestListPage = () => {
           // Iterate over each guest and make a POST request to add them to the database
           for (const guest of guestsWithIds) {
             try {
-              const response = await fetch(
-                "http://localhost:5000/api/guests/create-guests",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    ...guest,
-                    folderId,
-                    subFolderId,
-                  }),
-                }
-              );
+              const response = await axios.post('/guests/create-guests', {
+                ...guest,
+                folderId,
+                subFolderId,
+              });
 
-              if (response.ok) {
+              if (response.status === 200 || response.status === 201) {
                 console.log(`Guest ${guest.name} added successfully`);
               } else {
                 console.error(`Failed to add guest ${guest.name}`);
@@ -134,24 +136,27 @@ const GuestListPage = () => {
 
   const fetchGuests = async () => {
     try {
-
-      console.log('llllllll')
-      let url = "http://localhost:5000/api/guests/get-guests";
+      console.log('Fetching guests...');
+      
+      // Prepare the URL and query parameters
+      let url = "/guests/get-guests";
+      const params: any = {};
   
-      // Add query parameters based on folderId and subFolderId
       if (subFolderId) {
-        url += `?subfolderId=${subFolderId}`;
+        params.subfolderId = subFolderId;
       } else if (folderId) {
-        url += `?folderId=${folderId}`;
+        params.folderId = folderId;
       }
+      
+      console.log('Request URL is:', url, 'with params:', params);
   
-      console.log('url is:',url)
-
-      const response = await fetch(url);
-
-      console.log('repsonse is',response)
-      if (response.ok) {
-        const data = await response.json();
+      // Make the GET request with query parameters
+      const response = await axios.get(url, { params });
+  
+      console.log('Response is:', response);
+  
+      if (response.status === 200) {
+        const data = response.data;
         setGuests(data);
       } else {
         console.error("Failed to fetch guests");
@@ -205,31 +210,27 @@ const GuestListPage = () => {
 
   const handleAddGuest = async () => {
     if (newGuest.name && newGuest.email && newGuest.number) {
-
-      console.log('fucking  sub id',subFolderId)
-      console.log('fucking main id',folderId)
-
+  
+      console.log('Subfolder ID:', subFolderId);
+      console.log('Main folder ID:', folderId);
+  
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/guests/create-guests",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              ...newGuest,
-              folderId,
-              subFolderId,
-            }),
-          }
-        );
-        if (response.ok) {
-          const addedGuest = await response.json();
+        const response = await axios.post("/guests/create-guests", {
+          ...newGuest,
+          folderId,
+          subFolderId,
+        });
+  
+        if (response.status === 200 || response.status === 201) {
+          const addedGuest = response.data;
           setNewGuest({ name: "", email: "", number: "" });
           fetchGuests();
+          showPopup("Guest added successfully!", "success");
+
         } else {
           console.error("Failed to add guest");
+          showPopup("Failed to add guest.", "error");
+
         }
       } catch (error) {
         console.error("Error adding guest:", error);
@@ -268,58 +269,54 @@ const GuestListPage = () => {
     // Extract the IDs of the selected guests
     const idsToDelete = selectedGuestsList.map((guest) => guest._id);
 
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/guests/delete-guests",
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ids: idsToDelete }),
+      try {
+        const response = await axios.delete("/guests/delete-guests", {
+          data: { ids: idsToDelete },
+        });
+    
+        if (response.status === 200) {
+          // Refetch the guests after deletion
+          fetchGuests();
+          // Reset the checkedGuests state
+          setCheckedGuests({});
+          setHeaderChecked(false);
+          showPopup("Guests deleted successfully!", "success");
+
+          console.log("Guests deleted successfully");
+        } else {
+          console.error("Failed to delete guests");
+          showPopup("An error occurred while deleting guests.", "error");
+
         }
-      );
+      } catch (error) {
+        console.error("Error deleting guests:", error);
+      }
+    };
 
-      if (response.ok) {
-        // Refetch the guests after deletion
-        fetchGuests();
-        // Reset the checkedGuests state
-        setCheckedGuests({});
-        setHeaderChecked(false);
-        console.log("Guests deleted successfully");
-      } else {
-        console.error("Failed to delete guests");
+    const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const query = event.target.value;
+    
+      try {
+        let url = `/guests/search-guests?query=${query}`;
+        
+        // Add folderId or subFolderId as query parameters if they exist
+        if (subFolderId) {
+          url += `&subFolderId=${subFolderId}`;
+        } else if (folderId) {
+          url += `&folderId=${folderId}`;
+        }
+    
+        const response = await axios.get(url);
+    
+        if (response.status === 200) {
+          setGuests(response.data);
+        } else {
+          console.error("Failed to search guests");
+        }
+      } catch (error) {
+        console.error("Error searching guests:", error);
       }
-    } catch (error) {
-      console.error("Error deleting guests:", error);
-    }
-  };
-
-  const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-  
-    try {
-      let url = `http://localhost:5000/api/guests/search-guests?query=${query}`;
-  
-      // Add folderId or subFolderId as query parameters if they exist
-      if (subFolderId) {
-        url += `&subFolderId=${subFolderId}`;
-      } else if (folderId) {
-        url += `&folderId=${folderId}`;
-      }
-  
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        setGuests(data);
-      } else {
-        console.error("Failed to search guests");
-      }
-    } catch (error) {
-      console.error("Error searching guests:", error);
-    }
-  };
-  
+    };
 
   return (
     <div>
@@ -458,6 +455,14 @@ const GuestListPage = () => {
           show={true}
           session={session}
           onClose={() => setShowEventForm(false)}
+        />
+      )}
+
+{popup && (
+        <Popup
+          message={popup.message}
+          type={popup.type}
+          onClose={() => setPopup(null)}
         />
       )}
     </div>
