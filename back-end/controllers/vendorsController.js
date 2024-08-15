@@ -73,7 +73,7 @@ exports.addVendorToSubFolder = async (req, res) => {
             await subFolder_check.save();
             res.status(201).send("vendor added to subfolder");
         } else {
-            return res.status(404).send('vendor already found');
+            return res.status(409).send('vendor already found');
         }
     } catch (error) {
         res.status(500).send(error.message);

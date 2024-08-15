@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "@styles/custom-pagination.css";
 import ResponsivePagination from "react-responsive-pagination";
-import styles from "@styles/addEvent.module.css";
 import RestaurantCard from "./RestaurantCard";
 import useVenueStore from "@/store/venueStore";
 import axios from "@/lib/axios";
@@ -55,22 +54,21 @@ const RestaurantList: React.FC = () => {
         setPopupMessage("Saved successfully!");
         setPopupType("success");
         setPopupVisible(true);
-      } else {
-        setPopupMessage("Error saving to database.");
-        setPopupType("error");
-        setPopupVisible(true);
       }
     } catch (error: any) {
-      console.error("Error saving to database:", error.response?.data);
-      setPopupMessage("Error saving to database.");
+      if (error.response && error.response.status === 409) {
+        setPopupMessage("Vendor already added, try to add another vendor.");
+      } else {
+        setPopupMessage("Error saving to database.");
+      }
       setPopupType("error");
       setPopupVisible(true);
-      console.log("Popup should be visible now (error case)"); // Log added
+      console.error("Error saving to database:", error.response?.data);
     }
 
     setTimeout(() => {
       setPopupVisible(false);
-    }, 1000);
+    }, 800);
   };
 
   const closePopup = () => {
@@ -121,7 +119,6 @@ const RestaurantList: React.FC = () => {
       </div>
       {popupVisible && (
         <>
-          {console.log("Rendering Popup")} {/* Log added */}
           <Popup message={popupMessage} type={popupType} onClose={closePopup} />
         </>
       )}

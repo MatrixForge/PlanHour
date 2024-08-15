@@ -42,7 +42,7 @@ const NavBar: React.FC<NavBarProps> = ({ cardsRef }) => {
 
   const handleLogout = () => {
     useAuthStore.getState().logout();
-    router.push("/");
+    router.replace("/");
     };
 
   const handleGetStartedClick = () => {

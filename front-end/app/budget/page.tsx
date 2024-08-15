@@ -8,6 +8,7 @@ import styles from "@/styles/custom-colors.module.css";
 import styles1 from "@/styles/budgePage.module.css";
 import { useFolderStore } from "@/store/folderStore";
 import axios from "@/lib/axios";
+import Popup from "../components/addEvent/Popup";
 
 // Dynamically import ExportPopup
 const ExportPopup = dynamic(() => import("../components/ExportPopup"), {
@@ -28,7 +29,12 @@ const BudgetPage = () => {
   }>({});
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { folderId, subFolderId } = useFolderStore();
+  const [popupType, setPopupType] = useState<"success" | "error">("success");
+  const [popupVisible, setPopupVisible] = useState(false);
 
+  const closePopup = () => {
+    setPopupVisible(false);
+  };
   useEffect(() => {
     fetchData();
   }, [folderId, subFolderId]);
@@ -149,10 +155,15 @@ const BudgetPage = () => {
       }
 
       if (response.status === 200) {
-        console.log("Vendors saved successfully:", response.data);
+        setPopupType("success");
+        setPopupVisible(true); // Trigger Popup display
       } else {
-        console.error("Failed to save vendors:", response.data.message);
+        setPopupType("error");
+        setPopupVisible(true); // Trigger Popup display
       }
+      setTimeout(() => {
+        setPopupVisible(false);
+      }, 700);
     } catch (error) {
       console.error("Error saving vendors:", error);
     }
@@ -214,7 +225,18 @@ const BudgetPage = () => {
           onClose={() => setIsPopupOpen(false)}
           budgetData={budgetData}
           totalCost={totalCost}
-          selectedVenues= {selectedVenues}
+          selectedVenues={selectedVenues}
+        />
+      )}
+      {popupVisible && (
+        <Popup
+          message={
+            popupType === "success"
+              ? "Budget updated!"
+              : "Failed to update budget."
+          }
+          type={popupType}
+          onClose={closePopup}
         />
       )}
     </div>
