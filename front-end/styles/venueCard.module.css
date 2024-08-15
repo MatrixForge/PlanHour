@@ -26,8 +26,8 @@
 
 .checkbox {
   -webkit-appearance: none; /* Remove default appearance */
-  width: 1rem; /* Adjust width as needed */
-  height: 1rem; /* Adjust height as needed */
+  width: 1.2rem; /* Adjust width as needed */
+  height: 1.2rem; /* Adjust height as needed */
   border: 2px solid #ccc; /* Gray border */
   border-radius: 4px; /* Rounded corners */
   cursor: pointer;
@@ -43,8 +43,9 @@
 .checkbox:checked::after {
   content: ""; /* Empty content for pseudo-element */
   position: absolute; /* Position relative to checkbox */
-  top: 40%; /* Center vertically */
- /* Center horizontally */
+  top: 35%; /* Center vertically */
+  left: 45%;
+  /* Center horizontally */
   transform: translate(-50%, -50%) rotate(45deg); /* Center and rotate the checkmark */
   width: 6px; /* Adjust size of the checkmark */
   height: 15px; /* Adjust size of the checkmark */

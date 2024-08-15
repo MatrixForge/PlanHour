@@ -190,8 +190,8 @@ const BudgetPage = () => {
             ))}
           </div>
         </div>
-        <div className={styles1.totalCostContainer}>
-          <h3>Total Cost: ${totalCost}</h3>
+        <div className={styles1.total}>
+          <h3>Total Starting Cost: PKR {totalCost}</h3>
         </div>
       </div>
 
