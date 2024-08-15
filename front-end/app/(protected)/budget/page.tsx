@@ -1,17 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import CustomNavbar from "../components/NavBar";
-import Footer from "../components/footer";
-import VenueBoard from "../components/venueBoard";
+import CustomNavbar from "../../components/NavBar";
+import Footer from "../../components/footer";
+import VenueBoard from "../../components/venueBoard";
 import styles from "@/styles/custom-colors.module.css";
 import styles1 from "@/styles/budgePage.module.css";
 import { useFolderStore } from "@/store/folderStore";
 import axios from "@/lib/axios";
-import Popup from "../components/addEvent/Popup";
+import Popup from "../../components/addEvent/Popup";
 
 // Dynamically import ExportPopup
-const ExportPopup = dynamic(() => import("../components/ExportPopup"), {
+const ExportPopup = dynamic(() => import("../../components/ExportPopup"), {
   ssr: false,
 });
 

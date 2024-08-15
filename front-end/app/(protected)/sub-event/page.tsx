@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import NavBar from "../components/NavBar";
-import FolderDisplay1 from "../components/folderDisplay1";
-import Footer from "../components/footer";
-import NavBar2 from "../components/secondNavbg";
+import NavBar from "../../components/NavBar";
+import FolderDisplay1 from "../../components/folderDisplay1";
+import Footer from "../../components/footer";
+import NavBar2 from "../../components/secondNavbg";
 
 const FolderManager = () => {
   return (

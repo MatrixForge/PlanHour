@@ -212,7 +212,7 @@ const SubFolderDisplay = () => {
                   width={10}
                   height={10}
                 />
-                <span>{new Date(folder.date).toLocaleDateString()}</span>
+                <span>{new Date(existingFolderData.date).toLocaleDateString()}</span>
                 <CustomIIcon message="Click the folder to create your event" />
               </div>
             </div>

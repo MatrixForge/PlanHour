@@ -1,18 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import CustomNavbar from "../components/NavBar";
-import Footer from "../components/footer";
-import GuestBox from "../components/GuestLsit/GuestBox";
-import styles from "../../styles/custom-colors.module.css";
-import styles1 from "../../styles/guestList.module.css";
-import GoogleLoginPopup from "../components/GoogleLoginPopup";
+import CustomNavbar from "../../components/NavBar";
+import Footer from "../../components/footer";
+import GuestBox from "../../components/GuestLsit/GuestBox";
+import styles from "@/styles/custom-colors.module.css";
+import styles1 from "@/styles/guestList.module.css";
+import GoogleLoginPopup from "../../components/GoogleLoginPopup";
 import Papa from "papaparse";
 import { useSession } from "@supabase/auth-helpers-react";
-import EventForm from "../components/GoogleCalendarEventForm"; // Import EventForm
-import { useGuestStore } from "../../store/guestStore"; // Adjust the import path
+import EventForm from "../../components/GoogleCalendarEventForm"; // Import EventForm
+import { useGuestStore } from "../../../store/guestStore"; // Adjust the import path
 import { useFolderStore } from "@/store/folderStore";
 import axios from "@/lib/axios";
-import Popup from "../components/addEvent/Popup"
+import Popup from "../../components/addEvent/Popup"
 type Attendee = {
   email: string;
 };

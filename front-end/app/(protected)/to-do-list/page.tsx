@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../../components/NavBar";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import Footer from "../components/footer";
+import Footer from "../../components/footer";
 import "./toDoList.css"; // Adjust the path as necessary
 import Image from "next/image";
 import axios from "@/lib/axios";

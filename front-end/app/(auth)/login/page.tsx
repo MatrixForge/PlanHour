@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import "../../styles/signin.css";
+import "@/styles/signin.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Link from "next/link";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
-import ForgotPasswordPopup from "../components/ForgotPasswordPopup";
+import ForgotPasswordPopup from "../../components/ForgotPasswordPopup";
 import Image from "next/image";
 import axios from "@/lib/axios";
 const Login: React.FC = () => {
