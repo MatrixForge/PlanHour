@@ -6,10 +6,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  "https://nbcyksvprirbaovjlyao.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5iY3lrc3ZwcmlyYmFvdmpseWFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIyNjg0NzAsImV4cCI6MjAzNzg0NDQ3MH0.pzF9LiIvb4reKE5ngeFaQ9wSonYsqhbw9hXMOrHKdXE"
-);
+
+const supabaseUrl = 'https://ogkaiehvnujshbohvdbm.supabase.co'
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 export default function RootLayout({
   children,

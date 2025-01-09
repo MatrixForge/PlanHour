@@ -12,13 +12,16 @@ import EventForm from "../../components/GoogleCalendarEventForm"; // Import Even
 import { useGuestStore } from "../../../store/guestStore"; // Adjust the import path
 import { useFolderStore } from "@/store/folderStore";
 import axios from "@/lib/axios";
-import Popup from "../../components/addEvent/Popup"
+import Popup from "../../components/addEvent/Popup";
 type Attendee = {
   email: string;
 };
 
-const GuestListPage : React.FC  = () => {
-  const [popup, setPopup] = useState<{ message: string; type: "success" | "error" } | null>(null);
+const GuestListPage: React.FC = () => {
+  const [popup, setPopup] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const [checkedGuests, setCheckedGuests] = useState<{
     [key: string]: boolean;
@@ -32,17 +35,18 @@ const GuestListPage : React.FC  = () => {
   const [showEventForm, setShowEventForm] = useState(false); // State to control the event form display
 
   const { attendees, setAttendees } = useGuestStore(); // Access Zustand store
-  const {folderId,setFolderId,subFolderId,setSubFolderId} =useFolderStore();
+  const { folderId, setFolderId, subFolderId, setSubFolderId } =
+    useFolderStore();
 
   const session = useSession();
 
   useEffect(() => {
     if (folderId || subFolderId) {
-      console.log('mmmmm')
+      console.log("mmmmm");
       fetchGuests();
     }
   }, [folderId, subFolderId]);
-  
+
   useEffect(() => {
     // Check if user is logged in and show event form
     if (session != null) {
@@ -62,23 +66,29 @@ const GuestListPage : React.FC  = () => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.target;
 
-    console.log ( 'woww', folderId)
-    console.log ( 'woww1', subFolderId)
-
     if (id === "header-checkbox") {
+      // When header checkbox is clicked, update all guest checkboxes
+      const newCheckedState = guests.reduce((acc, _, index) => {
+        acc[`checkbox-${index}`] = checked;
+        return acc;
+      }, {} as { [key: string]: boolean });
+      
       setHeaderChecked(checked);
-      setCheckedGuests((prev) => {
-        const newCheckedGuests = Object.keys(prev).reduce((acc, key) => {
-          acc[key] = checked;
-          return acc;
-        }, {} as { [key: string]: boolean });
-        return newCheckedGuests;
-      });
+      setCheckedGuests(newCheckedState);
     } else {
-      setCheckedGuests((prev) => ({
+      // Handle individual checkbox clicks
+      setCheckedGuests(prev => ({
         ...prev,
-        [id]: checked,
+        [id]: checked
       }));
+      
+      // Update header checkbox based on all guests being checked
+      const allChecked = Object.values({
+        ...checkedGuests,
+        [id]: checked
+      }).every(value => value);
+      
+      setHeaderChecked(allChecked);
     }
   };
 
@@ -102,13 +112,12 @@ const GuestListPage : React.FC  = () => {
             ...guest,
             folderId, // Use folderId from Zustand store
             subFolderId, // Use subFolderId from Zustand store
-
           }));
 
           // Iterate over each guest and make a POST request to add them to the database
           for (const guest of guestsWithIds) {
             try {
-              const response = await axios.post('/guests/create-guests', {
+              const response = await axios.post("/guests/create-guests", {
                 ...guest,
                 folderId,
                 subFolderId,
@@ -135,25 +144,25 @@ const GuestListPage : React.FC  = () => {
 
   const fetchGuests = async () => {
     try {
-      console.log('Fetching guests...');
-      
+      console.log("Fetching guests...");
+
       // Prepare the URL and query parameters
       let url = "/guests/get-guests";
       const params: any = {};
-  
+
       if (subFolderId) {
         params.subfolderId = subFolderId;
       } else if (folderId) {
         params.folderId = folderId;
       }
-      
-      console.log('Request URL is:', url, 'with params:', params);
-  
+
+      console.log("Request URL is:", url, "with params:", params);
+
       // Make the GET request with query parameters
       const response = await axios.get(url, { params });
-  
-      console.log('Response is:', response);
-  
+
+      console.log("Response is:", response);
+
       if (response.status === 200) {
         const data = response.data;
         setGuests(data);
@@ -164,7 +173,6 @@ const GuestListPage : React.FC  = () => {
       console.error("Error fetching guests:", error);
     }
   };
-  
 
   const handleSendClick = () => {
     // Get selected guest emails or ids based on checkedGuests state
@@ -195,7 +203,7 @@ const GuestListPage : React.FC  = () => {
     // Set the popup message and type
     setPopup({
       message: "Invitations sent successfully",
-      type: "success"
+      type: "success",
     });
 
     console.log("Login popup state: ", showLoginPopup); // Check state
@@ -215,27 +223,24 @@ const GuestListPage : React.FC  = () => {
 
   const handleAddGuest = async () => {
     if (newGuest.name && newGuest.email && newGuest.number) {
-  
-      console.log('Subfolder ID:', subFolderId);
-      console.log('Main folder ID:', folderId);
-  
+      console.log("Subfolder ID:", subFolderId);
+      console.log("Main folder ID:", folderId);
+
       try {
         const response = await axios.post("/guests/create-guests", {
           ...newGuest,
           folderId,
           subFolderId,
         });
-  
+
         if (response.status === 200 || response.status === 201) {
           const addedGuest = response.data;
           setNewGuest({ name: "", email: "", number: "" });
           fetchGuests();
           showPopup("Guest added successfully!", "success");
-
         } else {
           console.error("Failed to add guest");
           showPopup("Failed to add guest.", "error");
-
         }
       } catch (error) {
         console.error("Error adding guest:", error);
@@ -274,54 +279,53 @@ const GuestListPage : React.FC  = () => {
     // Extract the IDs of the selected guests
     const idsToDelete = selectedGuestsList.map((guest) => guest._id);
 
-      try {
-        const response = await axios.delete("/guests/delete-guests", {
-          data: { ids: idsToDelete },
-        });
-    
-        if (response.status === 200) {
-          // Refetch the guests after deletion
-          fetchGuests();
-          // Reset the checkedGuests state
-          setCheckedGuests({});
-          setHeaderChecked(false);
-          showPopup("Guests deleted successfully!", "success");
+    try {
+      const response = await axios.delete("/guests/delete-guests", {
+        data: { ids: idsToDelete },
+      });
 
-          console.log("Guests deleted successfully");
-        } else {
-          console.error("Failed to delete guests");
-          showPopup("An error occurred while deleting guests.", "error");
+      if (response.status === 200) {
+        // Refetch the guests after deletion
+        fetchGuests();
+        // Reset the checkedGuests state
+        setCheckedGuests({});
+        setHeaderChecked(false);
+        showPopup("Guests deleted successfully!", "success");
 
-        }
-      } catch (error) {
-        console.error("Error deleting guests:", error);
+        console.log("Guests deleted successfully");
+      } else {
+        console.error("Failed to delete guests");
+        showPopup("An error occurred while deleting guests.", "error");
       }
-    };
+    } catch (error) {
+      console.error("Error deleting guests:", error);
+    }
+  };
 
-    const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
-      const query = event.target.value;
-    
-      try {
-        let url = `/guests/search-guests?query=${query}`;
-        
-        // Add folderId or subFolderId as query parameters if they exist
-        if (subFolderId) {
-          url += `&subFolderId=${subFolderId}`;
-        } else if (folderId) {
-          url += `&folderId=${folderId}`;
-        }
-    
-        const response = await axios.get(url);
-    
-        if (response.status === 200) {
-          setGuests(response.data);
-        } else {
-          console.error("Failed to search guests");
-        }
-      } catch (error) {
-        console.error("Error searching guests:", error);
+  const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+
+    try {
+      let url = `/guests/search-guests?query=${query}`;
+
+      // Add folderId or subFolderId as query parameters if they exist
+      if (subFolderId) {
+        url += `&subFolderId=${subFolderId}`;
+      } else if (folderId) {
+        url += `&folderId=${folderId}`;
       }
-    };
+
+      const response = await axios.get(url);
+
+      if (response.status === 200) {
+        setGuests(response.data);
+      } else {
+        console.error("Failed to search guests");
+      }
+    } catch (error) {
+      console.error("Error searching guests:", error);
+    }
+  };
 
   return (
     <div>
@@ -463,7 +467,7 @@ const GuestListPage : React.FC  = () => {
         />
       )}
 
-{popup && (
+      {popup && (
         <Popup
           message={popup.message}
           type={popup.type}

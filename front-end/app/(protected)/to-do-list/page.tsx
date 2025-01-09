@@ -5,22 +5,22 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import Footer from "../../components/footer";
-import "./toDoList.css"; // Adjust the path as necessary
+import "./toDoList.css";
 import Image from "next/image";
 import axios from "@/lib/axios";
 import { useFolderStore } from "@/store/folderStore";
 
 const BootstrapLayout = () => {
   const { folderId, subFolderId, folderTitle } = useFolderStore();
-  const taskListRef = useRef(null); // Reference to the task list container
+  const taskListRef = useRef(null);
   const [todos, setTodos] = useState([]);
   const [selectedDates, setSelectedDates] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedEventId, setSelectedEventId] = useState("");
-  const [editingTaskId, setEditingTaskId] = useState(null); // Local state to track editing
+  const [editingTaskId, setEditingTaskId] = useState(null);
   const [folderState, setfolderState] = useState("");
-  const [showAddTaskInput, setShowAddTaskInput] = useState(false); // State for showing input box
-  const [newTaskTitle, setNewTaskTitle] = useState(""); // State for new task title
+  const [showAddTaskInput, setShowAddTaskInput] = useState(false);
+  const [newTaskTitle, setNewTaskTitle] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -49,18 +49,13 @@ const BootstrapLayout = () => {
       }
       if (response) {
         const data = await response.data;
-        console.log("data", data);
         setTodos(data.toDoLists);
         setEvents(data.subfolders ? data.subfolders : data.siblingSubfolders);
         if (data.subfolders) {
-          setSelectedDates(
-            data.subfolders.map((event) => new Date(event.date))
-          );
+          setSelectedDates(data.subfolders.map((event) => new Date(event.date)));
         }
         if (data.siblingSubfolders) {
-          setSelectedDates(
-            data.siblingSubfolders.map((event) => new Date(event.date))
-          );
+          setSelectedDates(data.siblingSubfolders.map((event) => new Date(event.date)));
         }
       }
     } catch (error) {
@@ -68,12 +63,16 @@ const BootstrapLayout = () => {
     }
   };
 
-  const toggleDone = async (id) => {
+  const toggleDone = async (taskId, e) => {
+    e.stopPropagation(); // Prevent event bubbling
     try {
+      const taskToUpdate = todos.find(todo => todo._id === taskId);
+      if (!taskToUpdate) return;
+
       // Optimistically update the local state
-      setTodos(
-        todos.map((todo) =>
-          todo._id === id ? { ...todo, completed: !todo.completed } : todo
+      setTodos(prevTodos =>
+        prevTodos.map(todo =>
+          todo._id === taskId ? { ...todo, completed: !todo.completed } : todo
         )
       );
 
@@ -81,37 +80,35 @@ const BootstrapLayout = () => {
       const response = await axios.post("/events/complete-task", {
         id: selectedEventId,
         folderOrSubFolder: folderState,
-        taskId: id,
+        taskId: taskId,
       });
 
-      // If the API call fails, revert the local state
       if (response.status !== 200) {
-        // Rollback the state if necessary
-        setTodos(
-          todos.map((todo) =>
-            todo._id === id ? { ...todo, completed: !todo.completed } : todo
+        // Rollback if API call fails
+        setTodos(prevTodos =>
+          prevTodos.map(todo =>
+            todo._id === taskId ? { ...todo, completed: !todo.completed } : todo
           )
         );
-        console.error("Error updating task:", response.data.message);
       }
     } catch (error) {
-      // Rollback the state if there's an error
-      setTodos(
-        todos.map((todo) =>
-          todo._id === id ? { ...todo, completed: !todo.completed } : todo
+      console.error("Error updating task:", error);
+      // Rollback on error
+      setTodos(prevTodos =>
+        prevTodos.map(todo =>
+          todo._id === taskId ? { ...todo, completed: !todo.completed } : todo
         )
       );
-      console.error("Error updating task:", error.message);
     }
   };
 
   const toggleEditing = (id) => {
-    setEditingTaskId(id === editingTaskId ? null : id); // Toggle editing state
+    setEditingTaskId(id === editingTaskId ? null : id);
   };
 
   const handleTitleChange = (id, newTitle) => {
-    setTodos(
-      todos.map((todo) =>
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
         todo._id === id ? { ...todo, title: newTitle } : todo
       )
     );
@@ -135,11 +132,13 @@ const BootstrapLayout = () => {
   };
 
   const handleAddTaskClick = () => {
-    setShowAddTaskInput(true); // Show input box for new task
+    setShowAddTaskInput(true);
   };
 
-  const handleAddTaskSubmit = async () => {
-    if (newTaskTitle.trim() === "") return; // Prevent adding empty tasks
+  const handleAddTaskSubmit = async (e) => {
+    // Handle both button click and Enter key
+    if (e && e.key && e.key !== 'Enter') return;
+    if (newTaskTitle.trim() === "") return;
 
     const newTask = {
       title: newTaskTitle,
@@ -155,13 +154,9 @@ const BootstrapLayout = () => {
 
       if (response.status === 200) {
         const addedTask = response.data;
-        
-          setTodos((prevTodos) => [...prevTodos, addedTask]);
-        
-        // setTodos([...todos, addedTask]);
-        setEditingTaskId(addedTask._id); // Set the new task in editing mode
-        setNewTaskTitle(""); // Clear the input
-        setShowAddTaskInput(false); // Hide the input box
+        setTodos(prevTodos => [...prevTodos, addedTask]);
+        setNewTaskTitle("");
+        setShowAddTaskInput(false);
       }
     } catch (error) {
       console.error("Error adding task:", error);
@@ -172,16 +167,17 @@ const BootstrapLayout = () => {
     setNewTaskTitle(e.target.value);
   };
 
-  const deleteTask = async (id) => {
+  const deleteTask = async (taskId, e) => {
+    e.stopPropagation(); // Prevent event bubbling
     try {
       const response = await axios.post("/events/delete-task", {
-        id: selectedEventId, // The ID of the folder or subfolder
-        folderOrSubFolder: folderState, // Specify whether it's a folder or subfolder
-        taskId: id, // The ID of the task to be deleted
+        id: selectedEventId,
+        folderOrSubFolder: folderState,
+        taskId: taskId,
       });
+      
       if (response.status === 200) {
-        // Remove the task from the state
-        setTodos(todos.filter((todo) => todo._id !== id));
+        setTodos(prevTodos => prevTodos.filter(todo => todo._id !== taskId));
       }
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -206,12 +202,10 @@ const BootstrapLayout = () => {
             <div className="card-body1">
               <div className="task-list-container" ref={taskListRef}>
                 <ol className="list-group list-group-numbered">
-                  {todos.map((todo, idx) => (
+                  {todos.map((todo) => (
                     <li
                       key={todo._id}
-                      className={`list-group-item ${
-                        todo.completed ? "done" : ""
-                      }`}
+                      className={`list-group-item ${todo.completed ? "done" : ""}`}
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -224,9 +218,7 @@ const BootstrapLayout = () => {
                           value={todo.title}
                           maxLength={20}
                           autoFocus
-                          onChange={(e) =>
-                            handleTitleChange(todo._id, e.target.value)
-                          }
+                          onChange={(e) => handleTitleChange(todo._id, e.target.value)}
                           onBlur={() => toggleEditing(todo._id)}
                         />
                       ) : (
@@ -239,20 +231,16 @@ const BootstrapLayout = () => {
                       )}
                       <div className="icon-container">
                         <Image
-                          src={
-                            todo.completed
-                              ? "/correct-filled.png"
-                              : "/correct.png"
-                          }
+                          src={todo.completed ? "/correct-filled.png" : "/correct.png"}
                           alt="tick icon"
                           className="tick-icon"
-                          onClick={() => toggleDone(todo._id)}
+                          onClick={(e) => toggleDone(todo._id, e)}
                           width={100}
                           height={100}
                         />
                         <i
                           className="bi bi-x-circle x-icon"
-                          onClick={() => deleteTask(todo._id)}
+                          onClick={(e) => deleteTask(todo._id, e)}
                         ></i>
                       </div>
                     </li>
@@ -267,14 +255,14 @@ const BootstrapLayout = () => {
                       className="new-task-input"
                       value={newTaskTitle}
                       onChange={handleInputChange}
-                      // onBlur={handleAddTaskSubmit}
+                      onKeyPress={handleAddTaskSubmit}
                       autoFocus
                     />
                   </div>
                   <div
                     className="icon-container1"
                     onClick={handleAddTaskSubmit}
-                    style={{ cursor: "pointer" }} // Optional: adds a pointer cursor to indicate it's clickable
+                    style={{ cursor: "pointer" }}
                   >
                     <Image
                       src={"/check-mark.png"}
@@ -289,7 +277,7 @@ const BootstrapLayout = () => {
               )}
             </div>
             <div className="todo-footer">
-              {!showAddTaskInput ? (
+              {!showAddTaskInput && (
                 <li
                   className="list-group-item input-task"
                   style={{ display: "flex", justifyContent: "space-between" }}
@@ -307,38 +295,8 @@ const BootstrapLayout = () => {
                     <i className="bi bi-x-circle x-icon"></i>
                   </div>
                 </li>
-              ) : (
-                <div></div>
-                // <div className="icon-container">
-                //   <button
-                //     onClick={handleAddTaskSubmit}
-                //     className="btn btn-primary"
-                //   >
-                //     Save Task
-                //   </button>
-                // </div>
               )}
             </div>
-            {/* <div className="todo-footer">
-              <li
-                className="list-group-item input-task"
-                style={{ display: "flex", justifyContent: "space-between" }}
-                onClick={addTask}
-              >
-                <span className="text">Add Task</span>
-
-                <div className="icon-container">
-                  <Image
-                    src={"/check-mark.png"}
-                    alt="tick icon"
-                    className="tick-icon"
-                    width={100}
-                    height={100}
-                  />
-                  <i className="bi bi-x-circle x-icon"></i>
-                </div>
-              </li>
-            </div> */}
           </div>
         </div>
 
