@@ -192,6 +192,12 @@ const GuestListPage : React.FC  = () => {
 
     setShowLoginPopup(true); // Assuming login is required before creating the event
 
+    // Set the popup message and type
+    setPopup({
+      message: "Invitations sent successfully",
+      type: "success"
+    });
+
     console.log("Login popup state: ", showLoginPopup); // Check state
   };
 

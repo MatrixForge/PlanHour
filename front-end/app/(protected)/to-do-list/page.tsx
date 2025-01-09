@@ -155,7 +155,10 @@ const BootstrapLayout = () => {
 
       if (response.status === 200) {
         const addedTask = response.data;
-        setTodos([...todos, addedTask]);
+        
+          setTodos((prevTodos) => [...prevTodos, addedTask]);
+        
+        // setTodos([...todos, addedTask]);
         setEditingTaskId(addedTask._id); // Set the new task in editing mode
         setNewTaskTitle(""); // Clear the input
         setShowAddTaskInput(false); // Hide the input box
@@ -264,7 +267,7 @@ const BootstrapLayout = () => {
                       className="new-task-input"
                       value={newTaskTitle}
                       onChange={handleInputChange}
-                      onBlur={handleAddTaskSubmit}
+                      // onBlur={handleAddTaskSubmit}
                       autoFocus
                     />
                   </div>

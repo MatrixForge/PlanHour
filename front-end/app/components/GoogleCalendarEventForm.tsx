@@ -7,6 +7,7 @@ import {
 } from "@supabase/auth-helpers-react";
 import { useGuestStore } from "../../store/guestStore"; // Adjust the import path
 import styles from "@styles/googleCalendarEventForm.module.css";
+import Popup from "./addEvent/Popup";
 
 interface EventFormProps {
   show: boolean;
@@ -17,6 +18,9 @@ interface EventFormProps {
 
 const EventForm: React.FC<EventFormProps> = ({ show, session, onClose }) => {
   const supabase = useSupabaseClient();
+
+  const [popup, setPopup] = useState<{ message: string; type: "success" | "error" } | null>(null);
+
 
   const { attendees } = useGuestStore((state) => state); // Access attendees from Zustand
 
@@ -50,6 +54,7 @@ const EventForm: React.FC<EventFormProps> = ({ show, session, onClose }) => {
   const createCalendarEvent = async () => {
     const { summary, location, start, end } = eventDetails;
 
+
     const event = {
       summary,
       description: location,
@@ -82,6 +87,12 @@ const EventForm: React.FC<EventFormProps> = ({ show, session, onClose }) => {
       const data = await response.json();
       console.log(data);
       console.log("aaa", attendees);
+
+      // Set the popup message and type
+    setPopup({
+      message: "Invitations sent successfully",
+      type: "success"
+    });
 
       // Sign out after successful event creation
       await signOut();
@@ -181,12 +192,14 @@ const EventForm: React.FC<EventFormProps> = ({ show, session, onClose }) => {
                 className={`${styles.saveButton}`}
                 onClick={handleSubmit}
               >
-                Create Event
+                 Send Invitations
               </Button>
             </div>
           </div>
         </div>
       </div>
+
+     
     </div>
   );
 };
